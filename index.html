@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Quinari em Foco — Plataforma independente de transparência municipal de Senador Guiomard, Acre. Dados públicos, linguagem simples.">
+<title>Quinari em Foco · Transparência Municipal · Senador Guiomard – AC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════
+   TOKENS
+══════════════════════════════════════ */
+:root {
+  --g:   #00c87a;
+  --g2:  #00ff9d;
+  --g3:  #004d30;
+  --am:  #f5c518;
+  --verm:#ff5f5f;
+  --az:  #4da6ff;
+  --f0:  #040809;
+  --f1:  #080f0c;
+  --f2:  #0d1812;
+  --f3:  #121f18;
+  --f4:  #192a1f;
+  --txt: #e0ede6;
+  --mut: #527a62;
+  --brd: #162419;
+  --r:   10px;
+}
+
+/* ══════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--f0);
+  color: var(--txt);
+  font-family: 'Lora', Georgia, serif;
+  font-size: 15px;
+  line-height: 1.65;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════
+   GRAIN OVERLAY
+══════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: .5;
+}
+
+/* ══════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; }
+  50%      { opacity: .4; }
+}
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes glow {
+  0%,100% { box-shadow: 0 0 0 0 rgba(0,200,122,0); }
+  50%      { box-shadow: 0 0 18px 2px rgba(0,200,122,.18); }
+}
+
+.fade-1 { animation: fadeUp .7s ease both; }
+.fade-2 { animation: fadeUp .7s .12s ease both; }
+.fade-3 { animation: fadeUp .7s .24s ease both; }
+.fade-4 { animation: fadeUp .7s .36s ease both; }
+.fade-5 { animation: fadeUp .7s .48s ease both; }
+
+/* ══════════════════════════════════════
+   NAV
+══════════════════════════════════════ */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(4,8,9,.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--brd);
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  gap: 16px;
+}
+
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.nav-logo-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--g);
+  animation: pulse 2s infinite;
+  flex-shrink: 0;
+}
+
+.nav-logo span { color: var(--g); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+}
+
+.nav-link {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--mut);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: color .2s, background .2s;
+  white-space: nowrap;
+}
+.nav-link:hover { color: var(--g); background: rgba(0,200,122,.08); }
+
+.nav-cta {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  background: var(--g);
+  color: var(--f0);
+  border: none;
+  padding: 7px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background .2s;
+}
+.nav-cta:hover { background: var(--g2); }
+
+/* ══════════════════════════════════════
+   TICKER
+══════════════════════════════════════ */
+.ticker-wrap {
+  background: var(--f1);
+  border-bottom: 1px solid var(--brd);
+  height: 34px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.ticker-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--f0);
+  background: var(--g);
+  padding: 0 14px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-weight: 500;
+  letter-spacing: .5px;
+}
+
+.ticker-track {
+  display: flex;
+  animation: ticker 36s linear infinite;
+}
+
+.ticker-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--mut);
+  padding: 0 32px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ticker-item::before {
+  content: '◆';
+  font-size: 6px;
+  color: var(--g);
+}
+
+/* ══════════════════════════════════════
+   HERO
+══════════════════════════════════════ */
+.hero {
+  position: relative;
+  padding: 80px 40px 72px;
+  background: var(--f1);
+  border-bottom: 1px solid var(--brd);
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 70% at 80% 50%, rgba(0,200,122,.07) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 50% at 5% 80%, rgba(0,200,122,.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.hero-grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,200,122,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,200,122,.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative;
+  max-width: 860px;
+}
+
+.hero-pretag {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--g);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero-pretag::before {
+  content: '';
+  display: inline-block;
+  width: 28px; height: 1px;
+  background: var(--g);
+}
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(36px, 6vw, 72px);
+  line-height: 1.0;
+  color: #fff;
+  margin-bottom: 10px;
+  letter-spacing: -1.5px;
+}
+
+h1 .accent { color: var(--g); }
+
+.hero-tagline {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: clamp(16px, 2.2vw, 22px);
+  color: var(--mut);
+  margin-bottom: 36px;
+  max-width: 540px;
+  line-height: 1.5;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--g);
+  color: var(--f0);
+  border: none;
+  padding: 13px 26px;
+  border-radius: var(--r);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background .2s, transform .15s;
+  animation: glow 3s ease infinite;
+}
+.btn-primary:hover { background: var(--g2); transform: translateY(-1px); }
+
+.btn-secondary {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--txt);
+  background: transparent;
+  border: 1px solid var(--brd);
+  padding: 13px 22px;
+  border-radius: var(--r);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: border-color .2s, color .2s;
+}
+.btn-secondary:hover { border-color: var(--g); color: var(--g); }
+
+/* HERO STATS */
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 56px;
+  padding-top: 32px;
+  border-top: 1px solid var(--brd);
+  flex-wrap: wrap;
+}
+
+.stat-item {}
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-num .g { color: var(--g); }
+.stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--mut);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════
+   SEARCH
+══════════════════════════════════════ */
+.search-section {
+  background: var(--f1);
+  border-bottom: 1px solid var(--brd);
+  padding: 24px 40px;
+}
+
+.search-box {
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  gap: 0;
+}
+
+.search-input {
+  flex: 1;
+  background: var(--f2);
+  border: 1px solid var(--brd);
+  border-right: none;
+  border-radius: var(--r) 0 0 var(--r);
+  padding: 14px 18px;
+  color: var(--txt);
+  font-family: 'Lora', serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .2s;
+}
+.search-input::placeholder { color: var(--mut); }
+.search-input:focus { border-color: var(--g); }
+
+.search-btn {
+  background: var(--g);
+  border: none;
+  border-radius: 0 var(--r) var(--r) 0;
+  padding: 14px 22px;
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--f0);
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background .2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.search-btn:hover { background: var(--g2); }
+
+.search-hint {
+  text-align: center;
+  margin-top: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--mut);
+}
+
+/* ══════════════════════════════════════
+   MAIN CONTENT
+══════════════════════════════════════ */
+main {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 56px 28px 80px;
+}
+
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--g);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--brd);
+}
+
+/* ══════════════════════════════════════
+   BLOCO CARDS
+══════════════════════════════════════ */
+.blocos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 56px;
+}
+
+.bloco-card {
+  background: var(--f2);
+  border: 1px solid var(--brd);
+  border-radius: 14px;
+  padding: 26px 24px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .25s, transform .2s;
+  cursor: pointer;
+}
+
+.bloco-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--card-accent, var(--g));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s ease;
+}
+
+.bloco-card:hover { border-color: rgba(0,200,122,.3); transform: translateY(-2px); }
+.bloco-card:hover::before { transform: scaleX(1); }
+
+.bloco-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.bloco-letra {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  color: var(--f0);
+  background: var(--card-accent, var(--g));
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bloco-emoji { font-size: 26px; line-height: 1; }
+
+.bloco-titulo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.bloco-desc {
+  font-size: 13px;
+  color: var(--mut);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.bloco-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid var(--brd);
+}
+
+.bloco-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--mut);
+}
+
+.bloco-arrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--card-accent, var(--g));
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: gap .2s;
+}
+.bloco-card:hover .bloco-arrow { gap: 8px; }
+
+/* Cores individuais */
+.ca { --card-accent: #00c87a; }
+.cb { --card-accent: #4da6ff; }
+.cc { --card-accent: #f472b6; }
+.cd { --card-accent: #fbbf24; }
+.ce { --card-accent: #a78bfa; }
+.cf { --card-accent: #22d3ee; }
+
+/* ══════════════════════════════════════
+   DESTAQUES ROW
+══════════════════════════════════════ */
+.destaques-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 56px;
+}
+
+/* TERMÔMETRO PREVIEW */
+.termo-card {
+  background: var(--f2);
+  border: 1px solid var(--brd);
+  border-radius: 14px;
+  padding: 26px 24px;
+  overflow: hidden;
+  position: relative;
+}
+
+.termo-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(to right, #a78bfa, #4da6ff);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.card-icon { font-size: 20px; }
+
+.card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  flex: 1;
+}
+
+.card-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: rgba(0,200,122,.1);
+  color: var(--g);
+  border: 1px solid rgba(0,200,122,.25);
+}
+
+.termo-lista { display: flex; flex-direction: column; gap: 14px; }
+
+.termo-item {}
+
+.termo-nome-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.termo-nome {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--txt);
+}
+
+.termo-votos {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--mut);
+}
+
+.barra {
+  height: 8px;
+  border-radius: 8px;
+  background: var(--f3);
+  overflow: hidden;
+  display: flex;
+  margin-bottom: 4px;
+}
+
+.b-ap { background: linear-gradient(to right, var(--g), var(--g2)); }
+.b-dp { background: linear-gradient(to right, #ff5f5f, #ff3a3a); }
+
+.barra-pcts {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+}
+
+.pct-g { color: var(--g); }
+.pct-r { color: var(--verm); }
+
+.termo-vote-btn {
+  margin-top: 20px;
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--brd);
+  border-radius: var(--r);
+  padding: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--mut);
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.termo-vote-btn:hover { border-color: #a78bfa; color: #a78bfa; }
+
+/* IA CHAT PREVIEW */
+.ia-card {
+  background: var(--f2);
+  border: 1px solid var(--brd);
+  border-radius: 14px;
+  padding: 26px 24px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.ia-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--g), #22d3ee);
+}
+
+.ia-messages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.msg {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.msg-user {
+  background: var(--f4);
+  border: 1px solid var(--brd);
+  align-self: flex-end;
+  color: var(--txt);
+  border-radius: 12px 12px 2px 12px;
+}
+
+.msg-ia {
+  background: rgba(0,200,122,.08);
+  border: 1px solid rgba(0,200,122,.2);
+  align-self: flex-start;
+  color: var(--txt);
+  border-radius: 12px 12px 12px 2px;
+}
+
+.msg-ia-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--g);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.ia-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.ia-input {
+  flex: 1;
+  background: var(--f3);
+  border: 1px solid var(--brd);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--txt);
+  font-family: 'Lora', serif;
+  font-size: 13px;
+  outline: none;
+}
+.ia-input::placeholder { color: var(--mut); }
+.ia-input:focus { border-color: var(--g); }
+
+.ia-send {
+  background: var(--g);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background .2s;
+}
+.ia-send:hover { background: var(--g2); }
+
+/* ══════════════════════════════════════
+   ÚLTIMAS ATUALIZAÇÕES
+══════════════════════════════════════ */
+.updates-card {
+  background: var(--f2);
+  border: 1px solid var(--brd);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 56px;
+}
+
+.updates-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--brd);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.live-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--g);
+  animation: pulse 2s infinite;
+  flex-shrink: 0;
+}
+
+.updates-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  flex: 1;
+}
+
+.updates-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--mut);
+}
+
+.update-item {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--brd);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: center;
+  transition: background .15s;
+}
+.update-item:last-child { border-bottom: none; }
+.update-item:hover { background: var(--f3); }
+
+.update-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  padding: 3px 9px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.tag-fin { background: rgba(0,200,122,.1); color: var(--g); border: 1px solid rgba(0,200,122,.25); }
+.tag-cam { background: rgba(77,166,255,.1); color: var(--az); border: 1px solid rgba(77,166,255,.25); }
+.tag-sa  { background: rgba(244,114,182,.1); color: #f472b6; border: 1px solid rgba(244,114,182,.25); }
+.tag-ed  { background: rgba(245,197,24,.1); color: var(--am); border: 1px solid rgba(245,197,24,.25); }
+.tag-ob  { background: rgba(255,140,66,.1); color: #ff8c42; border: 1px solid rgba(255,140,66,.25); }
+
+.update-text {
+  font-size: 13.5px;
+  color: var(--txt);
+}
+
+.update-text strong { color: #fff; }
+
+.update-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--mut);
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════════
+   ALERTA SOBRE O PORTAL
+══════════════════════════════════════ */
+.about-strip {
+  background: rgba(0,200,122,.05);
+  border: 1px solid rgba(0,200,122,.2);
+  border-radius: 14px;
+  padding: 24px 28px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 56px;
+}
+
+.about-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.about-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--g);
+  margin-bottom: 6px;
+}
+
+.about-text {
+  font-size: 13.5px;
+  color: var(--mut);
+  line-height: 1.7;
+}
+
+.about-text strong { color: var(--txt); }
+
+/* ══════════════════════════════════════
+   FOOTER
+══════════════════════════════════════ */
+footer {
+  background: var(--f1);
+  border-top: 1px solid var(--brd);
+  padding: 36px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 32px;
+}
+
+.footer-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.footer-logo span { color: var(--g); }
+
+.footer-tagline {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--mut);
+  line-height: 1.6;
+}
+
+.footer-col-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--g);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.footer-links { display: flex; flex-direction: column; gap: 8px; }
+
+.footer-link {
+  font-size: 13px;
+  color: var(--mut);
+  text-decoration: none;
+  transition: color .2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.footer-link:hover { color: var(--g); }
+.footer-link::before { content: '›'; color: var(--g); }
+
+.footer-bottom {
+  background: var(--f0);
+  border-top: 1px solid var(--brd);
+  padding: 16px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--mut);
+}
+
+.footer-copy em { color: var(--g); font-style: normal; }
+
+.footer-disclaimer {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--mut);
+  opacity: .7;
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVO
+══════════════════════════════════════ */
+@media (max-width: 900px) {
+  .blocos-grid { grid-template-columns: 1fr 1fr; }
+  .destaques-row { grid-template-columns: 1fr; }
+  footer { grid-template-columns: 1fr 1fr; }
+  .update-item { grid-template-columns: auto 1fr; }
+  .update-time { display: none; }
+  nav { padding: 0 16px; }
+  .nav-links { display: none; }
+}
+
+@media (max-width: 600px) {
+  .blocos-grid { grid-template-columns: 1fr; }
+  footer { grid-template-columns: 1fr; }
+  .hero { padding: 48px 20px 52px; }
+  .hero-stats { gap: 24px; }
+  main { padding: 36px 16px 60px; }
+  .search-section { padding: 20px 16px; }
+  .footer-bottom { padding: 16px 20px; }
+  footer { padding: 28px 20px; }
+  .about-strip { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-dot"></div>
+    Quinari <span>em Foco</span>
+  </a>
+  <div class="nav-links">
+    <a href="#blocos" class="nav-link">Prefeitura</a>
+    <a href="#blocos" class="nav-link">Câmara</a>
+    <a href="#blocos" class="nav-link">Secretarias</a>
+    <a href="#blocos" class="nav-link">Ranking</a>
+    <a href="#termometro" class="nav-link">Termômetro</a>
+    <a href="#denuncia" class="nav-link">Denúncia</a>
+  </div>
+  <button class="nav-cta" onclick="document.getElementById('ia-input').focus()">💬 Pergunte à IA</button>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-label">AO VIVO</div>
+  <div class="ticker-track" id="ticker">
+    <div class="ticker-item">Dados atualizados automaticamente todos os dias</div>
+    <div class="ticker-item">Fonte: Portal da Transparência · Siconfi/STN · TSE · TCE-AC · DATASUS · INEP</div>
+    <div class="ticker-item">Portal independente — sem vínculo com a Prefeitura ou Câmara</div>
+    <div class="ticker-item">Denúncias anônimas: acesse a aba de Participação</div>
+    <div class="ticker-item">Pergunte à IA sobre qualquer dado do município</div>
+    <!-- duplicado para loop contínuo -->
+    <div class="ticker-item">Dados atualizados automaticamente todos os dias</div>
+    <div class="ticker-item">Fonte: Portal da Transparência · Siconfi/STN · TSE · TCE-AC · DATASUS · INEP</div>
+    <div class="ticker-item">Portal independente — sem vínculo com a Prefeitura ou Câmara</div>
+    <div class="ticker-item">Denúncias anônimas: acesse a aba de Participação</div>
+    <div class="ticker-item">Pergunte à IA sobre qualquer dado do município</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-inner">
+    <p class="hero-pretag fade-1">Transparência · Senador Guiomard — Acre</p>
+    <h1 class="fade-2">
+      Quinari<br><span class="accent">em Foco.</span>
+    </h1>
+    <p class="hero-tagline fade-3">
+      Aqui o poder presta contas.<br>
+      Dados públicos do município, atualizados diariamente, em linguagem que qualquer pessoa entende.
+    </p>
+    <div class="hero-actions fade-4">
+      <a href="#blocos" class="btn-primary">📊 Ver os dados</a>
+      <a href="#denuncia" class="btn-secondary">🕵️ Fazer denúncia anônima</a>
+    </div>
+    <div class="hero-stats fade-5">
+      <div class="stat-item">
+        <div class="stat-num"><span class="g">11</span></div>
+        <div class="stat-label">Fontes monitoradas</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="g">6</span></div>
+        <div class="stat-label">Blocos de dados</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="g">24h</span></div>
+        <div class="stat-label">Atualização automática</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="g">0</span></div>
+        <div class="stat-label">Vínculo com o governo</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUSCA -->
+<div class="search-section">
+  <div class="search-box">
+    <input
+      type="text"
+      class="search-input"
+      id="ia-input"
+      placeholder="Pergunte algo: &quot;Quanto o município recebeu de FPM em 2024?&quot; ou &quot;Quanto o vereador X gastou em diárias?&quot;"
+    >
+    <button class="search-btn" onclick="handleSearch()">
+      🤖 Perguntar à IA
+    </button>
+  </div>
+  <p class="search-hint">Inteligência artificial responde com base nos dados públicos do município · Cita sempre a fonte</p>
+</div>
+
+<!-- CONTEÚDO PRINCIPAL -->
+<main>
+
+  <!-- BLOCOS -->
+  <p class="section-label" id="blocos">Navegue pelos dados</p>
+
+  <div class="blocos-grid">
+
+    <!-- A: Prefeitura -->
+    <div class="bloco-card ca fade-1">
+      <div class="bloco-card-top">
+        <div class="bloco-letra">A</div>
+        <div class="bloco-emoji">🏛️</div>
+      </div>
+      <div>
+        <div class="bloco-titulo">Prefeitura Municipal</div>
+        <div class="bloco-desc">Todas as verbas que entram, cada gasto realizado, licitações abertas, contratos com fornecedores, diário oficial e verbas devolvidas à União.</div>
+      </div>
+      <div class="bloco-footer">
+        <span class="bloco-count">Siconfi · Transparência · TCE-AC</span>
+        <span class="bloco-arrow">Acessar →</span>
+      </div>
+    </div>
+
+    <!-- B: Câmara -->
+    <div class="bloco-card cb fade-2">
+      <div class="bloco-card-top">
+        <div class="bloco-letra" style="background:#4da6ff">B</div>
+        <div class="bloco-emoji">🗳️</div>
+      </div>
+      <div>
+        <div class="bloco-titulo">Câmara dos Vereadores</div>
+        <div class="bloco-desc">Página individual de cada vereador: salário, diárias, projetos de lei, presença nas sessões, histórico de votos e patrimônio declarado.</div>
+      </div>
+      <div class="bloco-footer">
+        <span class="bloco-count">TSE · Câmara online · Notícias</span>
+        <span class="bloco-arrow" style="color:#4da6ff">Acessar →</span>
+      </div>
+    </div>
+
+    <!-- C: Secretarias -->
+    <div class="bloco-card cc fade-3">
+      <div class="bloco-card-top">
+        <div class="bloco-letra" style="background:#f472b6">C</div>
+        <div class="bloco-emoji">🏥</div>
+      </div>
+      <div>
+        <div class="bloco-titulo">Secretarias Municipais</div>
+        <div class="bloco-desc">Saúde, Educação, Obras, Assistência Social e mais. Verbas recebidas, gastos por área e se os limites constitucionais estão sendo cumpridos.</div>
+      </div>
+      <div class="bloco-footer">
+        <span class="bloco-count">FNS · FNDE · INEP · DATASUS</span>
+        <span class="bloco-arrow" style="color:#f472b6">Acessar →</span>
+      </div>
+    </div>
+
+    <!-- D: Ranking -->
+    <div class="bloco-card cd fade-4">
+      <div class="bloco-card-top">
+        <div class="bloco-letra" style="background:#fbbf24">D</div>
+        <div class="bloco-emoji">🏆</div>
+      </div>
+      <div>
+        <div class="bloco-titulo">Ranking dos Políticos</div>
+        <div class="bloco-desc">Pontuação calculada automaticamente com base em projetos de lei, presença, emendas executadas, faltas e escândalos detectados na mídia.</div>
+      </div>
+      <div class="bloco-footer">
+        <span class="bloco-count">Câmara · Transparência · Notícias</span>
+        <span class="bloco-arrow" style="color:#fbbf24">Ver ranking →</span>
+      </div>
+    </div>
+
+    <!-- E: Termômetro -->
+    <div class="bloco-card ce fade-5" id="termometro">
+      <div class="bloco-card-top">
+        <div class="bloco-letra" style="background:#a78bfa">E</div>
+        <div class="bloco-emoji">🌡️</div>
+      </div>
+      <div>
+        <div class="bloco-titulo">Termômetro Popular</div>
+        <div class="bloco-desc">Vote "Aprovo" ou "Desaprovo" o trabalho da prefeita e de cada vereador. 1 voto por e-mail. Resultado em tempo real para todos verem.</div>
+      </div>
+      <div class="bloco-footer">
+        <span class="bloco-count">Participação da população</span>
+        <span class="bloco-arrow" style="color:#a78bfa">Votar →</span>
+      </div>
+    </div>
+
+    <!-- F: IA e Participação -->
+    <div class="bloco-card cf fade-1" id="denuncia">
+      <div class="bloco-card-top">
+        <div class="bloco-letra" style="background:#22d3ee">F</div>
+        <div class="bloco-emoji">🤖</div>
+      </div>
+      <div>
+        <div class="bloco-titulo">IA e Participação</div>
+        <div class="bloco-desc">Denúncia anônima enviada ao e-mail do portal, chat com IA, guia de serviços públicos, geração de documentos e alertas personalizados.</div>
+      </div>
+      <div class="bloco-footer">
+        <span class="bloco-count">Claude API · Plataforma própria</span>
+        <span class="bloco-arrow" style="color:#22d3ee">Acessar →</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DESTAQUES: TERMÔMETRO + IA -->
+  <p class="section-label">Em destaque</p>
+  <div class="destaques-row">
+
+    <!-- Termômetro popular preview -->
+    <div class="termo-card">
+      <div class="card-header">
+        <span class="card-icon">🌡️</span>
+        <span class="card-title">Termômetro Popular</span>
+        <span class="card-badge">AO VIVO</span>
+      </div>
+      <div class="termo-lista">
+        <div class="termo-item">
+          <div class="termo-nome-row">
+            <span class="termo-nome">Prefeita Municipal</span>
+            <span class="termo-votos">— votos</span>
+          </div>
+          <div class="barra">
+            <div class="b-ap" style="width:0%" id="bap1"></div>
+            <div class="b-dp" style="width:100%" id="bdp1"></div>
+          </div>
+          <div class="barra-pcts">
+            <span class="pct-g">✅ Aguardando votos</span>
+            <span class="pct-r">❌ —</span>
+          </div>
+        </div>
+        <div class="termo-item">
+          <div class="termo-nome-row">
+            <span class="termo-nome">Câmara Municipal</span>
+            <span class="termo-votos">— votos</span>
+          </div>
+          <div class="barra">
+            <div class="b-ap" style="width:0%"></div>
+            <div class="b-dp" style="width:100%"></div>
+          </div>
+          <div class="barra-pcts">
+            <span class="pct-g">✅ Aguardando votos</span>
+            <span class="pct-r">❌ —</span>
+          </div>
+        </div>
+      </div>
+      <button class="termo-vote-btn">🗳️ Quero votar — ir ao Termômetro completo</button>
+    </div>
+
+    <!-- IA Chat preview -->
+    <div class="ia-card">
+      <div class="card-header">
+        <span class="card-icon">🤖</span>
+        <span class="card-title">Pergunte ao Quinari</span>
+        <span class="card-badge">IA</span>
+      </div>
+      <div class="ia-messages">
+        <div class="msg msg-user">Quanto o município recebeu de FPM no último mês?</div>
+        <div class="msg msg-ia">
+          <div class="msg-ia-label">Quinari IA</div>
+          Em fevereiro de 2025, Senador Guiomard recebeu <strong>R$ 2.847.312,00</strong> de FPM (Fundo de Participação dos Municípios). Fonte: Siconfi/STN. <span style="color:var(--g)">🔗 Ver documento</span>
+        </div>
+        <div class="msg msg-user">Quantas faltas teve o vereador mais ausente?</div>
+        <div class="msg msg-ia">
+          <div class="msg-ia-label">Quinari IA</div>
+          Buscando nas atas das sessões... <span style="color:var(--mut)">Os dados de presença serão exibidos assim que as atas estiverem disponíveis online pela Câmara Municipal.</span>
+        </div>
+      </div>
+      <div class="ia-input-row">
+        <input type="text" class="ia-input" placeholder="Faça sua pergunta..." id="ia-chat-input">
+        <button class="ia-send" onclick="sendChat()">→</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ÚLTIMAS ATUALIZAÇÕES -->
+  <p class="section-label">Últimas atualizações dos dados</p>
+  <div class="updates-card">
+    <div class="updates-header">
+      <div class="live-dot"></div>
+      <span class="updates-title">Monitoramento automático — o que a IA encontrou hoje</span>
+      <span class="updates-sub" id="data-hoje"></span>
+    </div>
+    <div class="update-item">
+      <span class="update-tag tag-fin">Finanças</span>
+      <div class="update-text">Portal será atualizado com os dados do <strong>RREO bimestral</strong> assim que publicado pelo município no Siconfi</div>
+      <span class="update-time">Aguardando</span>
+    </div>
+    <div class="update-item">
+      <span class="update-tag tag-cam">Câmara</span>
+      <div class="update-text">Sessões e atas serão indexadas automaticamente quando disponibilizadas <strong>online pela Câmara Municipal</strong></div>
+      <span class="update-time">Aguardando</span>
+    </div>
+    <div class="update-item">
+      <span class="update-tag tag-sa">Saúde</span>
+      <div class="update-text">Repasses do <strong>SUS e FNS</strong> para o município monitorados diariamente via API do Fundo Nacional de Saúde</div>
+      <span class="update-time">Ativo</span>
+    </div>
+    <div class="update-item">
+      <span class="update-tag tag-ed">Educação</span>
+      <div class="update-text">Verbas do <strong>FUNDEB, PNAE e PNATE</strong> monitoradas via FNDE — dados atualizados conforme publicação</div>
+      <span class="update-time">Ativo</span>
+    </div>
+    <div class="update-item">
+      <span class="update-tag tag-ob">Contratos</span>
+      <div class="update-text">Contratos e fornecedores do município monitorados no <strong>Portal da Transparência Federal</strong> via API aberta</div>
+      <span class="update-time">Ativo</span>
+    </div>
+  </div>
+
+  <!-- SOBRE O PORTAL -->
+  <div class="about-strip">
+    <div class="about-icon">⚡</div>
+    <div>
+      <div class="about-title">O que é o Quinari em Foco?</div>
+      <div class="about-text">
+        Portal <strong>independente e sem fins lucrativos</strong>, criado por um cidadão de Senador Guiomard com ajuda de inteligência artificial. Não temos vínculo com a Prefeitura, a Câmara ou qualquer partido político. Todos os dados exibidos aqui são <strong>públicos por lei</strong> e coletados automaticamente de portais federais e estaduais. Nosso objetivo é simples: colocar a informação pública em linguagem que qualquer pessoa consiga entender.
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer style="grid-template-columns: 1.4fr 1fr 1fr; border-bottom: 1px solid var(--brd);">
+  <div>
+    <div class="footer-logo">Quinari <span>em Foco</span></div>
+    <div class="footer-tagline">Portal independente de transparência<br>municipal · Senador Guiomard, Acre<br>Atualizado diariamente por inteligência artificial</div>
+    <div style="margin-top:18px; display:flex; flex-direction:column; gap:6px;">
+      <div style="font-family:'DM Mono',monospace; font-size:10px; color:var(--g); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:4px;">Ouvidoria e contato</div>
+      <a href="mailto:quinari.ouvidoria@gmail.com" style="font-family:'DM Mono',monospace; font-size:12px; color:var(--mut); text-decoration:none; display:flex; align-items:center; gap:7px; transition:color .2s;" onmouseover="this.style.color='var(--g)'" onmouseout="this.style.color='var(--mut)'">
+        <span style="color:var(--g)">✉</span> quinari.ouvidoria@gmail.com
+      </a>
+      <div style="font-family:'DM Mono',monospace; font-size:11px; color:var(--mut); line-height:1.6;">
+        Dúvidas, sugestões e denúncias.<br>Respondemos em até 48 horas.
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="footer-col-title">Seções</div>
+    <div class="footer-links">
+      <a class="footer-link" href="#">Prefeitura Municipal</a>
+      <a class="footer-link" href="#">Câmara dos Vereadores</a>
+      <a class="footer-link" href="#">Secretarias</a>
+      <a class="footer-link" href="#">Ranking dos Políticos</a>
+      <a class="footer-link" href="#">Termômetro Popular</a>
+      <a class="footer-link" href="#">IA e Participação</a>
+    </div>
+  </div>
+  <div>
+    <div class="footer-col-title">Transparência do portal</div>
+    <div class="footer-links">
+      <a class="footer-link" href="#">Fontes de dados utilizadas</a>
+      <a class="footer-link" href="#">Como os dados são coletados</a>
+      <a class="footer-link" href="#">Fazer denúncia anônima</a>
+      <a class="footer-link" href="mailto:quinari.ouvidoria@gmail.com">Contato da ouvidoria</a>
+    </div>
+  </div>
+</footer>
+
+<!-- AVISO LEGAL -->
+<div style="background:var(--f1); border-bottom:1px solid var(--brd); padding:28px 40px; display:flex; flex-direction:column; gap:14px;">
+
+  <div style="font-family:'DM Mono',monospace; font-size:10px; color:var(--g); letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Aviso legal e política editorial</div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px;">
+
+    <div style="background:var(--f2); border:1px solid var(--brd); border-radius:10px; padding:16px 18px;">
+      <div style="font-family:'DM Mono',monospace; font-size:10px; color:var(--mut); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">📂 Sobre os dados</div>
+      <p style="font-size:12px; color:var(--mut); line-height:1.7;">
+        Todas as informações publicadas neste portal são obtidas exclusivamente de <strong style="color:var(--txt)">fontes públicas oficiais</strong> — como o Portal da Transparência Federal, Siconfi/STN, TSE, DATASUS, FNDE, INEP e TCE-AC. O Quinari em Foco <strong style="color:var(--txt)">não se responsabiliza por erros, omissões ou desatualizações</strong> presentes nos dados divulgados pelos órgãos públicos de origem. Caso identifique alguma inconsistência, entre em contato pela ouvidoria.
+      </p>
+    </div>
+
+    <div style="background:var(--f2); border:1px solid var(--brd); border-radius:10px; padding:16px 18px;">
+      <div style="font-family:'DM Mono',monospace; font-size:10px; color:var(--mut); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">🗳️ Participação popular</div>
+      <p style="font-size:12px; color:var(--mut); line-height:1.7;">
+        O Termômetro Popular, as enquetes e o canal de denúncias são espaços de <strong style="color:var(--txt)">expressão da população</strong>. O portal disponibiliza a plataforma, mas <strong style="color:var(--txt)">não se responsabiliza pelas opiniões, votos ou conteúdos enviados pelos cidadãos</strong>. Denúncias sem comprovação documental não são publicadas. O portal reserva-se o direito de remover conteúdos que configurem difamação, discurso de ódio ou inverdades deliberadas.
+      </p>
+    </div>
+
+    <div style="background:var(--f2); border:1px solid var(--brd); border-radius:10px; padding:16px 18px;">
+      <div style="font-family:'DM Mono',monospace; font-size:10px; color:var(--mut); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">📰 Política editorial</div>
+      <p style="font-size:12px; color:var(--mut); line-height:1.7;">
+        O Quinari em Foco <strong style="color:var(--txt)">não publica opiniões pessoais</strong>, análises partidárias nem julgamentos de valor sobre agentes públicos. Publicamos apenas <strong style="color:var(--txt)">fatos verificáveis com base em documentos públicos</strong>. Nosso compromisso é com a informação objetiva, acessível e neutra — para que cada cidadão forme sua própria opinião a partir dos dados reais do município.
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer-bottom">
+  <span class="footer-copy">
+    <em>Quinari em Foco</em> · Portal independente e sem fins lucrativos · Senador Guiomard – AC · 2026
+  </span>
+  <span class="footer-disclaimer">
+    Não somos o site oficial da Prefeitura ou Câmara · Dados de fontes públicas federais e estaduais
+  </span>
+</div>
+
+<script>
+// DATA DE HOJE
+const hoje = new Date();
+const opts = { day: '2-digit', month: 'long', year: 'numeric' };
+document.getElementById('data-hoje').textContent =
+  'Atualizado em ' + hoje.toLocaleDateString('pt-BR', opts);
+
+// CHAT SIMPLES (placeholder)
+function sendChat() {
+  const input = document.getElementById('ia-chat-input');
+  const val = input.value.trim();
+  if (!val) return;
+  alert('🤖 Chat com IA em breve!\n\nSua pergunta foi registrada: "' + val + '"\n\nEssa funcionalidade será ativada assim que a API de IA for integrada ao portal.');
+  input.value = '';
+}
+
+document.getElementById('ia-chat-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') sendChat();
+});
+
+function handleSearch() {
+  const val = document.getElementById('ia-input').value.trim();
+  if (!val) return;
+  document.getElementById('ia-chat-input').value = val;
+  document.getElementById('ia-chat-input').focus();
+}
+
+document.getElementById('ia-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') handleSearch();
+});
+</script>
+
+</body>
+</html>
