@@ -3,7 +3,7 @@
 const SUPABASE_URL    = process.env.SUPABASE_URL;
 const SUPABASE_KEY    = process.env.SUPABASE_SERVICE_KEY;
 const TRANSP_KEY      = process.env.TRANSPARENCIA_API_KEY || '';
-const IBGE_COD        = '1200435';
+const IBGE_COD        = '1200450';
 const ANO_HOJE        = new Date().getFullYear();
 const MES_ATUAL       = new Date().getMonth() + 1;
 const ANO_SICONFI_MAX = MES_ATUAL <= 6 ? ANO_HOJE - 1 : ANO_HOJE;
