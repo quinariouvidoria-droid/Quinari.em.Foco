@@ -991,6 +991,7 @@ footer {
     <a href="#blocos" class="nav-link">Ranking</a>
     <a href="#termometro" class="nav-link">Termômetro</a>
     <a href="#denuncia" class="nav-link">Denúncia</a>
+    <a href="voz-do-povo.html" class="nav-link" style="color:#a78bfa;border:1px solid rgba(167,139,250,.25);border-radius:6px;background:rgba(167,139,250,.07);">🗣️ Voz do Povo</a>
   </div>
   <button class="nav-cta" onclick="document.getElementById('ia-input').focus()">💬 Pergunte à IA</button>
 </nav>
@@ -1069,6 +1070,19 @@ footer {
 
 <!-- CONTEÚDO PRINCIPAL -->
 <main>
+
+  <!-- BANNER VOZ DO POVO -->
+  <a href="voz-do-povo.html" style="display:block;text-decoration:none;margin-bottom:36px;">
+    <div style="background:linear-gradient(135deg,rgba(167,139,250,.1) 0%,rgba(167,139,250,.04) 100%);border:1px solid rgba(167,139,250,.3);border-radius:14px;padding:24px 28px;display:flex;align-items:center;gap:20px;transition:border-color .2s,transform .2s;position:relative;overflow:hidden;" onmouseover="this.style.borderColor='rgba(167,139,250,.6)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(167,139,250,.3)';this.style.transform='translateY(0)'">
+      <div style="position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(167,139,250,.12) 0%,transparent 70%);pointer-events:none;"></div>
+      <div style="font-size:36px;flex-shrink:0;">🗣️</div>
+      <div style="flex:1;">
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:#fff;margin-bottom:5px;">A Voz do Povo é a Voz de Deus</div>
+        <div style="font-family:'Lora',serif;font-style:italic;font-size:13.5px;color:var(--mut);line-height:1.6;">Opine sobre projetos votados na Câmara · Proponha ideias para o município · Assine abaixo-assinados digitais</div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:12px;color:#a78bfa;flex-shrink:0;display:flex;align-items:center;gap:6px;font-weight:500;">Participar →</div>
+    </div>
+  </a>
 
   <!-- BLOCOS -->
   <p class="section-label" id="blocos">Navegue pelos dados</p>
