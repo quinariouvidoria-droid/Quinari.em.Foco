@@ -2,7 +2,7 @@
 // Coleta dados públicos de 2020 até o ano atual
 // Fontes: Siconfi/STN, Portal da Transparência, TSE
 
-export const config = { runtime: 'edge', maxDuration: 60 };
+export const config = { maxDuration: 60 };
 
 const SUPABASE_URL      = process.env.SUPABASE_URL;
 const SUPABASE_KEY      = process.env.SUPABASE_SERVICE_KEY;
@@ -70,10 +70,13 @@ async function log(fonte, status, registros, mensagem) {
 // ── Fetch com timeout ───────────────────────────────────────
 async function fetchJSON(url, headers = {}, timeoutMs = 20000) {
   try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
     const res = await fetch(url, {
       headers: { 'Accept': 'application/json', ...headers },
-      signal: AbortSignal.timeout(timeoutMs)
+      signal: controller.signal
     });
+    clearTimeout(timer);
     if (!res.ok) return { erro: res.status, dados: null };
     const dados = await res.json();
     return { erro: null, dados };
@@ -392,42 +395,58 @@ export default async function handler(req) {
   const anoAlvo    = anoParam ? parseInt(anoParam) : ANOS[0]; // ANOS[0] = mais recente
   const anosParaColetar = [anoAlvo];
 
-  console.log(`[Quinari Cron] Anos: ${anosParaColetar.join(', ')} · ${new Date().toISOString()}`);
-
   const inicio = Date.now();
   const resumo = {};
+  const ano    = anosParaColetar[0];
 
-  // Coleta Siconfi ano a ano (sequencial para não sobrecarregar)
-  for (const ano of anosParaColetar) {
-    resumo[`siconfi_${ano}`] = await coletarSiconfiAno(ano);
-    await new Promise(r => setTimeout(r, 500)); // Delay entre anos
+  console.log(`[Quinari] Coletando ano ${ano}`);
+
+  // 1. Siconfi — receitas e despesas
+  try {
+    resumo.siconfi = await coletarSiconfiAno(ano);
+  } catch (e) {
+    resumo.siconfi = { erro: e.message };
   }
 
-  // Coleta Portal da Transparência (paralela por ano)
+  // 2. Fornecedores (só se tiver chave)
   if (TRANSP_KEY) {
-    const [forn, lic] = await Promise.allSettled(
-      anosParaColetar.map(ano => coletarFornecedoresAno(ano)),
-      anosParaColetar.map(ano => coletarLicitacoesAno(ano))
-    );
-    resumo.fornecedores = forn.value || 0;
-    resumo.licitacoes   = lic.value || 0;
+    try {
+      resumo.fornecedores = await coletarFornecedoresAno(ano);
+    } catch (e) {
+      resumo.fornecedores = 0;
+    }
+
+    // 3. Licitações
+    try {
+      resumo.licitacoes = await coletarLicitacoesAno(ano);
+    } catch (e) {
+      resumo.licitacoes = 0;
+    }
+  } else {
+    resumo.aviso = 'TRANSPARENCIA_API_KEY não configurada — fornecedores e licitações ignorados';
   }
 
-  // Vereadores (coleta uma vez)
-  if (forcar || !resumo.vereadores) {
-    resumo.vereadores = await coletarVereadores();
+  // 4. Vereadores (só na coleta mais recente ou se explicitamente pedido)
+  if (ano >= ANO_SICONFI_MAX) {
+    try {
+      resumo.vereadores = await coletarVereadores();
+    } catch (e) {
+      resumo.vereadores = 0;
+    }
   }
 
-  // Atualiza timestamp
-  await sbPatch('configuracoes', 'chave=eq.ultima_atualizacao',
-    { valor: new Date().toISOString() });
+  // 5. Atualiza timestamp
+  try {
+    await sbPatch('configuracoes', 'chave=eq.ultima_atualizacao',
+      { valor: new Date().toISOString() });
+  } catch (_) {}
 
   const duracao = ((Date.now() - inicio) / 1000).toFixed(1);
+  console.log(`[Quinari] Ano ${ano} concluído em ${duracao}s`, resumo);
 
   return new Response(JSON.stringify({
     sucesso: true,
-    modo: forcar ? 'historico_completo_2020_atual' : 'atualizacao_diaria',
-    anos_coletados: anosParaColetar,
+    ano_coletado: ano,
     duracao_segundos: duracao,
     executado_em: new Date().toISOString(),
     resumo
