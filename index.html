@@ -969,21 +969,60 @@ footer {
 document.getElementById('data-hoje').textContent =
   new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
 
-// Chat
-function sendChat(){
-  const v=document.getElementById('chat-inp').value.trim();
-  if(!v)return;
-  alert('🤖 Chat com IA em breve!\n\n"'+v+'"');
-  document.getElementById('chat-inp').value='';
+// ── CHAT COM IA ──
+const chatHistory = [];
+
+async function sendChat(){
+  const inp = document.getElementById('chat-inp');
+  const v = inp.value.trim();
+  if(!v) return;
+
+  // Adiciona mensagem do usuário na tela
+  const msgs = document.querySelector('.chat-msgs');
+  const userDiv = document.createElement('div');
+  userDiv.className = 'cm cm-u';
+  userDiv.textContent = v;
+  msgs.appendChild(userDiv);
+  inp.value = '';
+  msgs.scrollTop = msgs.scrollHeight;
+
+  // Adiciona ao histórico
+  chatHistory.push({ role: 'user', content: v });
+
+  // Placeholder de carregando
+  const loadDiv = document.createElement('div');
+  loadDiv.className = 'cm cm-ai';
+  loadDiv.innerHTML = '<div class="cm-label">Quinari IA</div><span style="color:var(--muted)">Consultando os dados...</span>';
+  msgs.appendChild(loadDiv);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: chatHistory })
+    });
+    const data = await res.json();
+    const resposta = data.resposta || data.error || 'Não consegui processar sua pergunta.';
+
+    // Atualiza o placeholder com a resposta
+    loadDiv.innerHTML = '<div class="cm-label">Quinari IA</div>' + resposta.replace(/\n/g, '<br>');
+    chatHistory.push({ role: 'assistant', content: resposta });
+  } catch(err) {
+    loadDiv.innerHTML = '<div class="cm-label">Quinari IA</div><span style="color:var(--muted)">Erro de conexão. Tente novamente.</span>';
+  }
+  msgs.scrollTop = msgs.scrollHeight;
 }
 document.getElementById('chat-inp').addEventListener('keydown',e=>{if(e.key==='Enter')sendChat();});
 
-// Search
+// Search redireciona para chat
 function handleSearch(){
   const v=document.getElementById('s-input').value.trim();
   if(!v)return;
   document.getElementById('chat-inp').value=v;
-  document.querySelector('.panel-body .chat-inp').focus();
+  // scroll para a seção de chat
+  document.querySelector('.panel-body').scrollIntoView({behavior:'smooth'});
+  setTimeout(()=>sendChat(),200);
 }
 document.getElementById('s-input').addEventListener('keydown',e=>{if(e.key==='Enter')handleSearch();});
 
