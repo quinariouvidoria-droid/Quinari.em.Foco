@@ -557,6 +557,22 @@ function renderIdeias(){
   }).join('');
 }
 
+// ── MODERAÇÃO VIA API ──
+async function moderar(texto, tipo){
+  try {
+    const res = await fetch('/api/moderar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ texto, tipo })
+    });
+    const data = await res.json();
+    return data;
+  } catch {
+    // Se a API falhar, aprovar por padrão
+    return { aprovado: true, nivel: 'ok', motivo: null, texto_limpo: null };
+  }
+}
+
 function novaIdeia(){if(!sessao()){abrirModal('login');return;}abrirModal('ideia');}
 function iniciarAssinar(id){
   if(!sessao()){abrirModal('login');return;}
@@ -574,16 +590,44 @@ function confirmarAssinatura(){
   idea.sigs.push({nome,email:s.email,data:new Date().toLocaleDateString('pt-BR')});
   saveDB(db);fecharModal('assinar');renderIdeias();assinarId=null;
 }
-function publicarIdeia(){
+async function publicarIdeia(){
   const s=sessao();if(!s)return;
   const titulo=document.getElementById('ideia-titulo').value.trim();
   const cat=document.getElementById('ideia-cat').value;
   const desc=document.getElementById('ideia-desc').value.trim();
   if(!titulo||!desc)return;
+
+  // Botão de carregando
+  const btn = document.querySelector('#modal-ideia .btn-red-m');
+  const origText = btn.textContent;
+  btn.textContent = 'Verificando...';
+  btn.disabled = true;
+
+  // Moderação
+  const resultado = await moderar(titulo + ' ' + desc, 'ideia de projeto');
+
+  btn.textContent = origText;
+  btn.disabled = false;
+
+  if(!resultado.aprovado){
+    const err = document.getElementById('ideia-ok');
+    err.style.background = 'rgba(225,6,0,.08)';
+    err.style.borderColor = 'rgba(225,6,0,.3)';
+    err.style.color = 'var(--red)';
+    err.textContent = '❌ ' + (resultado.motivo || 'Conteúdo não permitido. Revise o texto e tente novamente.');
+    err.classList.add('show');
+    setTimeout(()=>err.classList.remove('show'),4000);
+    return;
+  }
+
   const db=getDB();const hoje=new Date().toLocaleDateString('pt-BR');
-  db.ideias.unshift({id:'i'+Date.now(),cat,titulo,desc,autor:s.nome,email:s.email,data:hoje,sigs:[{nome:s.nome,email:s.email,data:hoje}]});
+  const textoFinal = resultado.texto_limpo || desc;
+  db.ideias.unshift({id:'i'+Date.now(),cat,titulo,desc:textoFinal,autor:s.nome,email:s.email,data:hoje,sigs:[{nome:s.nome,email:s.email,data:hoje}]});
   saveDB(db);
-  document.getElementById('ideia-ok').classList.add('show');
+  const ok = document.getElementById('ideia-ok');
+  ok.style.background = '';ok.style.borderColor = '';ok.style.color = '';
+  ok.textContent = 'Sua ideia foi publicada! A comunidade já pode assinar.';
+  ok.classList.add('show');
   document.getElementById('ideia-titulo').value='';
   document.getElementById('ideia-desc').value='';
   setTimeout(()=>{fecharModal('ideia');renderIdeias();},1100);
