@@ -1,93 +1,35 @@
-// api/dados.js
-// Endpoint que as páginas do portal usam para buscar dados reais do Supabase
-// Exemplo: /api/dados?tabela=receitas&ano=2025
-
-export const config = { runtime: 'edge' };
+// api/dados.js — Node.js runtime
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const PERMITIDAS   = ['receitas','despesas','licitacoes','fornecedores',
+  'diario_oficial','orcamento_bimestral','indicadores','vereadores','configuracoes','log_coleta'];
 
-// Tabelas permitidas (segurança: apenas leitura de tabelas públicas)
-const TABELAS_PERMITIDAS = [
-  'receitas', 'despesas', 'licitacoes', 'fornecedores',
-  'diario_oficial', 'orcamento_bimestral', 'indicadores',
-  'vereadores', 'configuracoes', 'log_coleta'
-];
+module.exports = async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Cache-Control', 'public, s-maxage=300');
 
-export default async function handler(req) {
-  const url = new URL(req.url);
-  const tabela = url.searchParams.get('tabela');
-  const ano    = url.searchParams.get('ano');
-  const limite = Math.min(parseInt(url.searchParams.get('limite') || '100'), 500);
-  const ordem  = url.searchParams.get('ordem');
-  const filtros = url.searchParams.get('filtros'); // JSON: {"status":"ativo"}
+  const { tabela, ano, limite = '100', ordem, filtros } = req.query || {};
 
-  if (!tabela || !TABELAS_PERMITIDAS.includes(tabela)) {
-    return new Response(JSON.stringify({
-      erro: 'Tabela não permitida',
-      permitidas: TABELAS_PERMITIDAS
-    }), {
-      status: 400,
-      headers: corsHeaders()
-    });
+  if (!tabela || !PERMITIDAS.includes(tabela)) {
+    return res.status(400).json({ erro: 'Tabela não permitida', permitidas: PERMITIDAS });
   }
 
-  // Monta a query para o Supabase
-  let supabaseQuery = `${SUPABASE_URL}/rest/v1/${tabela}?select=*&limit=${limite}`;
-
-  if (ano) supabaseQuery += `&ano=eq.${ano}`;
-  if (ordem) supabaseQuery += `&order=${ordem}`;
-
-  // Filtros adicionais opcionais
+  let q = `${SUPABASE_URL}/rest/v1/${tabela}?select=*&limit=${Math.min(parseInt(limite),500)}`;
+  if (ano)    q += `&ano=eq.${ano}`;
+  if (ordem)  q += `&order=${ordem}`;
   if (filtros) {
-    try {
-      const f = JSON.parse(filtros);
-      for (const [chave, valor] of Object.entries(f)) {
-        supabaseQuery += `&${chave}=eq.${encodeURIComponent(valor)}`;
-      }
-    } catch {}
+    try { for (const [k,v] of Object.entries(JSON.parse(filtros))) q += `&${k}=eq.${v}`; } catch(_) {}
   }
 
   try {
-    const res = await fetch(supabaseQuery, {
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Accept': 'application/json'
-      }
+    const r = await fetch(q, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Accept': 'application/json' }
     });
-
-    if (!res.ok) {
-      return new Response(JSON.stringify({ erro: `Supabase retornou ${res.status}` }), {
-        status: 500,
-        headers: corsHeaders()
-      });
-    }
-
-    const dados = await res.json();
-
-    return new Response(JSON.stringify({
-      tabela,
-      total: dados.length,
-      dados,
-      atualizado_em: new Date().toISOString()
-    }), {
-      status: 200,
-      headers: corsHeaders()
-    });
-
-  } catch (err) {
-    return new Response(JSON.stringify({ erro: err.message }), {
-      status: 500,
-      headers: corsHeaders()
-    });
+    if (!r.ok) return res.status(500).json({ erro: `Supabase ${r.status}` });
+    const dados = await r.json();
+    return res.status(200).json({ tabela, total: dados.length, dados });
+  } catch (e) {
+    return res.status(500).json({ erro: e.message });
   }
-}
-
-function corsHeaders() {
-  return {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Cache-Control': 'public, s-maxage=300' // Cache de 5 min no Vercel Edge
-  };
-}
+};
