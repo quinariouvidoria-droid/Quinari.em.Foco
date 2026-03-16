@@ -1,0 +1,22 @@
+{
+  "crons": [
+    {
+      "path": "/api/coletar",
+      "schedule": "0 9 * * *"
+    }
+  ],
+  "functions": {
+    "api/coletar.js": {
+      "maxDuration": 60
+    },
+    "api/chat.js": {
+      "maxDuration": 30
+    },
+    "api/moderar.js": {
+      "maxDuration": 15
+    },
+    "api/dados.js": {
+      "maxDuration": 10
+    }
+  }
+}
