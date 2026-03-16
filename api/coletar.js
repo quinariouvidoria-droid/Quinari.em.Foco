@@ -383,12 +383,14 @@ export default async function handler(req) {
     });
   }
 
-  // Verifica se é coleta forçada de todos os anos ou só atualização diária
-  const url    = new URL(req.url);
-  const forcar = url.searchParams.get('forcar') === 'true';
-  // Por padrão coleta só o ano mais recente para não exceder o tempo limite
-  // Com ?forcar=true coleta todos os anos de 2020 até o atual
-  const anosParaColetar = forcar ? ANOS : [ANOS[ANOS.length - 1]];
+  // Parâmetros de controle:
+  // ?ano=2023          → coleta apenas 2023
+  // ?forcar=true       → coleta o ano atual (mesmo comportamento do padrão)
+  // sem parâmetro      → coleta o ano mais recente
+  const url        = new URL(req.url);
+  const anoParam   = url.searchParams.get('ano');
+  const anoAlvo    = anoParam ? parseInt(anoParam) : ANOS[0]; // ANOS[0] = mais recente
+  const anosParaColetar = [anoAlvo];
 
   console.log(`[Quinari Cron] Anos: ${anosParaColetar.join(', ')} · ${new Date().toISOString()}`);
 
