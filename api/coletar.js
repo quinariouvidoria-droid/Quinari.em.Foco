@@ -1,5 +1,5 @@
-// api/coletar.js — Quinari em Foco v6 DEFINITIVO
-// Estratégia: DELETE por ano antes de INSERT — sem conflitos de unique key
+// api/coletar.js — Quinari em Foco v7 FINAL
+// Correções: parâmetro 'municipio' (não codigoIbge) + despesas agrupamento correto
 // IBGE: 1200450
 
 const IBGE         = '1200450';
@@ -7,36 +7,27 @@ const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
 const TRANSP_KEY   = process.env.TRANSPARENCIA_API_KEY;
 
-const headers = {
+const hSupa = {
   'Content-Type': 'application/json',
   'apikey': SUPABASE_KEY,
   'Authorization': `Bearer ${SUPABASE_KEY}`
 };
 
-// ─── Deleta registros de um ano antes de reinserir ────────────────────────────
-async function deletarAno(tabela, ano, campoAno = 'ano') {
-  await fetch(`${SUPABASE_URL}/rest/v1/${tabela}?${campoAno}=eq.${ano}`, {
-    method: 'DELETE', headers
-  });
+async function deletarAno(tabela, ano) {
+  await fetch(`${SUPABASE_URL}/rest/v1/${tabela}?ano=eq.${ano}`, { method: 'DELETE', headers: hSupa });
 }
 
-// ─── Insere registros sem se preocupar com conflito ───────────────────────────
 async function inserir(tabela, registros) {
   if (!registros || registros.length === 0) return 0;
-  // Insere em lotes de 100 para não estourar o limite do Supabase
   let total = 0;
   for (let i = 0; i < registros.length; i += 100) {
-    const lote = registros.slice(i, i + 100);
     const res = await fetch(`${SUPABASE_URL}/rest/v1/${tabela}`, {
       method: 'POST',
-      headers: { ...headers, 'Prefer': 'return=minimal' },
-      body: JSON.stringify(lote)
+      headers: { ...hSupa, 'Prefer': 'return=minimal' },
+      body: JSON.stringify(registros.slice(i, i + 100))
     });
-    if (!res.ok) {
-      const err = await res.text();
-      throw new Error(`Supabase(${tabela}) lote ${i}: ${res.status} — ${err.substring(0, 200)}`);
-    }
-    total += lote.length;
+    if (!res.ok) throw new Error(`Supabase(${tabela}) ${res.status}: ${(await res.text()).substring(0, 200)}`);
+    total += Math.min(100, registros.length - i);
   }
   return total;
 }
@@ -45,45 +36,43 @@ async function log(fonte, status, total, erro = null) {
   try {
     await fetch(`${SUPABASE_URL}/rest/v1/log_coleta`, {
       method: 'POST',
-      headers: { ...headers, 'Prefer': 'return=minimal' },
+      headers: { ...hSupa, 'Prefer': 'return=minimal' },
       body: JSON.stringify({ fonte, status, total_registros: total, erro, executado_em: new Date().toISOString() })
     });
   } catch(e) {}
 }
 
-// ─── Busca RREO de um anexo (tenta todos os bimestres) ────────────────────────
+// ─── Busca RREO tentando todos os bimestres ───────────────────────────────────
 async function buscarRREO(ano, numeroAnexo) {
+  const anexoStr = String(numeroAnexo).padStart(2, '0');
   for (let bim = 6; bim >= 1; bim--) {
     try {
-      const anexoStr = String(numeroAnexo).padStart(2, '0');
       const url = `https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=${ano}&nr_periodo=${bim}&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo%20${anexoStr}&id_ente=${IBGE}`;
       const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
       if (!res.ok) continue;
       const json = await res.json();
-      const itens = json.items || [];
-      if (itens.length > 0) return { itens, bimestre: bim };
-    } catch(e) { /* tenta próximo bimestre */ }
+      if ((json.items || []).length > 0) return { itens: json.items, bimestre: bim };
+    } catch(e) {}
   }
   return { itens: [], bimestre: 0 };
 }
 
 // ─── 1. SICONFI ───────────────────────────────────────────────────────────────
 async function coletarSiconfi(ano) {
-  const result = { receitas: 0, despesas: 0, indicadores: 0 };
+  const result = { receitas: 0, despesas: 0, indicadores: 0, detalhes: [] };
 
   // ── Receitas (Anexo 01) ───────────────────────────────────────────────────
   const { itens: itensR, bimestre: bimR } = await buscarRREO(ano, 1);
+  result.detalhes.push(`Anexo01: ${itensR.length} itens bim${bimR}`);
+
   if (itensR.length > 0) {
-    // Agrupa itens por cod_conta (cada conta tem várias linhas: previsão, realizado...)
     const mapa = {};
     for (const item of itensR) {
-      const chave = (item.cod_conta || item.conta || '').substring(0, 100);
+      const chave = (item.cod_conta || '').substring(0, 100);
       if (!chave) continue;
       if (!mapa[chave]) mapa[chave] = {
-        ano: parseInt(ano),
-        fonte: (item.conta || 'N/I').substring(0, 200),
-        categoria: chave,
-        orcado: 0, arrecadado: 0,
+        ano: parseInt(ano), fonte: (item.conta || 'N/I').substring(0, 200),
+        categoria: chave, orcado: 0, arrecadado: 0,
         atualizado_em: new Date().toISOString()
       };
       const col = (item.coluna || item.rotulo || '').toUpperCase();
@@ -100,22 +89,34 @@ async function coletarSiconfi(ano) {
     }
   }
 
-  // ── Despesas (Anexo 02) ───────────────────────────────────────────────────
+  // ── Despesas (Anexo 02) — CORRIGIDO ──────────────────────────────────────
+  // Problema anterior: "RREO2TotalDespesas" era a ÚNICA chave porque
+  // o Siconfi retorna todas as linhas com cod_conta = "RREO2TotalDespesas"
+  // para o total. Precisamos usar a combinação cod_conta + coluna para agrupar,
+  // OU aceitar múltiplas linhas e usar (conta + coluna) como identificador único.
   const { itens: itensD, bimestre: bimD } = await buscarRREO(ano, 2);
+  result.detalhes.push(`Anexo02: ${itensD.length} itens bim${bimD}`);
+
   if (itensD.length > 0) {
+    // Estratégia corrigida: cada LINHA do Siconfi = 1 registro de despesa
+    // (cod_conta pode ser o mesmo para totais — por isso usamos cod_conta+rotulo)
     const mapa = {};
     for (const item of itensD) {
-      const chave = (item.cod_conta || item.conta || '').substring(0, 100);
-      if (!chave) continue;
+      // Usa combinação conta+rotulo como chave única para agrupar colunas da mesma linha
+      const contaLimpa = (item.conta || 'N/I').trim();
+      const rotulo     = (item.rotulo || 'Padrão').trim();
+      const chave      = `${item.cod_conta || contaLimpa}||${rotulo}`;
+
       if (!mapa[chave]) mapa[chave] = {
         ano: parseInt(ano),
-        funcao: (item.conta || 'N/I').substring(0, 200),
-        categoria: chave,
+        funcao: contaLimpa.substring(0, 200),
+        categoria: (item.cod_conta || contaLimpa).substring(0, 100),
         dotacao_inicial: 0, dotacao_atualizada: 0,
         empenhado: 0, liquidado: 0, pago: 0,
         atualizado_em: new Date().toISOString()
       };
-      const col = (item.coluna || item.rotulo || '').toUpperCase();
+
+      const col = (item.coluna || '').toUpperCase();
       const val = parseFloat(item.valor) || 0;
       if (col.includes('DOTAÇÃO INICIAL')    || col.includes('DOTACAO INICIAL'))    mapa[chave].dotacao_inicial    = val;
       if (col.includes('DOTAÇÃO ATUALIZADA') || col.includes('DOTACAO ATUALIZADA')) mapa[chave].dotacao_atualizada = val;
@@ -123,7 +124,10 @@ async function coletarSiconfi(ano) {
       if (col.includes('LIQUIDADO'))                                                 mapa[chave].liquidado          = val;
       if (col.includes('PAGO') || col.includes('REALIZADO'))                        mapa[chave].pago               = val;
     }
+
     const despesas = Object.values(mapa).filter(r => r.dotacao_inicial > 0 || r.empenhado > 0);
+    result.detalhes.push(`Despesas após agrupamento: ${despesas.length}`);
+
     if (despesas.length > 0) {
       await deletarAno('despesas', ano);
       result.despesas = await inserir('despesas', despesas);
@@ -139,6 +143,7 @@ async function coletarSiconfi(ano) {
       if (!res.ok) continue;
       const json = await res.json();
       const itens = json.items || [];
+      result.detalhes.push(`RGF quad${quad}: ${itens.length} itens`);
       if (itens.length === 0) continue;
 
       const mapa = {};
@@ -146,8 +151,7 @@ async function coletarSiconfi(ano) {
         const chave = (item.cod_conta || item.conta || '').substring(0, 100);
         if (!chave) continue;
         if (!mapa[chave]) mapa[chave] = {
-          ano: parseInt(ano),
-          nome: (item.conta || 'Indicador').substring(0, 200),
+          ano: parseInt(ano), nome: (item.conta || 'Indicador').substring(0, 200),
           valor: 0, limite: null, percentual_limite: null,
           atualizado_em: new Date().toISOString()
         };
@@ -166,51 +170,80 @@ async function coletarSiconfi(ano) {
         await log(`Siconfi/RGF quad${quad}`, 'ok', result.indicadores);
         break;
       }
-    } catch(e) { /* tenta próximo quadrimestre */ }
+    } catch(e) { result.detalhes.push(`RGF quad${quad} erro: ${e.message}`); }
   }
 
   return result;
 }
 
 // ─── 2. Portal da Transparência ───────────────────────────────────────────────
+// CORRIGIDO: parâmetro 'municipio' em vez de 'codigoIbge' para transferências
 async function coletarTransparencia(ano) {
   const result = { licitacoes: 0, fornecedores: 0, detalhes: [] };
   const hdrs = { 'chave-api-dados': TRANSP_KEY, 'Accept': 'application/json' };
 
-  const endpoints = [
-    { url: `https://api.portaldatransparencia.gov.br/api-de-dados/convenios?codigoIbge=${IBGE}&dataInicioVigencia=01/01/${ano}&dataFimVigencia=31/12/${ano}&pagina=1`, nome: 'convenios' },
-    { url: `https://api.portaldatransparencia.gov.br/api-de-dados/licitacoes?codigoIbge=${IBGE}&dataInicial=01/01/${ano}&dataFinal=31/12/${ano}&pagina=1`, nome: 'licitacoes' },
-    { url: `https://api.portaldatransparencia.gov.br/api-de-dados/contratos?codigoIbge=${IBGE}&dataInicial=01/01/${ano}&dataFinal=31/12/${ano}&pagina=1`, nome: 'contratos' },
+  // Endpoints corrigidos com parâmetros corretos
+  const tentativas = [
+    // transferências voluntárias (convênios, obras federais no município)
+    { url: `https://api.portaldatransparencia.gov.br/api-de-dados/transferencias-voluntarias?municipio=${IBGE}&ano=${ano}&pagina=1`, tipo: 'convenios' },
+    // licitações — parâmetro correto é codigoIbge
+    { url: `https://api.portaldatransparencia.gov.br/api-de-dados/licitacoes?codigoIbge=${IBGE}&dataInicial=01/01/${ano}&dataFinal=31/12/${ano}&pagina=1`, tipo: 'licitacoes' },
+    // contratos — parâmetro correto é codigoIbge
+    { url: `https://api.portaldatransparencia.gov.br/api-de-dados/contratos?codigoIbge=${IBGE}&dataInicial=01/01/${ano}&dataFinal=31/12/${ano}&pagina=1`, tipo: 'contratos' },
   ];
 
-  for (const ep of endpoints) {
+  for (const { url, tipo } of tentativas) {
     try {
-      const res = await fetch(ep.url, { headers: hdrs, signal: AbortSignal.timeout(10000) });
-      result.detalhes.push(`${ep.nome}: HTTP ${res.status}`);
+      const res = await fetch(url, { headers: hdrs, signal: AbortSignal.timeout(10000) });
+      result.detalhes.push(`${tipo}: HTTP ${res.status}`);
       if (!res.ok) continue;
-      const dados = await res.json();
-      if (!Array.isArray(dados) || dados.length === 0) continue;
 
-      if (ep.nome === 'convenios' || ep.nome === 'licitacoes') {
+      const dados = await res.json();
+      if (!Array.isArray(dados) || dados.length === 0) {
+        result.detalhes.push(`${tipo}: sem dados`);
+        continue;
+      }
+      result.detalhes.push(`${tipo}: ${dados.length} registros ✅`);
+
+      if (tipo === 'convenios') {
         const lics = dados.map(d => ({
           ano: parseInt(ano),
           numero: String(d.numero || d.nrConvenio || d.id || 'S/N').substring(0, 50),
-          modalidade: ep.nome === 'convenios' ? 'Convênio Federal' : String(d.modalidade?.descricao || 'N/I').substring(0, 100),
+          modalidade: 'Convênio Federal',
           objeto: String(d.objeto || d.dsObjeto || 'N/I').substring(0, 500),
-          valor_estimado: parseFloat(d.valorConvenio || d.vlConvenio || d.valorEstimado || 0) || 0,
-          valor_adjudicado: parseFloat(d.valorLiberado || d.valorAdjudicado || 0) || 0,
-          situacao: String(d.situacaoConvenio || d.situacao?.descricao || 'N/I').substring(0, 100),
-          data_abertura: d.dataInicioVigencia || d.dataAbertura || null,
-          vencedor: String(d.proponente?.nome || d.fornecedorVencedor?.nome || '').substring(0, 200) || null,
+          valor_estimado: parseFloat(d.valorConvenio || d.vlConvenio || d.valor || 0) || 0,
+          valor_adjudicado: parseFloat(d.valorLiberado || d.vlDesembolsado || 0) || 0,
+          situacao: String(d.situacaoConvenio || d.situacao || 'N/I').substring(0, 100),
+          data_abertura: d.dataInicioVigencia || d.dtInicioVigencia || null,
+          vencedor: String(d.proponente?.nome || d.nmProponente || '').substring(0, 200) || null,
           atualizado_em: new Date().toISOString()
         }));
         await deletarAno('licitacoes', ano);
         result.licitacoes = await inserir('licitacoes', lics);
-        await log(`Portal/${ep.nome}`, 'ok', result.licitacoes);
-        break; // encontrou dados, para
+        await log('Portal/convenios', 'ok', result.licitacoes);
+        continue;
       }
 
-      if (ep.nome === 'contratos') {
+      if (tipo === 'licitacoes' && result.licitacoes === 0) {
+        const lics = dados.map(d => ({
+          ano: parseInt(ano),
+          numero: String(d.numero || d.id || 'S/N').substring(0, 50),
+          modalidade: String(d.modalidade?.descricao || 'N/I').substring(0, 100),
+          objeto: String(d.objeto || 'N/I').substring(0, 500),
+          valor_estimado: parseFloat(d.valorEstimado || 0) || 0,
+          valor_adjudicado: parseFloat(d.valorAdjudicado || 0) || 0,
+          situacao: String(d.situacao?.descricao || 'N/I').substring(0, 100),
+          data_abertura: d.dataAbertura || null,
+          vencedor: String(d.fornecedorVencedor?.nome || '').substring(0, 200) || null,
+          atualizado_em: new Date().toISOString()
+        }));
+        await deletarAno('licitacoes', ano);
+        result.licitacoes = await inserir('licitacoes', lics);
+        await log('Portal/licitacoes', 'ok', result.licitacoes);
+        continue;
+      }
+
+      if (tipo === 'contratos') {
         const forn = dados.map(d => ({
           ano: parseInt(ano),
           nome: String(d.fornecedor?.nome || 'N/I').substring(0, 200),
@@ -227,7 +260,7 @@ async function coletarTransparencia(ano) {
         await log('Portal/contratos', 'ok', result.fornecedores);
       }
     } catch(e) {
-      result.detalhes.push(`${ep.nome} erro: ${e.message}`);
+      result.detalhes.push(`${tipo} erro: ${e.message}`);
     }
   }
 
@@ -237,20 +270,18 @@ async function coletarTransparencia(ano) {
   return result;
 }
 
-// ─── 3. TSE ───────────────────────────────────────────────────────────────────
+// ─── 3. TSE — vereadores ──────────────────────────────────────────────────────
 async function coletarTSE() {
-  const urlsTSE = [
+  const urls = [
     'https://resultados.tse.jus.br/oficial/ele2024/407/dados/ac/ac01392-c0013-e000407-u.json',
     'https://resultados.tse.jus.br/oficial/ele2024/407/dados-simplificados/ac/ac01392-c0013-e000407-u.json',
   ];
-
-  for (const url of urlsTSE) {
+  for (const url of urls) {
     try {
       const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
       if (!res.ok) continue;
       const dados = await res.json();
-      const candidatos = dados.cands || dados.candidatos || [];
-      const eleitos = candidatos.filter(c =>
+      const eleitos = (dados.cands || []).filter(c =>
         (c.st || '').toLowerCase().includes('eleito') ||
         (c.st || '').toLowerCase().includes('média') ||
         (c.st || '').toLowerCase().includes('qp')
@@ -264,16 +295,15 @@ async function coletarTSE() {
           municipio: 'Senador Guiomard', uf: 'AC', cargo: 'Vereador',
           atualizado_em: new Date().toISOString()
         }));
-        await fetch(`${SUPABASE_URL}/rest/v1/vereadores`, { method: 'DELETE', headers });
+        await fetch(`${SUPABASE_URL}/rest/v1/vereadores`, { method: 'DELETE', headers: hSupa });
         const total = await inserir('vereadores', vereadores);
         await log('TSE', 'ok', total);
         return { vereadores: total };
       }
     } catch(e) {}
   }
-
-  await log('TSE', 'parcial', 0, 'API TSE bloqueada para servidores. Cadastre vereadores manualmente no Supabase.');
-  return { vereadores: 0, aviso: 'Cadastre os vereadores manualmente no Supabase > Table Editor > vereadores' };
+  await log('TSE', 'parcial', 0, 'API TSE bloqueada para servidores — cadastre manualmente no Supabase');
+  return { vereadores: 0, aviso: 'Cadastre os 9 vereadores manualmente: Supabase > Table Editor > vereadores' };
 }
 
 // ─── Handler ──────────────────────────────────────────────────────────────────
@@ -281,8 +311,8 @@ export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ erro: 'Método não permitido' });
   const ano   = req.query.ano || String(new Date().getFullYear());
   const debug = req.query.debug === 'true';
-  if (!SUPABASE_URL || !SUPABASE_KEY) return res.status(500).json({ erro: 'SUPABASE_URL ou SUPABASE_SERVICE_KEY não configuradas' });
-  if (!TRANSP_KEY) return res.status(500).json({ erro: 'TRANSPARENCIA_API_KEY não configurada' });
+  if (!SUPABASE_URL || !SUPABASE_KEY) return res.status(500).json({ erro: 'Variáveis Supabase não configuradas' });
+  if (!TRANSP_KEY)                    return res.status(500).json({ erro: 'TRANSPARENCIA_API_KEY não configurada' });
 
   const t0 = Date.now();
   const [siconfi, transparencia, tse] = await Promise.allSettled([
@@ -294,20 +324,16 @@ export default async function handler(req, res) {
   const resumo = {
     ano, status: 'concluido', tempo_ms: Date.now() - t0,
     resultados: {
-      siconfi: siconfi.status === 'fulfilled'
-        ? { receitas: siconfi.value.receitas, despesas: siconfi.value.despesas, indicadores: siconfi.value.indicadores }
-        : { erro: siconfi.reason?.message },
-      transparencia: transparencia.status === 'fulfilled'
-        ? { licitacoes: transparencia.value.licitacoes, fornecedores: transparencia.value.fornecedores, detalhes: transparencia.value.detalhes }
-        : { erro: transparencia.reason?.message },
-      tse: tse.status === 'fulfilled' ? tse.value : { erro: tse.reason?.message }
+      siconfi:       siconfi.status       === 'fulfilled' ? { receitas: siconfi.value.receitas, despesas: siconfi.value.despesas, indicadores: siconfi.value.indicadores } : { erro: siconfi.reason?.message },
+      transparencia: transparencia.status === 'fulfilled' ? { licitacoes: transparencia.value.licitacoes, fornecedores: transparencia.value.fornecedores, detalhes: transparencia.value.detalhes } : { erro: transparencia.reason?.message },
+      tse:           tse.status           === 'fulfilled' ? tse.value : { erro: tse.reason?.message }
     }
   };
 
   if (debug) resumo.debug = {
-    siconfi: siconfi.value || siconfi.reason?.message,
+    siconfi:       siconfi.value       || siconfi.reason?.message,
     transparencia: transparencia.value || transparencia.reason?.message,
-    tse: tse.value || tse.reason?.message
+    tse:           tse.value           || tse.reason?.message
   };
 
   return res.status(200).json(resumo);
