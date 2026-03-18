@@ -3,998 +3,566 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prefeitura Municipal · Bloco A · Quinari em Foco</title>
+<title>Bloco A — Prefeitura | Quinari em Foco</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --red:#e10600; --red2:#ff1f1a;
-  --green:#00c87a; --green2:#00ff9d;
-  --yellow:#f5c518; --blue:#4da6ff; --purple:#a78bfa;
-  --white:#ffffff; --off:#f0f0f0;
-  --bg:#15151e; --bg1:#1e1e2a; --bg2:#26262f; --bg3:#2f2f3a;
-  --border:#383842; --muted:#909099; --r:4px;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--off);font-family:'Barlow',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+  :root {
+    --bg:       #15151e;
+    --bg2:      #1e1e2a;
+    --bg3:      #252533;
+    --red:      #e10600;
+    --red2:     #ff2020;
+    --white:    #ffffff;
+    --gray:     #a0a0b0;
+    --gray2:    #6b6b80;
+    --green:    #00d46a;
+    --yellow:   #ffd600;
+    --border:   rgba(255,255,255,0.08);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body { background:var(--bg); color:var(--white); font-family:'Barlow',sans-serif; min-height:100vh; }
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-@keyframes spin{to{transform:rotate(360deg)}}
-.a1{animation:fadeUp .45s .05s ease both}
-.a2{animation:fadeUp .45s .12s ease both}
-.a3{animation:fadeUp .45s .2s ease both}
+  /* ── NAV ── */
+  nav {
+    position:sticky; top:0; z-index:100;
+    background:var(--bg); border-bottom:3px solid var(--red);
+    padding:0 24px; display:flex; align-items:center; justify-content:space-between;
+    height:56px;
+  }
+  .nav-logo { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:1.3rem; letter-spacing:2px; text-transform:uppercase; color:var(--white); text-decoration:none; }
+  .nav-logo span { color:var(--red); }
+  .nav-links { display:flex; gap:24px; list-style:none; }
+  .nav-links a { color:var(--gray); text-decoration:none; font-size:.85rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; transition:color .2s; }
+  .nav-links a:hover, .nav-links a.ativo { color:var(--white); }
+  .nav-links a.ativo { border-bottom:2px solid var(--red); padding-bottom:2px; }
+  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
+  .hamburger span { width:24px; height:2px; background:var(--white); display:block; }
+  @media(max-width:768px){
+    .nav-links { display:none; position:absolute; top:56px; left:0; right:0; background:var(--bg); flex-direction:column; padding:16px 24px; gap:12px; border-bottom:2px solid var(--border); }
+    .nav-links.aberto { display:flex; }
+    .hamburger { display:flex; }
+  }
 
-/* ── NAV ── */
-nav{position:sticky;top:0;z-index:300;background:var(--bg);border-bottom:3px solid var(--red);height:60px;display:flex;align-items:center;padding:0 24px;gap:16px;}
-.nav-logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;text-transform:uppercase;letter-spacing:.5px;color:var(--white);text-decoration:none;display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.nav-bar{width:4px;height:20px;background:var(--red);border-radius:2px;animation:blink 2.5s infinite;}
-.nav-logo span{color:var(--red);}
-.nav-back{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:7px 14px;border:1px solid var(--border);border-radius:var(--r);transition:all .15s;display:flex;align-items:center;gap:6px;}
-.nav-back:hover{color:var(--white);border-color:var(--white);}
-.nav-bloco{margin-left:auto;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);display:flex;align-items:center;gap:8px;}
-.nav-bloco-badge{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:12px;background:var(--red);color:var(--white);padding:3px 9px;border-radius:3px;letter-spacing:.5px;}
-.nav-menu-btn{display:none;background:none;border:none;color:var(--white);font-size:22px;cursor:pointer;padding:4px 8px;}
+  /* ── TICKER ── */
+  .ticker { background:var(--red); overflow:hidden; height:32px; display:flex; align-items:center; }
+  .ticker-label { background:var(--bg); color:var(--red); font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:.75rem; letter-spacing:2px; padding:0 16px; white-space:nowrap; height:100%; display:flex; align-items:center; }
+  .ticker-track { display:flex; animation:ticker 30s linear infinite; white-space:nowrap; }
+  .ticker-track span { padding:0 32px; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:.8rem; letter-spacing:1px; color:var(--white); }
+  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
-/* Mobile drawer */
-.mobile-nav{display:none;position:fixed;top:60px;left:0;right:0;bottom:0;background:var(--bg);z-index:250;padding:20px;border-top:1px solid var(--border);flex-direction:column;gap:4px;overflow-y:auto;}
-.mobile-nav.open{display:flex;}
-.mobile-link{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;letter-spacing:1px;text-transform:uppercase;color:var(--off);text-decoration:none;padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;transition:background .15s;cursor:pointer;background:none;border-left:none;border-right:none;border-top:none;}
-.mobile-link:hover,.mobile-link:focus{background:var(--bg1);outline:none;}
-.mobile-link.act{color:var(--red);}
+  /* ── HEADER ── */
+  .page-header { padding:32px 24px 0; max-width:1200px; margin:0 auto; }
+  .breadcrumb { display:flex; align-items:center; gap:8px; font-size:.75rem; color:var(--gray2); font-family:'DM Mono',monospace; margin-bottom:16px; }
+  .breadcrumb a { color:var(--gray2); text-decoration:none; }
+  .breadcrumb a:hover { color:var(--white); }
+  .breadcrumb .sep { color:var(--red); }
+  .page-title { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:clamp(2rem,5vw,3.5rem); text-transform:uppercase; letter-spacing:2px; line-height:1; }
+  .page-title span { color:var(--red); }
+  .page-sub { color:var(--gray); font-size:.9rem; margin-top:8px; }
 
-/* ── HERO ── */
-.hero{background:var(--bg);border-bottom:1px solid var(--border);padding:52px 40px 40px;}
-.breadcrumb{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
-.breadcrumb a{color:var(--muted);text-decoration:none;transition:color .15s;}
-.breadcrumb a:hover{color:var(--red);}
-.breadcrumb span{color:var(--border);}
-.hero-h1{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(42px,6vw,76px);text-transform:uppercase;line-height:.94;letter-spacing:-1px;color:var(--white);margin-bottom:12px;}
-.hero-h1 .red{color:var(--red);}
-.hero-sub{font-size:16px;color:var(--muted);max-width:600px;line-height:1.65;margin-bottom:28px;}
+  /* ── SELETOR DE ANO ── */
+  .ano-bar { max-width:1200px; margin:24px auto 0; padding:0 24px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .ano-label { font-family:'DM Mono',monospace; font-size:.75rem; color:var(--gray2); text-transform:uppercase; letter-spacing:1px; }
+  .ano-btns { display:flex; gap:6px; flex-wrap:wrap; }
+  .ano-btn { background:var(--bg3); border:1px solid var(--border); color:var(--gray); font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:.85rem; letter-spacing:1px; padding:6px 14px; cursor:pointer; transition:all .2s; border-radius:2px; }
+  .ano-btn:hover { border-color:var(--gray2); color:var(--white); }
+  .ano-btn.ativo { background:var(--red); border-color:var(--red); color:var(--white); }
 
-/* FONTE PILL */
-.fonte-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
-.fpill{font-family:'DM Mono',monospace;font-size:10px;padding:4px 12px;border-radius:20px;border:1px solid var(--border);color:var(--muted);background:var(--bg1);display:flex;align-items:center;gap:6px;}
-.fpill::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;}
+  /* ── ABAS ── */
+  .abas-wrap { max-width:1200px; margin:24px auto 0; padding:0 24px; }
+  .abas { display:flex; gap:0; border-bottom:2px solid var(--border); overflow-x:auto; scrollbar-width:none; }
+  .abas::-webkit-scrollbar { display:none; }
+  .aba-btn { background:none; border:none; color:var(--gray2); font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:.9rem; letter-spacing:1px; text-transform:uppercase; padding:12px 20px; cursor:pointer; white-space:nowrap; border-bottom:2px solid transparent; margin-bottom:-2px; transition:all .2s; }
+  .aba-btn:hover { color:var(--gray); }
+  .aba-btn.ativa { color:var(--white); border-bottom-color:var(--red); }
 
-/* ALERTA IA */
-.ai-banner{background:rgba(0,200,122,.06);border:1px solid rgba(0,200,122,.2);border-left:3px solid var(--green);border-radius:var(--r);padding:14px 18px;font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:0;}
-.ai-banner strong{color:var(--off);}
-.ai-banner .ai-label{color:var(--green);font-weight:500;}
+  /* ── CONTEÚDO ABAS ── */
+  .aba-content { display:none; max-width:1200px; margin:0 auto; padding:24px; }
+  .aba-content.ativa { display:block; }
 
-/* ── TABS NAV ── */
-.tabs-nav{background:var(--bg1);border-bottom:1px solid var(--border);padding:0 24px;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;}
-.tabs-nav::-webkit-scrollbar{display:none;}
-.tab-btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);background:none;border:none;border-bottom:3px solid transparent;margin-bottom:-1px;padding:14px 20px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:8px;transition:color .15s,border-color .15s;}
-.tab-btn:hover{color:var(--white);}
-.tab-btn.on{color:var(--white);border-bottom-color:var(--red);}
+  /* ── KPIs ── */
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:24px; }
+  .kpi { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--red); padding:16px 20px; }
+  .kpi-label { font-family:'DM Mono',monospace; font-size:.7rem; color:var(--gray2); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+  .kpi-valor { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:1.6rem; color:var(--white); line-height:1; }
+  .kpi-valor.verde { color:var(--green); }
+  .kpi-valor.amarelo { color:var(--yellow); }
+  .kpi-valor.vermelho { color:var(--red2); }
+  .kpi-sub { font-size:.75rem; color:var(--gray2); margin-top:4px; }
 
-/* ── MAIN ── */
-.wrap{max-width:1100px;margin:0 auto;padding:40px 24px 80px;}
+  /* ── GRÁFICO DE BARRAS ── */
+  .grafico-titulo { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:1rem; letter-spacing:1px; text-transform:uppercase; color:var(--gray); margin:24px 0 12px; }
+  .barra-item { display:grid; grid-template-columns:1fr auto; align-items:center; gap:8px; margin-bottom:10px; }
+  .barra-nome { font-size:.82rem; color:var(--gray); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .barra-track { background:var(--bg3); height:8px; border-radius:2px; overflow:hidden; flex:1; }
+  .barra-fill { height:100%; background:var(--red); border-radius:2px; transition:width .6s ease; }
+  .barra-fill.azul { background:#4a9eff; }
+  .barra-fill.verde { background:var(--green); }
+  .barra-row { display:grid; grid-template-columns:200px 1fr auto; gap:10px; align-items:center; margin-bottom:8px; }
+  .barra-valor { font-family:'DM Mono',monospace; font-size:.75rem; color:var(--gray); white-space:nowrap; }
+  @media(max-width:600px){ .barra-row { grid-template-columns:1fr; gap:4px; } }
 
-/* PANELS */
-.tab-panel{display:none;}
-.tab-panel.on{display:block;}
+  /* ── TABELA ── */
+  .tabela-wrap { overflow-x:auto; margin-top:16px; }
+  .tabela-busca { background:var(--bg3); border:1px solid var(--border); color:var(--white); font-family:'Barlow',sans-serif; font-size:.85rem; padding:8px 14px; width:100%; max-width:320px; margin-bottom:12px; outline:none; }
+  .tabela-busca:focus { border-color:var(--red); }
+  table { width:100%; border-collapse:collapse; font-size:.83rem; }
+  th { background:var(--bg3); color:var(--gray2); font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:1px; text-transform:uppercase; padding:10px 12px; text-align:left; border-bottom:2px solid var(--border); white-space:nowrap; }
+  td { padding:10px 12px; border-bottom:1px solid var(--border); color:var(--gray); vertical-align:top; }
+  tr:hover td { background:var(--bg2); }
+  .badge { display:inline-block; padding:2px 8px; border-radius:2px; font-family:'DM Mono',monospace; font-size:.7rem; font-weight:500; letter-spacing:.5px; }
+  .badge-verde { background:rgba(0,212,106,.15); color:var(--green); }
+  .badge-amarelo { background:rgba(255,214,0,.15); color:var(--yellow); }
+  .badge-vermelho { background:rgba(225,6,0,.15); color:var(--red2); }
 
-/* SECTION TITLE */
-.sec-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:22px;display:flex;align-items:center;gap:14px;}
-.sec-title::after{content:'';flex:1;height:1px;background:var(--border);}
+  /* ── SEMÁFORO ── */
+  .semaforo-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; margin:24px 0; }
+  .semaforo-card { background:var(--bg2); border:1px solid var(--border); padding:20px; }
+  .semaforo-nome { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:1rem; letter-spacing:1px; text-transform:uppercase; margin-bottom:12px; }
+  .semaforo-barra-wrap { background:var(--bg3); border-radius:2px; height:12px; overflow:hidden; margin-bottom:8px; }
+  .semaforo-barra { height:100%; border-radius:2px; transition:width .8s ease; }
+  .semaforo-info { display:flex; justify-content:space-between; font-family:'DM Mono',monospace; font-size:.75rem; }
 
-/* ── KPI CARDS ── */
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:32px;}
-.kpi{background:var(--bg1);border:1px solid var(--border);border-top:3px solid var(--c,var(--red));border-radius:var(--r);padding:20px 18px;}
-.kpi-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
-.kpi-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:28px;color:var(--white);line-height:1;margin-bottom:4px;}
-.kpi-val .unit{font-size:16px;font-weight:600;color:var(--muted);}
-.kpi-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
-.kpi-trend{font-family:'DM Mono',monospace;font-size:10px;margin-top:6px;}
-.trend-up{color:var(--green);}
-.trend-dn{color:var(--red);}
+  /* ── IA RESUMO ── */
+  .ia-box { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--red); padding:20px; margin:24px 0; }
+  .ia-header { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .ia-dot { width:8px; height:8px; background:var(--red); border-radius:50%; animation:pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+  .ia-titulo { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:.85rem; letter-spacing:2px; text-transform:uppercase; color:var(--gray2); }
+  .ia-texto { color:var(--gray); font-size:.88rem; line-height:1.6; }
 
-/* ── TABLE ── */
-.tbl-wrap{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:28px;}
-.tbl-head{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
-.tbl-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.3px;color:var(--white);}
-.tbl-src{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);display:flex;align-items:center;gap:5px;}
-.tbl-src::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);}
+  /* ── PAGINAÇÃO ── */
+  .paginacao { display:flex; gap:6px; margin-top:16px; flex-wrap:wrap; }
+  .pag-btn { background:var(--bg3); border:1px solid var(--border); color:var(--gray); font-family:'DM Mono',monospace; font-size:.75rem; padding:6px 12px; cursor:pointer; transition:all .2s; }
+  .pag-btn:hover { border-color:var(--gray2); color:var(--white); }
+  .pag-btn.ativo { background:var(--red); border-color:var(--red); color:var(--white); }
 
-.tbl-search{display:flex;gap:0;}
-.tbl-sinput{background:var(--bg2);border:1px solid var(--border);border-right:none;border-radius:var(--r) 0 0 var(--r);padding:8px 12px;color:var(--white);font-family:'Barlow',sans-serif;font-size:13px;outline:none;width:220px;transition:border-color .2s;}
-.tbl-sinput::placeholder{color:var(--muted);}
-.tbl-sinput:focus{border-color:var(--red);}
-.tbl-sbtn{background:var(--red);border:none;border-radius:0 var(--r) var(--r) 0;padding:8px 14px;cursor:pointer;color:var(--white);font-size:14px;transition:background .15s;}
-.tbl-sbtn:hover{background:var(--red2);}
+  /* ── LOADING ── */
+  .loading { display:flex; align-items:center; gap:12px; padding:32px; color:var(--gray2); font-family:'DM Mono',monospace; font-size:.8rem; }
+  .spin { width:20px; height:20px; border:2px solid var(--border); border-top-color:var(--red); border-radius:50%; animation:spin .8s linear infinite; }
+  @keyframes spin { to{transform:rotate(360deg)} }
+  .vazio { padding:48px; text-align:center; color:var(--gray2); font-family:'DM Mono',monospace; font-size:.8rem; }
 
-.tbl-filter{display:flex;gap:6px;padding:12px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
-.fbtn{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:11px;letter-spacing:.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:var(--bg2);color:var(--muted);cursor:pointer;transition:all .15s;}
-.fbtn.on{border-color:var(--red);color:var(--red);background:rgba(225,6,0,.08);}
-.fbtn:not(.on):hover{border-color:var(--off);color:var(--off);}
-
-table{width:100%;border-collapse:collapse;}
-thead{background:var(--bg2);}
-thead th{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:12px 16px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--border);}
-tbody tr{border-bottom:1px solid var(--border);transition:background .15s;}
-tbody tr:last-child{border-bottom:none;}
-tbody tr:hover{background:var(--bg2);}
-tbody td{padding:13px 16px;font-size:14px;color:var(--off);vertical-align:middle;}
-.td-mono{font-family:'DM Mono',monospace;font-size:12px;}
-.td-bold{font-weight:600;color:var(--white);}
-.td-green{color:var(--green);}
-.td-red{color:var(--red);}
-.td-yellow{color:var(--yellow);}
-.td-muted{color:var(--muted);}
-.tbl-empty{text-align:center;padding:48px;color:var(--muted);font-size:14px;}
-.tbl-foot{padding:12px 20px;border-top:1px solid var(--border);font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
-
-/* BADGES */
-.badge{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:3px 9px;border-radius:3px;white-space:nowrap;}
-.b-green{background:rgba(0,200,122,.12);color:var(--green);}
-.b-red{background:rgba(225,6,0,.12);color:var(--red);}
-.b-yellow{background:rgba(245,197,24,.12);color:var(--yellow);}
-.b-blue{background:rgba(77,166,255,.12);color:var(--blue);}
-.b-purple{background:rgba(167,139,250,.12);color:var(--purple);}
-.b-muted{background:var(--bg2);color:var(--muted);border:1px solid var(--border);}
-
-/* SEMÁFORO CONSTITUCIONAL */
-.semaforo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:28px;}
-.semaforo{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;display:flex;align-items:center;gap:16px;}
-.sem-icon{font-size:28px;flex-shrink:0;}
-.sem-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
-.sem-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.3px;color:var(--white);margin-bottom:6px;}
-.sem-bar{height:8px;border-radius:4px;background:var(--bg3);overflow:hidden;margin-bottom:5px;position:relative;}
-.sem-fill{height:100%;border-radius:4px;transition:width .8s ease;}
-.sem-bar-min{position:absolute;top:0;bottom:0;width:2px;background:rgba(255,255,255,.3);}
-.sem-nums{display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:11px;}
-.sem-ok{color:var(--green);}
-.sem-nok{color:var(--red);}
-.sem-leg{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
-
-/* CHART SIMPLES */
-.chart-wrap{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:28px;}
-.chart-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;}
-.chart-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.3px;color:var(--white);}
-.chart-src{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
-.bars-chart{display:flex;flex-direction:column;gap:10px;}
-.bar-row{display:flex;align-items:center;gap:12px;}
-.bar-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);width:200px;flex-shrink:0;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.bar-track{flex:1;height:26px;background:var(--bg3);border-radius:3px;overflow:hidden;position:relative;}
-.bar-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding:0 10px;transition:width 1s ease;}
-.bar-val{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;color:var(--white);white-space:nowrap;}
-
-/* ALERTA CARD */
-.alerta{display:flex;align-items:flex-start;gap:14px;background:rgba(225,6,0,.06);border:1px solid rgba(225,6,0,.2);border-left:3px solid var(--red);border-radius:var(--r);padding:16px 18px;margin-bottom:12px;}
-.alerta-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
-.alerta-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.3px;color:var(--red);margin-bottom:4px;}
-.alerta-txt{font-size:13px;color:var(--muted);line-height:1.65;}
-.alerta-txt strong{color:var(--off);}
-
-.alerta.warn{background:rgba(245,197,24,.05);border-color:rgba(245,197,24,.25);border-left-color:var(--yellow);}
-.alerta.warn .alerta-title{color:var(--yellow);}
-
-.alerta.ok{background:rgba(0,200,122,.06);border-color:rgba(0,200,122,.2);border-left-color:var(--green);}
-.alerta.ok .alerta-title{color:var(--green);}
-
-/* IA RESUMO */
-.ia-resumo{background:rgba(0,200,122,.05);border:1px solid rgba(0,200,122,.2);border-radius:var(--r);padding:18px 20px;margin-bottom:28px;}
-.ia-resumo-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:7px;}
-.ia-resumo-label::before{content:'🤖';}
-.ia-resumo-txt{font-size:14px;color:var(--off);line-height:1.7;}
-.ia-resumo-txt strong{color:var(--white);}
-
-/* NOTA EXEMPLO */
-.nota-demo{background:rgba(245,197,24,.06);border:1px solid rgba(245,197,24,.2);border-radius:var(--r);padding:12px 16px;font-family:'DM Mono',monospace;font-size:11px;color:var(--yellow);margin-bottom:20px;line-height:1.6;}
-
-/* LINK EXTERNO */
-.ext-link{font-family:'DM Mono',monospace;font-size:11px;color:var(--red);text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:color .15s;}
-.ext-link:hover{color:var(--red2);}
-.ext-link::after{content:'↗';font-size:10px;}
-
-/* ── RESPONSIVE ── */
-@media(max-width:900px){
-  .kpi-grid{grid-template-columns:1fr 1fr;}
-  .semaforo-grid{grid-template-columns:1fr;}
-}
-@media(max-width:700px){
-  nav{padding:0 16px;}
-  .nav-bloco{display:none;}
-  .nav-menu-btn{display:block;}
-  .hero{padding:36px 16px 32px;}
-  .wrap{padding:28px 16px 60px;}
-  .kpi-grid{grid-template-columns:1fr 1fr;}
-  table{font-size:12px;}
-  thead th{padding:10px 10px;}
-  tbody td{padding:10px 10px;}
-  .tbl-sinput{width:140px;}
-  .bar-label{width:120px;font-size:10px;}
-  .tbl-head{flex-direction:column;align-items:flex-start;}
-  .tbl-search{width:100%;}
-  .tbl-sinput{flex:1;}
-}
-@media(max-width:460px){
-  .kpi-grid{grid-template-columns:1fr;}
-  .hero-h1{font-size:42px;}
-}
+  /* ── RODAPÉ ── */
+  footer { border-top:1px solid var(--border); margin-top:48px; padding:24px; text-align:center; color:var(--gray2); font-size:.8rem; }
+  footer a { color:var(--gray2); }
 </style>
 </head>
 <body>
 
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-label">QUINARI EM FOCO</div>
+  <div class="ticker-track" id="tickerTrack">
+    <span>Portal Independente de Transparência Municipal</span>
+    <span>Senador Guiomard — Acre</span>
+    <span>Dados atualizados diariamente via APIs públicas federais</span>
+    <span>Sem vínculo com a Prefeitura ou partidos políticos</span>
+    <span>Portal Independente de Transparência Municipal</span>
+    <span>Senador Guiomard — Acre</span>
+    <span>Dados atualizados diariamente via APIs públicas federais</span>
+    <span>Sem vínculo com a Prefeitura ou partidos políticos</span>
+  </div>
+</div>
+
 <!-- NAV -->
 <nav>
-  <a href="index.html" class="nav-logo">
-    <div class="nav-bar"></div>
-    Quinari <span>em Foco</span>
-  </a>
-  <a href="index.html" class="nav-back">← Portal</a>
-  <div class="nav-bloco">
-    <span class="nav-bloco-badge">BLOCO A</span>
-    Prefeitura Municipal
+  <a href="index.html" class="nav-logo">QUINARI <span>EM FOCO</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="prefeitura.html" class="ativo">Prefeitura</a></li>
+    <li><a href="voz-do-povo.html">Voz do Povo</a></li>
+    <li><a href="mailto:quinari.ouvidoria@gmail.com">Ouvidoria</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
   </div>
-  <button class="nav-menu-btn" onclick="toggleMenu()" id="menu-btn">☰</button>
 </nav>
 
-<!-- Mobile drawer -->
-<div class="mobile-nav" id="mobile-nav">
-  <a href="index.html" class="mobile-link">← Voltar ao portal</a>
-  <button class="mobile-link act" onclick="setTab('receitas');toggleMenu()">💰 Receitas</button>
-  <button class="mobile-link act" onclick="setTab('despesas');toggleMenu()">📤 Despesas</button>
-  <button class="mobile-link act" onclick="setTab('licitacoes');toggleMenu()">📋 Licitações</button>
-  <button class="mobile-link act" onclick="setTab('fornecedores');toggleMenu()">🏢 Fornecedores</button>
-  <button class="mobile-link act" onclick="setTab('diario');toggleMenu()">📰 Diário Oficial</button>
-  <button class="mobile-link act" onclick="setTab('orcamento');toggleMenu()">📊 Orçamento</button>
+<!-- HEADER -->
+<div class="page-header">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a>
+    <span class="sep">›</span>
+    <span>Bloco A — Prefeitura Municipal</span>
+  </div>
+  <h1 class="page-title">BLOCO A — <span>PREFEITURA</span></h1>
+  <p class="page-sub">Receitas, despesas, licitações e execução orçamentária de Senador Guiomard · Fonte: Siconfi/STN · IBGE: 1200450</p>
 </div>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="breadcrumb a1">
-    <a href="index.html">Quinari em Foco</a>
-    <span>/</span>
-    <span style="color:var(--off)">Bloco A — Prefeitura Municipal</span>
-  </div>
-  <h1 class="hero-h1 a2">Prefeitura<br><span class="red">Municipal.</span></h1>
-  <p class="hero-sub a3">Todas as verbas que entram no município, cada gasto realizado, licitações abertas, contratos com fornecedores, publicações no diário oficial e execução orçamentária.</p>
-  <div class="fonte-pills a3">
-    <span class="fpill">Siconfi / STN</span>
-    <span class="fpill">Portal da Transparência</span>
-    <span class="fpill">TCE-AC</span>
-    <span class="fpill">Diário Oficial do Município</span>
-    <span class="fpill">Receita Federal (CNPJ)</span>
-  </div>
-  <div class="ai-banner a3">
-    <span class="ai-label">🤖 IA Ativa —</span>
-    <strong>Resumo automático:</strong> Com base nos dados do Siconfi, Senador Guiomard arrecadou <strong>R$ 42,3 milhões</strong> em receitas totais no exercício de 2024, com execução orçamentária de <strong>91,4%</strong>. O município cumpre o mínimo constitucional em saúde (21,3%) e educação (27,8%). <a href="#" class="ext-link" style="margin-left:6px">Ver relatório completo</a>
+<!-- SELETOR DE ANO -->
+<div class="ano-bar">
+  <span class="ano-label">Exercício:</span>
+  <div class="ano-btns" id="anoBtns">
+    <button class="ano-btn" onclick="trocarAno(2020)">2020</button>
+    <button class="ano-btn" onclick="trocarAno(2021)">2021</button>
+    <button class="ano-btn" onclick="trocarAno(2022)">2022</button>
+    <button class="ano-btn" onclick="trocarAno(2023)">2023</button>
+    <button class="ano-btn ativo" onclick="trocarAno(2024)">2024</button>
+    <button class="ano-btn" onclick="trocarAno(2025)">2025</button>
   </div>
 </div>
 
-<!-- TABS -->
-<div class="tabs-nav" id="tabs-nav">
-  <button class="tab-btn on" onclick="setTab('receitas',this)">💰 Receitas</button>
-  <button class="tab-btn" onclick="setTab('despesas',this)">📤 Despesas</button>
-  <button class="tab-btn" onclick="setTab('licitacoes',this)">📋 Licitações</button>
-  <button class="tab-btn" onclick="setTab('fornecedores',this)">🏢 Fornecedores</button>
-  <button class="tab-btn" onclick="setTab('diario',this)">📰 Diário Oficial</button>
-  <button class="tab-btn" onclick="setTab('orcamento',this)">📊 Orçamento</button>
+<!-- ABAS -->
+<div class="abas-wrap">
+  <div class="abas">
+    <button class="aba-btn ativa" onclick="trocarAba('receitas')">Receitas</button>
+    <button class="aba-btn" onclick="trocarAba('despesas')">Despesas</button>
+    <button class="aba-btn" onclick="trocarAba('licitacoes')">Licitações</button>
+    <button class="aba-btn" onclick="trocarAba('fornecedores')">Fornecedores</button>
+    <button class="aba-btn" onclick="trocarAba('orcamento')">Orçamento</button>
+    <button class="aba-btn" onclick="trocarAba('indicadores')">Indicadores LRF</button>
+  </div>
 </div>
 
-<div class="wrap">
-
-<!-- ══════════════════════
-     RECEITAS
-══════════════════════ -->
-<div class="tab-panel on" id="panel-receitas">
-
-  <div class="nota-demo">⚠️ Dados de exemplo para demonstração. Quando integrado com a API do Siconfi, os valores reais serão carregados automaticamente e atualizados a cada publicação.</div>
-
-  <div class="kpi-grid">
-    <div class="kpi a1" style="--c:#e10600">
-      <div class="kpi-label">Receita total 2024</div>
-      <div class="kpi-val">R$ 42,3 <span class="unit">mi</span></div>
-      <div class="kpi-sub">Exercício jan–dez 2024</div>
-      <div class="kpi-trend trend-up">▲ 8,2% vs 2023</div>
-    </div>
-    <div class="kpi a2" style="--c:#00c87a">
-      <div class="kpi-label">FPM acumulado 2024</div>
-      <div class="kpi-val">R$ 18,7 <span class="unit">mi</span></div>
-      <div class="kpi-sub">Fundo de Part. dos Municípios</div>
-      <div class="kpi-trend trend-up">▲ 5,1% vs 2023</div>
-    </div>
-    <div class="kpi a3" style="--c:#4da6ff">
-      <div class="kpi-label">FUNDEB 2024</div>
-      <div class="kpi-val">R$ 8,4 <span class="unit">mi</span></div>
-      <div class="kpi-sub">Educação básica</div>
-      <div class="kpi-trend trend-up">▲ 11,3% vs 2023</div>
-    </div>
-    <div class="kpi a3" style="--c:#f5c518">
-      <div class="kpi-label">Convênios federais</div>
-      <div class="kpi-val">R$ 6,2 <span class="unit">mi</span></div>
-      <div class="kpi-sub">Transferências voluntárias</div>
-      <div class="kpi-trend trend-dn">▼ 2,3% vs 2023</div>
-    </div>
+<!-- ABA: RECEITAS -->
+<div class="aba-content ativa" id="aba-receitas">
+  <div class="kpis" id="kpis-receitas">
+    <div class="loading"><div class="spin"></div> Carregando receitas...</div>
   </div>
-
-  <div class="ia-resumo">
-    <div class="ia-resumo-label">Análise automática — Receitas 2024</div>
-    <div class="ia-resumo-txt">O município de Senador Guiomard teve <strong>R$ 42,3 milhões</strong> em receitas em 2024. O FPM representou <strong>44,2%</strong> da receita total, seguido pelo FUNDEB (<strong>19,9%</strong>) e pelos convênios federais (<strong>14,7%</strong>). A receita própria (ISS + IPTU + taxas) foi de apenas <strong>R$ 1,4 mi (3,3%)</strong>, indicando alta dependência de repasses federais — padrão comum em municípios de pequeno porte do interior da Amazônia.</div>
+  <div class="grafico-titulo">Top 10 fontes de receita — valores arrecadados</div>
+  <div id="grafico-receitas"></div>
+  <div class="ia-box" id="ia-receitas" style="display:none">
+    <div class="ia-header"><div class="ia-dot"></div><span class="ia-titulo">Análise da IA</span></div>
+    <div class="ia-texto" id="ia-receitas-texto"></div>
   </div>
-
-  <div class="chart-wrap">
-    <div class="chart-hdr">
-      <div class="chart-title">Receitas por origem — 2024</div>
-      <div class="chart-src">Fonte: Siconfi / STN · RREO</div>
-    </div>
-    <div class="bars-chart" id="chart-receitas"></div>
+  <div class="tabela-wrap">
+    <input class="tabela-busca" type="text" placeholder="Buscar fonte de receita..." oninput="filtrarTabela('tabela-receitas', this.value)">
+    <table id="tabela-receitas">
+      <thead><tr><th>Fonte de Receita</th><th>Previsto</th><th>Arrecadado</th><th>%</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="paginacao" id="pag-receitas"></div>
   </div>
-
-  <div class="tbl-wrap">
-    <div class="tbl-head">
-      <div>
-        <div class="tbl-title">Detalhamento de receitas</div>
-        <div class="tbl-src">Siconfi · STN · Atualizado bimestralmente</div>
-      </div>
-      <div class="tbl-search">
-        <input type="text" class="tbl-sinput" placeholder="Buscar verba..." oninput="filtrarRec(this.value)">
-        <button class="tbl-sbtn">🔍</button>
-      </div>
-    </div>
-    <div class="tbl-filter">
-      <button class="fbtn on" onclick="filtroRecCat('todos',this)">Todas</button>
-      <button class="fbtn" onclick="filtroRecCat('constitucional',this)">Constitucionais</button>
-      <button class="fbtn" onclick="filtroRecCat('saude',this)">Saúde</button>
-      <button class="fbtn" onclick="filtroRecCat('educacao',this)">Educação</button>
-      <button class="fbtn" onclick="filtroRecCat('convenio',this)">Convênios</button>
-      <button class="fbtn" onclick="filtroRecCat('propria',this)">Receita própria</button>
-    </div>
-    <div style="overflow-x:auto;">
-      <table id="tbl-receitas">
-        <thead><tr>
-          <th>Fonte / Programa</th>
-          <th>Categoria</th>
-          <th>Previsto</th>
-          <th>Arrecadado</th>
-          <th>% Execução</th>
-          <th>Documento</th>
-        </tr></thead>
-        <tbody id="tbody-receitas"></tbody>
-      </table>
-    </div>
-    <div class="tbl-foot">
-      <span id="rec-count">Carregando...</span>
-      <a href="https://siconfi.tesouro.gov.br" target="_blank" class="ext-link">Fonte: Siconfi / STN</a>
-    </div>
-  </div>
-
 </div>
 
-<!-- ══════════════════════
-     DESPESAS
-══════════════════════ -->
-<div class="tab-panel" id="panel-despesas">
-
-  <div class="nota-demo">⚠️ Dados de exemplo para demonstração. Integração com Siconfi/STN ativa quando configurado.</div>
-
-  <div class="kpi-grid">
-    <div class="kpi a1" style="--c:#e10600">
-      <div class="kpi-label">Total empenhado 2024</div>
-      <div class="kpi-val">R$ 40,1 <span class="unit">mi</span></div>
-      <div class="kpi-sub">Valor total de empenhos</div>
-    </div>
-    <div class="kpi a2" style="--c:#4da6ff">
-      <div class="kpi-label">Total liquidado</div>
-      <div class="kpi-val">R$ 38,7 <span class="unit">mi</span></div>
-      <div class="kpi-sub">Após entrega confirmada</div>
-    </div>
-    <div class="kpi a3" style="--c:#00c87a">
-      <div class="kpi-label">Total pago</div>
-      <div class="kpi-val">R$ 38,2 <span class="unit">mi</span></div>
-      <div class="kpi-sub">Efetivamente transferido</div>
-      <div class="kpi-trend trend-up">91,4% do orçamento</div>
-    </div>
-    <div class="kpi a3" style="--c:#f472b6">
-      <div class="kpi-label">Pessoal e encargos</div>
-      <div class="kpi-val">R$ 22,3 <span class="unit">mi</span></div>
-      <div class="kpi-sub">55,6% do total gasto</div>
-    </div>
+<!-- ABA: DESPESAS -->
+<div class="aba-content" id="aba-despesas">
+  <div class="kpis" id="kpis-despesas">
+    <div class="loading"><div class="spin"></div> Carregando despesas...</div>
   </div>
-
-  <div class="ia-resumo">
-    <div class="ia-resumo-label">Análise automática — Despesas 2024</div>
-    <div class="ia-resumo-txt">O maior gasto do município foi com <strong>pessoal e encargos (55,6%)</strong>, seguido por <strong>saúde (21,3%)</strong> e <strong>educação (27,8%)</strong>. O município executou <strong>91,4%</strong> do orçamento autorizado — desempenho acima da média estadual (87,2%). Foram identificados <strong>R$ 1,9 mi</strong> em empenhos sem liquidação até 31/12/2024, inscritos em Restos a Pagar.</div>
+  <div class="grafico-titulo">Despesas por função — valores empenhados</div>
+  <div id="grafico-despesas"></div>
+  <div class="tabela-wrap">
+    <input class="tabela-busca" type="text" placeholder="Buscar função..." oninput="filtrarTabela('tabela-despesas', this.value)">
+    <table id="tabela-despesas">
+      <thead><tr><th>Função</th><th>Dotação Inicial</th><th>Dotação Atualizada</th><th>Empenhado</th><th>Liquidado</th><th>Pago</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="paginacao" id="pag-despesas"></div>
   </div>
-
-  <div class="chart-wrap">
-    <div class="chart-hdr">
-      <div class="chart-title">Despesas por função — 2024</div>
-      <div class="chart-src">Fonte: Siconfi · RREO</div>
-    </div>
-    <div class="bars-chart" id="chart-despesas"></div>
-  </div>
-
-  <div class="tbl-wrap">
-    <div class="tbl-head">
-      <div>
-        <div class="tbl-title">Detalhamento de despesas</div>
-        <div class="tbl-src">Siconfi · STN · Atualizado bimestralmente</div>
-      </div>
-      <div class="tbl-search">
-        <input type="text" class="tbl-sinput" placeholder="Buscar despesa..." oninput="filtrarDesp(this.value)">
-        <button class="tbl-sbtn">🔍</button>
-      </div>
-    </div>
-    <div style="overflow-x:auto;">
-      <table>
-        <thead><tr>
-          <th>Função</th>
-          <th>Dotação inicial</th>
-          <th>Empenhado</th>
-          <th>Liquidado</th>
-          <th>Pago</th>
-          <th>% Exec.</th>
-        </tr></thead>
-        <tbody id="tbody-despesas"></tbody>
-      </table>
-    </div>
-    <div class="tbl-foot">
-      <span id="desp-count">Carregando...</span>
-      <a href="https://siconfi.tesouro.gov.br" target="_blank" class="ext-link">Fonte: Siconfi / STN</a>
-    </div>
-  </div>
-
 </div>
 
-<!-- ══════════════════════
-     LICITAÇÕES
-══════════════════════ -->
-<div class="tab-panel" id="panel-licitacoes">
-
-  <div class="nota-demo">⚠️ Dados de exemplo. Quando integrado com o Portal da Transparência e Diário Oficial, as licitações reais serão carregadas automaticamente.</div>
-
-  <div class="kpi-grid">
-    <div class="kpi a1" style="--c:#f5c518">
-      <div class="kpi-label">Em andamento</div>
-      <div class="kpi-val" style="color:var(--yellow)">3</div>
-      <div class="kpi-sub">Pregões e concorrências abertos</div>
-    </div>
-    <div class="kpi a2" style="--c:#00c87a">
-      <div class="kpi-label">Contratos ativos</div>
-      <div class="kpi-val">18</div>
-      <div class="kpi-sub">Valor total: R$ 12,4 mi</div>
-    </div>
-    <div class="kpi a3" style="--c:#e10600">
-      <div class="kpi-label">Dispensas 2024</div>
-      <div class="kpi-val" style="color:var(--red)">24</div>
-      <div class="kpi-sub">Valor: R$ 1,8 mi</div>
-    </div>
-    <div class="kpi a3" style="--c:#4da6ff">
-      <div class="kpi-label">Contratos vencendo</div>
-      <div class="kpi-val" style="color:var(--blue)">4</div>
-      <div class="kpi-sub">Nos próximos 60 dias</div>
-    </div>
+<!-- ABA: LICITAÇÕES -->
+<div class="aba-content" id="aba-licitacoes">
+  <div id="kpis-licitacoes" class="kpis"></div>
+  <div class="tabela-wrap">
+    <input class="tabela-busca" type="text" placeholder="Buscar licitação..." oninput="filtrarTabela('tabela-licitacoes', this.value)">
+    <table id="tabela-licitacoes">
+      <thead><tr><th>Número</th><th>Modalidade</th><th>Objeto</th><th>Valor Estimado</th><th>Situação</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="paginacao" id="pag-licitacoes"></div>
   </div>
-
-  <div class="alerta">
-    <div class="alerta-icon">⚠️</div>
-    <div>
-      <div class="alerta-title">Alerta: Contratos próximos do vencimento</div>
-      <div class="alerta-txt"><strong>4 contratos</strong> vencem nos próximos 60 dias. Sem renovação ou nova licitação, os serviços podem ser interrompidos. Contratos: Coleta de lixo (vence 15/05), Manutenção de vias (vence 22/05), Merenda escolar rural (vence 30/05), Locação de veículos (vence 10/06).</div>
-    </div>
-  </div>
-
-  <div class="tbl-wrap">
-    <div class="tbl-head">
-      <div>
-        <div class="tbl-title">Licitações e contratos</div>
-        <div class="tbl-src">Portal da Transparência · Diário Oficial</div>
-      </div>
-      <div class="tbl-search">
-        <input type="text" class="tbl-sinput" placeholder="Buscar empresa, objeto..." oninput="filtrarLic(this.value)">
-        <button class="tbl-sbtn">🔍</button>
-      </div>
-    </div>
-    <div class="tbl-filter">
-      <button class="fbtn on" onclick="filtroLicTipo('todos',this)">Todos</button>
-      <button class="fbtn" onclick="filtroLicTipo('pregao',this)">Pregão</button>
-      <button class="fbtn" onclick="filtroLicTipo('dispensa',this)">Dispensa</button>
-      <button class="fbtn" onclick="filtroLicTipo('concorrencia',this)">Concorrência</button>
-    </div>
-    <div style="overflow-x:auto;">
-      <table id="tbl-lic">
-        <thead><tr>
-          <th>Nº / Modalidade</th>
-          <th>Objeto</th>
-          <th>Empresa</th>
-          <th>Valor</th>
-          <th>Vigência</th>
-          <th>Status</th>
-          <th>Edital</th>
-        </tr></thead>
-        <tbody id="tbody-lic"></tbody>
-      </table>
-    </div>
-    <div class="tbl-foot">
-      <span id="lic-count">Carregando...</span>
-      <a href="https://www.transparencia.gov.br" target="_blank" class="ext-link">Portal da Transparência</a>
-    </div>
-  </div>
-
 </div>
 
-<!-- ══════════════════════
-     FORNECEDORES
-══════════════════════ -->
-<div class="tab-panel" id="panel-fornecedores">
-
-  <div class="nota-demo">⚠️ Dados de exemplo. A IA faz cruzamento automático dos sócios das empresas com a base de agentes públicos municipais via API da Receita Federal.</div>
-
-  <div class="alerta warn">
-    <div class="alerta-icon">🔎</div>
-    <div>
-      <div class="alerta-title">Cruzamento de dados ativo</div>
-      <div class="alerta-txt">A IA está monitorando os sócios de todas as empresas contratadas e cruzando com a lista de servidores e agentes políticos do município. <strong>1 possível conflito de interesse</strong> identificado — ver linha destacada abaixo.</div>
-    </div>
+<!-- ABA: FORNECEDORES -->
+<div class="aba-content" id="aba-fornecedores">
+  <div id="kpis-fornecedores" class="kpis"></div>
+  <div class="tabela-wrap">
+    <input class="tabela-busca" type="text" placeholder="Buscar fornecedor..." oninput="filtrarTabela('tabela-fornecedores', this.value)">
+    <table id="tabela-fornecedores">
+      <thead><tr><th>Fornecedor</th><th>CNPJ/CPF</th><th>Objeto</th><th>Valor Total</th><th>Vigência</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="paginacao" id="pag-fornecedores"></div>
   </div>
-
-  <div class="tbl-wrap">
-    <div class="tbl-head">
-      <div>
-        <div class="tbl-title">Empresas e valores pagos — 2024</div>
-        <div class="tbl-src">Portal da Transparência · Receita Federal (CNPJ)</div>
-      </div>
-      <div class="tbl-search">
-        <input type="text" class="tbl-sinput" placeholder="Buscar empresa ou CNPJ..." oninput="filtrarForn(this.value)">
-        <button class="tbl-sbtn">🔍</button>
-      </div>
-    </div>
-    <div style="overflow-x:auto;">
-      <table id="tbl-forn">
-        <thead><tr>
-          <th>#</th>
-          <th>Empresa</th>
-          <th>CNPJ</th>
-          <th>Serviço / Produto</th>
-          <th>Total recebido</th>
-          <th>Situação RF</th>
-          <th>Alerta</th>
-        </tr></thead>
-        <tbody id="tbody-forn"></tbody>
-      </table>
-    </div>
-    <div class="tbl-foot">
-      <span id="forn-count">Carregando...</span>
-      <a href="https://www.transparencia.gov.br" target="_blank" class="ext-link">Portal da Transparência</a>
-    </div>
-  </div>
-
 </div>
 
-<!-- ══════════════════════
-     DIÁRIO OFICIAL
-══════════════════════ -->
-<div class="tab-panel" id="panel-diario">
-
-  <div class="nota-demo">⚠️ Dados de exemplo. Quando o Diário Oficial do município estiver online, a IA lerá e resumirá cada edição automaticamente todos os dias.</div>
-
-  <div class="ia-resumo">
-    <div class="ia-resumo-label">Resumo da última edição — IA</div>
-    <div class="ia-resumo-txt">
-      Edição nº 312 (08/04/2025) — A IA identificou: <strong>3 nomeações</strong> para cargos comissionados na Secretaria de Educação, <strong>1 portaria</strong> de exoneração a pedido (Sec. Saúde), <strong>2 contratos</strong> publicados (pavimentação R$ 420 mil · manutenção predial R$ 87 mil) e <strong>1 resultado de licitação</strong> (Pregão 08/2025 — Materiais de escritório).
-    </div>
-  </div>
-
-  <div class="tbl-wrap">
-    <div class="tbl-head">
-      <div>
-        <div class="tbl-title">Publicações do Diário Oficial</div>
-        <div class="tbl-src">Diário Oficial do Município · IA lê diariamente</div>
-      </div>
-      <div class="tbl-search">
-        <input type="text" class="tbl-sinput" placeholder="Buscar nome, portaria..." oninput="filtrarDO(this.value)">
-        <button class="tbl-sbtn">🔍</button>
-      </div>
-    </div>
-    <div class="tbl-filter">
-      <button class="fbtn on" onclick="filtroDO('todos',this)">Todas</button>
-      <button class="fbtn" onclick="filtroDO('nomeacao',this)">Nomeações</button>
-      <button class="fbtn" onclick="filtroDO('exoneracao',this)">Exonerações</button>
-      <button class="fbtn" onclick="filtroDO('contrato',this)">Contratos</button>
-      <button class="fbtn" onclick="filtroDO('portaria',this)">Portarias</button>
-      <button class="fbtn" onclick="filtroDO('licitacao',this)">Licitações</button>
-    </div>
-    <div style="overflow-x:auto;">
-      <table id="tbl-do">
-        <thead><tr>
-          <th>Edição</th>
-          <th>Data</th>
-          <th>Tipo</th>
-          <th>Resumo (IA)</th>
-          <th>PDF</th>
-        </tr></thead>
-        <tbody id="tbody-do"></tbody>
-      </table>
-    </div>
-    <div class="tbl-foot">
-      <span id="do-count">Carregando...</span>
-      <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);">IA resume cada edição automaticamente</span>
-    </div>
-  </div>
-
+<!-- ABA: ORÇAMENTO -->
+<div class="aba-content" id="aba-orcamento">
+  <p style="color:var(--gray);padding:24px 0;font-size:.9rem;">Dados do RREO bimestral — disponíveis após coleta completa.</p>
+  <div class="semaforo-grid" id="semaforo"></div>
 </div>
 
-<!-- ══════════════════════
-     ORÇAMENTO
-══════════════════════ -->
-<div class="tab-panel" id="panel-orcamento">
-
-  <div class="nota-demo">⚠️ Dados de exemplo. Baseado no RREO e RGF publicados no Siconfi pelo município.</div>
-
-  <p class="sec-title">Semáforo Constitucional</p>
-
-  <div class="semaforo-grid">
-    <div class="semaforo">
-      <div class="sem-icon">🏥</div>
-      <div style="flex:1">
-        <div class="sem-label">Mínimo obrigatório em saúde</div>
-        <div class="sem-title">Saúde — 21,3% aplicados</div>
-        <div class="sem-bar">
-          <div class="sem-fill" style="width:100%;background:var(--green)"></div>
-          <div class="sem-bar-min" style="left:70.7%"></div>
-        </div>
-        <div class="sem-nums">
-          <span class="sem-ok">✅ 21,3% — Cumpre o mínimo (15%)</span>
-          <span class="sem-leg">R$ 6,4 mi de R$ 8,9 mi previsto</span>
-        </div>
-      </div>
-    </div>
-    <div class="semaforo">
-      <div class="sem-icon">📚</div>
-      <div style="flex:1">
-        <div class="sem-label">Mínimo obrigatório em educação</div>
-        <div class="sem-title">Educação — 27,8% aplicados</div>
-        <div class="sem-bar">
-          <div class="sem-fill" style="width:100%;background:var(--green)"></div>
-          <div class="sem-bar-min" style="left:89.9%"></div>
-        </div>
-        <div class="sem-nums">
-          <span class="sem-ok">✅ 27,8% — Cumpre o mínimo (25%)</span>
-          <span class="sem-leg">R$ 8,3 mi de R$ 11,2 mi previsto</span>
-        </div>
-      </div>
-    </div>
-    <div class="semaforo">
-      <div class="sem-icon">👥</div>
-      <div style="flex:1">
-        <div class="sem-label">Limite de gastos com pessoal (LRF)</div>
-        <div class="sem-title">Pessoal — 54,2% da RCL</div>
-        <div class="sem-bar">
-          <div class="sem-fill" style="width:85%;background:var(--yellow)"></div>
-          <div class="sem-bar-min" style="left:95.5%"></div>
-        </div>
-        <div class="sem-nums">
-          <span class="td-yellow">⚠️ 54,2% — Próximo do limite (60%)</span>
-          <span class="sem-leg">Alerta de atenção pela LRF</span>
-        </div>
-      </div>
-    </div>
-    <div class="semaforo">
-      <div class="sem-icon">💳</div>
-      <div style="flex:1">
-        <div class="sem-label">Dívida consolidada líquida</div>
-        <div class="sem-title">Dívida — R$ 2,1 mi</div>
-        <div class="sem-bar">
-          <div class="sem-fill" style="width:14%;background:var(--green)"></div>
-          <div class="sem-bar-min" style="left:95%"></div>
-        </div>
-        <div class="sem-nums">
-          <span class="sem-ok">✅ Dentro do limite legal (1,2× RCL)</span>
-          <span class="sem-leg">Margem ampla disponível</span>
-        </div>
-      </div>
-    </div>
+<!-- ABA: INDICADORES LRF -->
+<div class="aba-content" id="aba-indicadores">
+  <div id="kpis-indicadores" class="kpis">
+    <div class="loading"><div class="spin"></div> Carregando indicadores...</div>
   </div>
-
-  <div class="alerta warn">
-    <div class="alerta-icon">⚠️</div>
-    <div>
-      <div class="alerta-title">Atenção: Gastos com pessoal em 54,2% da RCL</div>
-      <div class="alerta-txt">O município está em <strong>zona de atenção</strong> da LRF. O limite legal é de <strong>60%</strong>. Nos últimos 12 meses o gasto cresceu <strong>3,2 pontos percentuais</strong>. Se mantiver essa trajetória, poderá atingir o limite dentro de <strong>8 meses</strong>.</div>
-    </div>
-  </div>
-
-  <div class="alerta ok">
-    <div class="alerta-icon">✅</div>
-    <div>
-      <div class="alerta-title">Pareceres do TCE-AC</div>
-      <div class="alerta-txt">Contas de 2023 aprovadas com ressalvas pelo Tribunal de Contas do Estado do Acre. <strong>2 ressalvas</strong> apontadas: atraso na entrega de informações ao SIOPS (saúde) e inconsistência em cadastro de servidores. Prazo para regularização: 90 dias.</div>
-    </div>
-  </div>
-
-  <div class="tbl-wrap">
-    <div class="tbl-head">
-      <div>
-        <div class="tbl-title">Execução orçamentária — últimos bimestres</div>
-        <div class="tbl-src">Siconfi · RREO · Atualizado bimestralmente</div>
-      </div>
-    </div>
-    <div style="overflow-x:auto;">
-      <table>
-        <thead><tr>
-          <th>Período</th>
-          <th>Receita prevista</th>
-          <th>Receita realizada</th>
-          <th>Despesa autorizada</th>
-          <th>Despesa executada</th>
-          <th>Resultado</th>
-        </tr></thead>
-        <tbody>
-          <tr><td class="td-mono">1º Bim 2025</td><td class="td-mono">R$ 7.200.000</td><td class="td-mono">R$ 7.410.000</td><td class="td-mono">R$ 7.100.000</td><td class="td-mono">R$ 6.980.000</td><td><span class="badge b-green">Superávit</span></td></tr>
-          <tr><td class="td-mono">6º Bim 2024</td><td class="td-mono">R$ 8.100.000</td><td class="td-mono">R$ 8.340.000</td><td class="td-mono">R$ 8.200.000</td><td class="td-mono">R$ 8.190.000</td><td><span class="badge b-green">Equilibrado</span></td></tr>
-          <tr><td class="td-mono">5º Bim 2024</td><td class="td-mono">R$ 7.800.000</td><td class="td-mono">R$ 7.620.000</td><td class="td-mono">R$ 7.900.000</td><td class="td-mono">R$ 7.840.000</td><td><span class="badge b-yellow">Leve déficit</span></td></tr>
-          <tr><td class="td-mono">4º Bim 2024</td><td class="td-mono">R$ 7.400.000</td><td class="td-mono">R$ 7.510.000</td><td class="td-mono">R$ 7.350.000</td><td class="td-mono">R$ 7.290.000</td><td><span class="badge b-green">Superávit</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="tbl-foot">
-      <span>4 bimestres exibidos</span>
-      <a href="https://siconfi.tesouro.gov.br" target="_blank" class="ext-link">Fonte: Siconfi</a>
-    </div>
-  </div>
-
+  <div class="semaforo-grid" id="semaforo-indicadores"></div>
 </div>
 
-</div><!-- /wrap -->
+<footer>
+  <p>Quinari em Foco · Portal independente · Senador Guiomard, Acre · 2026</p>
+  <p style="margin-top:6px">Dados públicos via Siconfi/STN · Este portal não é oficial da Prefeitura ou Câmara Municipal</p>
+  <p style="margin-top:6px"><a href="mailto:quinari.ouvidoria@gmail.com">quinari.ouvidoria@gmail.com</a></p>
+</footer>
 
 <script>
-// ── TABS ──
-function setTab(id, el){
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('on'));
-  document.getElementById('panel-'+id).classList.add('on');
-  if(el){el.classList.add('on');}
-  else{
-    document.querySelectorAll('.tab-btn').forEach(b=>{
-      if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'"))b.classList.add('on');
-    });
+const API = '/api/dados';
+let anoAtual = 2024;
+let abaAtual = 'receitas';
+const dadosCache = {};
+const paginaAtual = {};
+
+// ── Utilitários ────────────────────────────────────────────────────────────────
+const fmt = v => v == null ? '—' : 'R$ ' + Number(v).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+const fmtN = v => v == null ? '—' : Number(v).toLocaleString('pt-BR');
+const pct = (a,b) => b > 0 ? ((a/b)*100).toFixed(1)+'%' : '—';
+const corPct = p => p >= 90 ? 'verde' : p >= 60 ? 'amarelo' : 'vermelho';
+
+async function buscarDados(tabela, ano, limite=500) {
+  const chave = `${tabela}_${ano}`;
+  if (dadosCache[chave]) return dadosCache[chave];
+  try {
+    const r = await fetch(`${API}?tabela=${tabela}&ano=${ano}&limite=${limite}`);
+    if (!r.ok) return [];
+    const d = await r.json();
+    dadosCache[chave] = Array.isArray(d) ? d : (d.dados || []);
+    return dadosCache[chave];
+  } catch(e) { return []; }
+}
+
+// ── Trocar ano ────────────────────────────────────────────────────────────────
+function trocarAno(ano) {
+  anoAtual = ano;
+  document.querySelectorAll('.ano-btn').forEach(b => {
+    b.classList.toggle('ativo', parseInt(b.textContent) === ano);
+  });
+  carregarAba(abaAtual);
+}
+
+// ── Trocar aba ────────────────────────────────────────────────────────────────
+function trocarAba(aba) {
+  abaAtual = aba;
+  document.querySelectorAll('.aba-btn').forEach((b,i) => {
+    const abas = ['receitas','despesas','licitacoes','fornecedores','orcamento','indicadores'];
+    b.classList.toggle('ativa', abas[i] === aba);
+  });
+  document.querySelectorAll('.aba-content').forEach(el => {
+    el.classList.toggle('ativa', el.id === `aba-${aba}`);
+  });
+  carregarAba(aba);
+}
+
+async function carregarAba(aba) {
+  if (aba === 'receitas')    await carregarReceitas();
+  if (aba === 'despesas')    await carregarDespesas();
+  if (aba === 'licitacoes')  await carregarLicitacoes();
+  if (aba === 'fornecedores') await carregarFornecedores();
+  if (aba === 'indicadores') await carregarIndicadores();
+}
+
+// ── Gráfico de barras ─────────────────────────────────────────────────────────
+function renderGrafico(containerId, itens, campoNome, campoValor, cor='') {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  if (!itens || itens.length === 0) { el.innerHTML = '<div class="vazio">Sem dados disponíveis</div>'; return; }
+  const max = Math.max(...itens.map(i => i[campoValor] || 0));
+  el.innerHTML = itens.slice(0,10).map(item => {
+    const val = item[campoValor] || 0;
+    const w = max > 0 ? (val/max*100).toFixed(1) : 0;
+    return `<div class="barra-row">
+      <div class="barra-nome" title="${item[campoNome]}">${item[campoNome]}</div>
+      <div class="barra-track"><div class="barra-fill ${cor}" style="width:${w}%"></div></div>
+      <div class="barra-valor">${fmt(val)}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── Tabela com paginação ───────────────────────────────────────────────────────
+function renderTabela(tabelaId, pagId, linhas, pagina=1) {
+  const tbody = document.querySelector(`#${tabelaId} tbody`);
+  const pagEl = document.getElementById(pagId);
+  if (!tbody) return;
+  if (!linhas || linhas.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--gray2);padding:32px">Sem dados para este ano</td></tr>';
+    if (pagEl) pagEl.innerHTML = '';
+    return;
   }
+  const POR_PAG = 20;
+  const total = Math.ceil(linhas.length / POR_PAG);
+  const inicio = (pagina-1)*POR_PAG;
+  const fatia = linhas.slice(inicio, inicio+POR_PAG);
+  tbody.innerHTML = fatia.map(l => l._html).join('');
+  if (pagEl && total > 1) {
+    pagEl.innerHTML = Array.from({length:total},(_,i) =>
+      `<button class="pag-btn ${i+1===pagina?'ativo':''}" onclick="mudarPag('${tabelaId}','${pagId}',${i+1})">${i+1}</button>`
+    ).join('');
+  } else if (pagEl) { pagEl.innerHTML = ''; }
 }
 
-// ── MOBILE ──
-function toggleMenu(){
-  const nav=document.getElementById('mobile-nav');
-  const btn=document.getElementById('menu-btn');
-  const open=nav.classList.toggle('open');
-  btn.textContent=open?'✕':'☰';
-  document.body.style.overflow=open?'hidden':'';
+function mudarPag(tabelaId, pagId, pag) {
+  paginaAtual[tabelaId] = pag;
+  const chave = `linhas_${tabelaId}`;
+  if (window[chave]) renderTabela(tabelaId, pagId, window[chave], pag);
 }
 
-// ── DADOS EXEMPLO ──
-const receitas=[
-  {nome:'FPM — Fundo de Part. dos Municípios',cat:'constitucional',previsto:18200000,arrecadado:18740000},
-  {nome:'FUNDEB',cat:'educacao',previsto:7800000,arrecadado:8420000},
-  {nome:'SUS — PAB / MAC / FAEC',cat:'saude',previsto:4100000,arrecadado:4380000},
-  {nome:'ICMS-Cota Parte (Estado)',cat:'constitucional',previsto:3200000,arrecadado:3140000},
-  {nome:'Convênios federais — obras',cat:'convenio',previsto:3800000,arrecadado:3620000},
-  {nome:'PNATE — Transporte escolar',cat:'educacao',previsto:820000,arrecadado:810000},
-  {nome:'PNAE — Merenda escolar',cat:'educacao',previsto:640000,arrecadado:635000},
-  {nome:'PDDE — Manutenção escolar',cat:'educacao',previsto:180000,arrecadado:178000},
-  {nome:'FNAS — Assistência Social',cat:'convenio',previsto:520000,arrecadado:498000},
-  {nome:'Emendas parlamentares',cat:'convenio',previsto:1800000,arrecadado:1640000},
-  {nome:'IPTU',cat:'propria',previsto:280000,arrecadado:241000},
-  {nome:'ISS — Serviços',cat:'propria',previsto:620000,arrecadado:598000},
-  {nome:'Taxas diversas',cat:'propria',previsto:180000,arrecadado:164000},
-  {nome:'ITR-Cota Parte',cat:'constitucional',previsto:140000,arrecadado:132000},
-  {nome:'IPVA-Cota Parte (Estado)',cat:'constitucional',previsto:920000,arrecadado:912000},
-];
+function filtrarTabela(tabelaId, busca) {
+  const chave = `linhas_${tabelaId}`;
+  const todas = window[`todas_${tabelaId}`] || [];
+  const b = busca.toLowerCase();
+  window[chave] = b ? todas.filter(l => l._texto.includes(b)) : todas;
+  paginaAtual[tabelaId] = 1;
+  const pagId = tabelaId.replace('tabela-','pag-');
+  renderTabela(tabelaId, pagId, window[chave], 1);
+}
 
-const despesas=[
-  {func:'Administração Geral',dot:4200000,emp:4120000,liq:4080000,pago:4070000},
-  {func:'Saúde',dot:8900000,emp:8710000,liq:8620000,pago:8590000},
-  {func:'Educação',dot:11200000,emp:10980000,liq:10840000,pago:10810000},
-  {func:'Assistência Social',dot:2100000,emp:2040000,liq:2010000,pago:1990000},
-  {func:'Infraestrutura / Obras',dot:3800000,emp:3610000,liq:3420000,pago:3380000},
-  {func:'Transporte',dot:1400000,emp:1380000,liq:1360000,pago:1350000},
-  {func:'Agricultura',dot:980000,emp:920000,liq:890000,pago:880000},
-  {func:'Meio Ambiente',dot:420000,emp:380000,liq:360000,pago:355000},
-  {func:'Esporte e Cultura',dot:640000,emp:590000,liq:570000,pago:565000},
-  {func:'Legislativo (Câmara)',dot:3200000,emp:3180000,liq:3160000,pago:3150000},
-];
+// ── RECEITAS ──────────────────────────────────────────────────────────────────
+async function carregarReceitas() {
+  const el = document.getElementById('kpis-receitas');
+  el.innerHTML = '<div class="loading"><div class="spin"></div> Carregando...</div>';
+  const dados = await buscarDados('receitas', anoAtual);
 
-const licitacoes=[
-  {num:'PE 001/2025',tipo:'pregao',objeto:'Aquisição de medicamentos básicos — UBS',empresa:'Pharma Acre Distribuidora Ltda',cnpj:'12.345.678/0001-90',valor:380000,vigencia:'Jan–Dez 2025',status:'ativo'},
-  {num:'PE 002/2025',tipo:'pregao',objeto:'Locação de veículos para saúde',empresa:'Auto Frota AC Ltda',cnpj:'23.456.789/0001-01',valor:216000,vigencia:'Fev–Jul 2025',status:'ativo'},
-  {num:'CC 001/2024',tipo:'concorrencia',objeto:'Pavimentação de ruas — Bairro Centro',empresa:'Construtora Norte Ltda',cnpj:'34.567.890/0001-12',valor:1420000,vigencia:'Mar 2024–Mar 2025',status:'vencendo'},
-  {num:'DL 024/2024',tipo:'dispensa',objeto:'Manutenção emergencial de escola',empresa:'Serv. Gerais Acre ME',cnpj:'45.678.901/0001-23',valor:48000,vigencia:'Out 2024',status:'encerrado'},
-  {num:'PE 008/2025',tipo:'pregao',objeto:'Material de escritório',empresa:'Em andamento',cnpj:'—',valor:null,vigencia:'Aberto até 25/04/2025',status:'aberto'},
-  {num:'DL 006/2025',tipo:'dispensa',objeto:'Serviços de saúde veterinária — zoonoses',empresa:'Vet Rural Acre Ltda',cnpj:'56.789.012/0001-34',valor:36000,vigencia:'Mar–Dez 2025',status:'ativo'},
-];
+  if (!dados.length) {
+    el.innerHTML = '<div class="vazio">Sem dados de receitas para este ano. Execute a coleta em /api/coletar?ano='+anoAtual+'</div>';
+    document.getElementById('grafico-receitas').innerHTML = '';
+    return;
+  }
 
-const fornecedores=[
-  {rank:1,nome:'Construtora Norte Ltda',cnpj:'34.567.890/0001-12',servico:'Obras e pavimentação',total:1840000,rf:'Regular',alerta:false},
-  {rank:2,nome:'Pharma Acre Distribuidora Ltda',cnpj:'12.345.678/0001-90',servico:'Medicamentos',total:980000,rf:'Regular',alerta:false},
-  {rank:3,nome:'Auto Frota AC Ltda',cnpj:'23.456.789/0001-01',servico:'Locação de veículos',total:742000,rf:'Regular',alerta:false},
-  {rank:4,nome:'Serviços e Limpeza Acre Ltda',cnpj:'67.890.123/0001-45',servico:'Limpeza pública e coleta',total:684000,rf:'Regular',alerta:false},
-  {rank:5,nome:'TechEduc Ltda',cnpj:'78.901.234/0001-56',servico:'Equipamentos educacionais',total:420000,rf:'Regular',alerta:false},
-  {rank:6,nome:'J. Silva & Irmãos ME',cnpj:'89.012.345/0001-67',servico:'Gêneros alimentícios',total:312000,rf:'Regular',alerta:true},
-  {rank:7,nome:'Vet Rural Acre Ltda',cnpj:'56.789.012/0001-34',servico:'Saúde veterinária',total:108000,rf:'Regular',alerta:false},
-  {rank:8,nome:'Serv. Gerais Acre ME',cnpj:'45.678.901/0001-23',servico:'Manutenção predial',total:96000,rf:'Regular',alerta:false},
-];
+  const totalOrcado = dados.reduce((s,r) => s + (r.orcado||0), 0);
+  const totalArrecadado = dados.reduce((s,r) => s + (r.arrecadado||0), 0);
+  const pctExec = totalOrcado > 0 ? (totalArrecadado/totalOrcado*100).toFixed(1) : 0;
 
-const diarioOficial=[
-  {edicao:'312',data:'08/04/2025',tipo:'nomeacao',resumo:'Nomeação de 3 agentes comunitários de saúde — Sec. Saúde',pdf:true},
-  {edicao:'312',data:'08/04/2025',tipo:'contrato',resumo:'Publicação de contrato PE 002/2025 — Locação de veículos R$ 216 mil',pdf:true},
-  {edicao:'311',data:'07/04/2025',tipo:'portaria',resumo:'Portaria nº 142 — regulamenta uso de veículos oficiais',pdf:true},
-  {edicao:'310',data:'04/04/2025',tipo:'licitacao',resumo:'Resultado PE 001/2025 — Medicamentos: Pharma Acre vencedora com R$ 380 mil',pdf:true},
-  {edicao:'309',data:'03/04/2025',tipo:'exoneracao',resumo:'Exoneração a pedido de servidor — Secretaria de Saúde',pdf:true},
-  {edicao:'308',data:'02/04/2025',tipo:'nomeacao',resumo:'Nomeação de Secretário Adjunto de Obras — cargo comissionado',pdf:true},
-  {edicao:'307',data:'01/04/2025',tipo:'contrato',resumo:'Publicação CC 001/2025 — Pavimentação R$ 1,42 mi',pdf:true},
-];
+  el.innerHTML = `
+    <div class="kpi"><div class="kpi-label">Total Previsto</div><div class="kpi-valor">${fmt(totalOrcado)}</div></div>
+    <div class="kpi"><div class="kpi-label">Total Arrecadado</div><div class="kpi-valor verde">${fmt(totalArrecadado)}</div></div>
+    <div class="kpi"><div class="kpi-label">Execução</div><div class="kpi-valor ${corPct(pctExec)}">${pctExec}%</div></div>
+    <div class="kpi"><div class="kpi-label">Fontes</div><div class="kpi-valor">${dados.length}</div><div class="kpi-sub">categorias</div></div>
+  `;
 
-// Receitas chart
-const chartRecData=[
-  {nome:'FPM',val:18740000,cor:'#e10600'},
-  {nome:'FUNDEB',val:8420000,cor:'#4da6ff'},
-  {nome:'SUS / Saúde',val:4380000,cor:'#f472b6'},
-  {nome:'ICMS-Cota Parte',val:3140000,cor:'#f5c518'},
-  {nome:'Convênios federais',val:3620000,cor:'#a78bfa'},
-  {nome:'Receita própria',val:1003000,cor:'#00c87a'},
-  {nome:'PNATE + PNAE + PDDE',val:1623000,cor:'#22d3ee'},
-];
+  const ordenados = [...dados].sort((a,b) => (b.arrecadado||0)-(a.arrecadado||0));
+  renderGrafico('grafico-receitas', ordenados, 'fonte', 'arrecadado', 'verde');
 
-// Despesas chart
-const chartDespData=[
-  {nome:'Educação',val:10810000,cor:'#4da6ff'},
-  {nome:'Saúde',val:8590000,cor:'#f472b6'},
-  {nome:'Legislativo',val:3150000,cor:'#909099'},
-  {nome:'Administração',val:4070000,cor:'#f5c518'},
-  {nome:'Infraestrutura',val:3380000,cor:'#a78bfa'},
-  {nome:'Assistência Social',val:1990000,cor:'#00c87a'},
-  {nome:'Outros',val:2570000,cor:'#22d3ee'},
-];
+  const linhas = ordenados.map(r => {
+    const p = r.orcado > 0 ? (r.arrecadado/r.orcado*100).toFixed(1) : 0;
+    return {
+      _html: `<tr><td>${r.fonte}</td><td>${fmt(r.orcado)}</td><td>${fmt(r.arrecadado)}</td><td><span class="badge badge-${corPct(p)}">${p}%</span></td></tr>`,
+      _texto: (r.fonte||'').toLowerCase()
+    };
+  });
+  window['todas_tabela-receitas'] = linhas;
+  window['linhas_tabela-receitas'] = linhas;
+  renderTabela('tabela-receitas','pag-receitas', linhas, 1);
+}
 
-function fmt(v){if(!v&&v!==0)return'—';if(v>=1000000)return'R$ '+(v/1000000).toFixed(2).replace('.',',')+'mi';if(v>=1000)return'R$ '+(v/1000).toFixed(0)+'mil';return'R$ '+v;}
-function fmtFull(v){if(!v&&v!==0)return'—';return'R$ '+v.toLocaleString('pt-BR');}
-function pct(a,b){return b?Math.round(a/b*100):0;}
-function pctBadge(p){if(p>=95)return`<span class="badge b-green">${p}%</span>`;if(p>=80)return`<span class="badge b-yellow">${p}%</span>`;return`<span class="badge b-red">${p}%</span>`;}
+// ── DESPESAS ──────────────────────────────────────────────────────────────────
+async function carregarDespesas() {
+  const el = document.getElementById('kpis-despesas');
+  el.innerHTML = '<div class="loading"><div class="spin"></div> Carregando...</div>';
+  const dados = await buscarDados('despesas', anoAtual);
 
-function renderChart(containerId, data){
-  const max=Math.max(...data.map(d=>d.val));
-  const el=document.getElementById(containerId);
-  if(!el)return;
-  el.innerHTML=data.map(d=>{
-    const w=Math.round(d.val/max*100);
-    return `<div class="bar-row">
-      <div class="bar-label">${d.nome}</div>
-      <div class="bar-track">
-        <div class="bar-fill" style="width:${w}%;background:${d.cor};">
-          <span class="bar-val">${fmt(d.val)}</span>
-        </div>
+  if (!dados.length) {
+    el.innerHTML = '<div class="vazio">Sem dados de despesas para este ano.</div>';
+    document.getElementById('grafico-despesas').innerHTML = '';
+    return;
+  }
+
+  const totalDot = dados.reduce((s,r) => s + (r.dotacao_inicial||0), 0);
+  const totalEmp = dados.reduce((s,r) => s + (r.empenhado||0), 0);
+  const totalPago = dados.reduce((s,r) => s + (r.pago||0), 0);
+  const pctEmp = totalDot > 0 ? (totalEmp/totalDot*100).toFixed(1) : 0;
+
+  el.innerHTML = `
+    <div class="kpi"><div class="kpi-label">Dotação Inicial</div><div class="kpi-valor">${fmt(totalDot)}</div></div>
+    <div class="kpi"><div class="kpi-label">Total Empenhado</div><div class="kpi-valor amarelo">${fmt(totalEmp)}</div></div>
+    <div class="kpi"><div class="kpi-label">Total Pago</div><div class="kpi-valor verde">${fmt(totalPago)}</div></div>
+    <div class="kpi"><div class="kpi-label">Execução</div><div class="kpi-valor ${corPct(pctEmp)}">${pctEmp}%</div></div>
+  `;
+
+  const ordenados = [...dados].sort((a,b) => (b.empenhado||0)-(a.empenhado||0));
+  renderGrafico('grafico-despesas', ordenados, 'funcao', 'empenhado');
+
+  const linhas = ordenados.map(r => ({
+    _html: `<tr><td>${r.funcao}</td><td>${fmt(r.dotacao_inicial)}</td><td>${fmt(r.dotacao_atualizada)}</td><td>${fmt(r.empenhado)}</td><td>${fmt(r.liquidado)}</td><td>${fmt(r.pago)}</td></tr>`,
+    _texto: (r.funcao||'').toLowerCase()
+  }));
+  window['todas_tabela-despesas'] = linhas;
+  window['linhas_tabela-despesas'] = linhas;
+  renderTabela('tabela-despesas','pag-despesas', linhas, 1);
+}
+
+// ── LICITAÇÕES ────────────────────────────────────────────────────────────────
+async function carregarLicitacoes() {
+  const dados = await buscarDados('licitacoes', anoAtual);
+  const el = document.getElementById('kpis-licitacoes');
+  if (!dados.length) {
+    el.innerHTML = '<div class="vazio">Sem dados de licitações. Aguardando chave do Portal da Transparência com acesso a municípios.</div>';
+    return;
+  }
+  const totalVal = dados.reduce((s,r) => s + (r.valor_estimado||0), 0);
+  el.innerHTML = `
+    <div class="kpi"><div class="kpi-label">Total de Licitações</div><div class="kpi-valor">${dados.length}</div></div>
+    <div class="kpi"><div class="kpi-label">Valor Total Estimado</div><div class="kpi-valor">${fmt(totalVal)}</div></div>
+  `;
+  const linhas = dados.map(r => ({
+    _html: `<tr><td><code style="font-size:.75rem;color:var(--gray2)">${r.numero||'—'}</code></td><td>${r.modalidade||'—'}</td><td>${(r.objeto||'—').substring(0,80)}${r.objeto?.length>80?'...':''}</td><td>${fmt(r.valor_estimado)}</td><td><span class="badge badge-verde">${r.situacao||'—'}</span></td></tr>`,
+    _texto: [(r.numero||''),(r.objeto||''),(r.modalidade||'')].join(' ').toLowerCase()
+  }));
+  window['todas_tabela-licitacoes'] = linhas;
+  window['linhas_tabela-licitacoes'] = linhas;
+  renderTabela('tabela-licitacoes','pag-licitacoes', linhas, 1);
+}
+
+// ── FORNECEDORES ──────────────────────────────────────────────────────────────
+async function carregarFornecedores() {
+  const dados = await buscarDados('fornecedores', anoAtual);
+  const el = document.getElementById('kpis-fornecedores');
+  if (!dados.length) {
+    el.innerHTML = '<div class="vazio">Sem dados de fornecedores para este ano.</div>';
+    return;
+  }
+  const totalVal = dados.reduce((s,r) => s + (r.valor_total||0), 0);
+  el.innerHTML = `
+    <div class="kpi"><div class="kpi-label">Total de Contratos</div><div class="kpi-valor">${dados.length}</div></div>
+    <div class="kpi"><div class="kpi-label">Valor Total</div><div class="kpi-valor">${fmt(totalVal)}</div></div>
+  `;
+  const ordenados = [...dados].sort((a,b) => (b.valor_total||0)-(a.valor_total||0));
+  const linhas = ordenados.map(r => ({
+    _html: `<tr><td>${r.nome}</td><td><code style="font-size:.75rem;color:var(--gray2)">${r.cnpj_cpf||'—'}</code></td><td>${(r.objeto||'—').substring(0,60)}...</td><td>${fmt(r.valor_total)}</td><td style="font-size:.78rem;color:var(--gray2)">${r.data_inicio||'—'} / ${r.data_fim||'—'}</td></tr>`,
+    _texto: [(r.nome||''),(r.objeto||'')].join(' ').toLowerCase()
+  }));
+  window['todas_tabela-fornecedores'] = linhas;
+  window['linhas_tabela-fornecedores'] = linhas;
+  renderTabela('tabela-fornecedores','pag-fornecedores', linhas, 1);
+}
+
+// ── INDICADORES LRF ───────────────────────────────────────────────────────────
+async function carregarIndicadores() {
+  const dados = await buscarDados('indicadores', anoAtual);
+  const el = document.getElementById('kpis-indicadores');
+  const semEl = document.getElementById('semaforo-indicadores');
+  if (!dados.length) {
+    el.innerHTML = '<div class="vazio">Indicadores LRF não disponíveis para este ano. Os dados do RGF são publicados trimestralmente.</div>';
+    semEl.innerHTML = '';
+    return;
+  }
+  el.innerHTML = `<div class="kpi"><div class="kpi-label">Indicadores encontrados</div><div class="kpi-valor">${dados.length}</div></div>`;
+  semEl.innerHTML = dados.map(ind => {
+    const pct = ind.percentual_limite || 0;
+    const cor = pct > 95 ? '#e10600' : pct > 80 ? '#ffd600' : '#00d46a';
+    const w = Math.min(pct, 100);
+    return `<div class="semaforo-card">
+      <div class="semaforo-nome">${ind.nome}</div>
+      <div class="semaforo-barra-wrap"><div class="semaforo-barra" style="width:${w}%;background:${cor}"></div></div>
+      <div class="semaforo-info">
+        <span style="color:var(--gray)">${fmt(ind.valor)}</span>
+        <span style="color:${cor}">${pct}% do limite</span>
+        ${ind.limite ? `<span style="color:var(--gray2)">Limite: ${fmt(ind.limite)}</span>` : ''}
       </div>
     </div>`;
   }).join('');
 }
 
-// ── RENDER RECEITAS ──
-let recFilter='todos', recSearch='';
-function renderReceitas(){
-  let data=receitas;
-  if(recFilter!=='todos')data=data.filter(r=>r.cat===recFilter);
-  if(recSearch)data=data.filter(r=>r.nome.toLowerCase().includes(recSearch.toLowerCase()));
-  const tbody=document.getElementById('tbody-receitas');
-  if(!data.length){tbody.innerHTML=`<tr><td colspan="6" class="tbl-empty">Nenhum resultado encontrado.</td></tr>`;document.getElementById('rec-count').textContent='0 itens';return;}
-  tbody.innerHTML=data.map(r=>{
-    const p=pct(r.arrecadado,r.previsto);
-    const catMap={constitucional:'Constitucional',saude:'Saúde',educacao:'Educação',convenio:'Convênio',propria:'Receita própria'};
-    return `<tr>
-      <td class="td-bold">${r.nome}</td>
-      <td><span class="badge ${r.cat==='constitucional'?'b-blue':r.cat==='saude'?'b-red':r.cat==='educacao'?'b-purple':r.cat==='convenio'?'b-yellow':'b-green'}">${catMap[r.cat]||r.cat}</span></td>
-      <td class="td-mono">${fmtFull(r.previsto)}</td>
-      <td class="td-mono td-green">${fmtFull(r.arrecadado)}</td>
-      <td>${pctBadge(p)}</td>
-      <td><a href="#" class="ext-link">RREO</a></td>
-    </tr>`;
-  }).join('');
-  document.getElementById('rec-count').textContent=`${data.length} fonte${data.length!==1?'s':''}`;
-}
-function filtrarRec(v){recSearch=v;renderReceitas();}
-function filtroRecCat(f,el){recFilter=f;document.querySelectorAll('#panel-receitas .fbtn').forEach(b=>b.classList.remove('on'));el.classList.add('on');renderReceitas();}
-
-// ── RENDER DESPESAS ──
-let despSearch='';
-function renderDespesas(){
-  let data=despesas;
-  if(despSearch)data=data.filter(d=>d.func.toLowerCase().includes(despSearch.toLowerCase()));
-  const tbody=document.getElementById('tbody-despesas');
-  tbody.innerHTML=data.map(d=>{
-    const p=pct(d.pago,d.dot);
-    return `<tr>
-      <td class="td-bold">${d.func}</td>
-      <td class="td-mono">${fmtFull(d.dot)}</td>
-      <td class="td-mono">${fmtFull(d.emp)}</td>
-      <td class="td-mono">${fmtFull(d.liq)}</td>
-      <td class="td-mono td-green">${fmtFull(d.pago)}</td>
-      <td>${pctBadge(p)}</td>
-    </tr>`;
-  }).join('');
-  document.getElementById('desp-count').textContent=`${data.length} função${data.length!==1?'ões':'ão'}`;
-}
-function filtrarDesp(v){despSearch=v;renderDespesas();}
-
-// ── RENDER LICITAÇÕES ──
-let licFilter='todos', licSearch='';
-function renderLic(){
-  let data=licitacoes;
-  if(licFilter!=='todos')data=data.filter(l=>l.tipo===licFilter);
-  if(licSearch)data=data.filter(l=>(l.objeto+l.empresa).toLowerCase().includes(licSearch.toLowerCase()));
-  const tbody=document.getElementById('tbody-lic');
-  const stMap={ativo:'b-green',aberto:'b-blue',vencendo:'b-yellow',encerrado:'b-muted'};
-  const stLabel={ativo:'Ativo',aberto:'Aberto',vencendo:'Vencendo',encerrado:'Encerrado'};
-  const tipoMap={pregao:'Pregão',dispensa:'Dispensa',concorrencia:'Concorrência'};
-  tbody.innerHTML=data.map(l=>`<tr>
-    <td><div class="td-bold td-mono">${l.num}</div><div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;">${tipoMap[l.tipo]||l.tipo}</div></td>
-    <td style="max-width:220px;font-size:13px;">${l.objeto}</td>
-    <td><div class="td-bold" style="font-size:13px;">${l.empresa}</div><div class="td-mono" style="font-size:10px;color:var(--muted);">${l.cnpj}</div></td>
-    <td class="td-mono td-green">${l.valor?fmtFull(l.valor):'—'}</td>
-    <td class="td-mono" style="font-size:12px;">${l.vigencia}</td>
-    <td><span class="badge ${stMap[l.status]||'b-muted'}">${stLabel[l.status]||l.status}</span></td>
-    <td><a href="#" class="ext-link">Edital</a></td>
-  </tr>`).join('');
-  document.getElementById('lic-count').textContent=`${data.length} contrato${data.length!==1?'s':''}`;
-}
-function filtrarLic(v){licSearch=v;renderLic();}
-function filtroLicTipo(f,el){licFilter=f;document.querySelectorAll('#panel-licitacoes .fbtn').forEach(b=>b.classList.remove('on'));el.classList.add('on');renderLic();}
-
-// ── RENDER FORNECEDORES ──
-let fornSearch='';
-function renderForn(){
-  let data=fornecedores;
-  if(fornSearch)data=data.filter(f=>(f.nome+f.cnpj+f.servico).toLowerCase().includes(fornSearch.toLowerCase()));
-  const tbody=document.getElementById('tbody-forn');
-  tbody.innerHTML=data.map(f=>`<tr style="${f.alerta?'background:rgba(245,197,24,.04);':''}">
-    <td class="td-mono td-muted">${f.rank}</td>
-    <td><div class="td-bold">${f.nome}</div></td>
-    <td class="td-mono" style="font-size:11px;">${f.cnpj}</td>
-    <td style="font-size:13px;color:var(--muted);">${f.servico}</td>
-    <td class="td-mono td-green">${fmtFull(f.total)}</td>
-    <td><span class="badge ${f.rf==='Regular'?'b-green':'b-red'}">${f.rf}</span></td>
-    <td>${f.alerta?'<span class="badge b-yellow">⚠️ Verificar</span>':'<span class="badge b-muted">Ok</span>'}</td>
-  </tr>`).join('');
-  document.getElementById('forn-count').textContent=`${data.length} empresa${data.length!==1?'s':''}`;
-}
-function filtrarForn(v){fornSearch=v;renderForn();}
-
-// ── RENDER DIÁRIO OFICIAL ──
-let doFilter='todos', doSearch='';
-function renderDO(){
-  let data=diarioOficial;
-  if(doFilter!=='todos')data=data.filter(d=>d.tipo===doFilter);
-  if(doSearch)data=data.filter(d=>d.resumo.toLowerCase().includes(doSearch.toLowerCase()));
-  const tbody=document.getElementById('tbody-do');
-  const tipoMap={nomeacao:{label:'Nomeação',cl:'b-blue'},exoneracao:{label:'Exoneração',cl:'b-red'},contrato:{label:'Contrato',cl:'b-green'},portaria:{label:'Portaria',cl:'b-yellow'},licitacao:{label:'Licitação',cl:'b-purple'}};
-  tbody.innerHTML=data.map(d=>{
-    const t=tipoMap[d.tipo]||{label:d.tipo,cl:'b-muted'};
-    return `<tr>
-      <td class="td-mono td-bold">Nº ${d.edicao}</td>
-      <td class="td-mono">${d.data}</td>
-      <td><span class="badge ${t.cl}">${t.label}</span></td>
-      <td style="font-size:13px;">${d.resumo}</td>
-      <td>${d.pdf?`<a href="#" class="ext-link">PDF</a>`:'-'}</td>
-    </tr>`;
-  }).join('');
-  document.getElementById('do-count').textContent=`${data.length} publicação${data.length!==1?'ões':''}`;
-}
-function filtrarDO(v){doSearch=v;renderDO();}
-function filtroDO(f,el){doFilter=f;document.querySelectorAll('#panel-diario .fbtn').forEach(b=>b.classList.remove('on'));el.classList.add('on');renderDO();}
-
-// ── INIT ──
-document.addEventListener('DOMContentLoaded',()=>{
-  renderChart('chart-receitas', chartRecData);
-  renderChart('chart-despesas', chartDespData);
-  renderReceitas();
-  renderDespesas();
-  renderLic();
-  renderForn();
-  renderDO();
+// ── Inicialização ─────────────────────────────────────────────────────────────
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('aberto');
 });
+
+carregarReceitas();
 </script>
 </body>
 </html>
