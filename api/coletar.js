@@ -1,5 +1,5 @@
-// api/coletar.js — Quinari em Foco v7 FINAL
-// Correções: parâmetro 'municipio' (não codigoIbge) + despesas agrupamento correto
+// api/coletar.js — Quinari em Foco v8 FINAL
+// Despesas: chave correta é 'conta' (42 únicos), não 'cod_conta' (1 único)
 // IBGE: 1200450
 
 const IBGE         = '1200450';
@@ -42,7 +42,6 @@ async function log(fonte, status, total, erro = null) {
   } catch(e) {}
 }
 
-// ─── Busca RREO tentando todos os bimestres ───────────────────────────────────
 async function buscarRREO(ano, numeroAnexo) {
   const anexoStr = String(numeroAnexo).padStart(2, '0');
   for (let bim = 6; bim >= 1; bim--) {
@@ -62,26 +61,30 @@ async function coletarSiconfi(ano) {
   const result = { receitas: 0, despesas: 0, indicadores: 0, detalhes: [] };
 
   // ── Receitas (Anexo 01) ───────────────────────────────────────────────────
+  // Estrutura: cod_conta tem valores únicos por categoria → agrupa por cod_conta
   const { itens: itensR, bimestre: bimR } = await buscarRREO(ano, 1);
   result.detalhes.push(`Anexo01: ${itensR.length} itens bim${bimR}`);
 
   if (itensR.length > 0) {
     const mapa = {};
     for (const item of itensR) {
-      const chave = (item.cod_conta || '').substring(0, 100);
+      const chave = (item.cod_conta || item.conta || '').substring(0, 100);
       if (!chave) continue;
       if (!mapa[chave]) mapa[chave] = {
-        ano: parseInt(ano), fonte: (item.conta || 'N/I').substring(0, 200),
-        categoria: chave, orcado: 0, arrecadado: 0,
+        ano: parseInt(ano),
+        fonte: (item.conta || 'N/I').substring(0, 200),
+        categoria: chave,
+        orcado: 0, arrecadado: 0,
         atualizado_em: new Date().toISOString()
       };
-      const col = (item.coluna || item.rotulo || '').toUpperCase();
+      const col = (item.coluna || '').toUpperCase();
       const val = parseFloat(item.valor) || 0;
       if (col.includes('INICIAL'))                                  mapa[chave].orcado     = val;
       if (col.includes('ATUALIZADA') && mapa[chave].orcado === 0)  mapa[chave].orcado     = val;
       if (col.includes('REALIZADO') || col.includes('ARRECADADO')) mapa[chave].arrecadado = val;
     }
     const registros = Object.values(mapa).filter(r => r.orcado > 0 || r.arrecadado > 0);
+    result.detalhes.push(`Receitas após agrupamento: ${registros.length}`);
     if (registros.length > 0) {
       await deletarAno('receitas', ano);
       result.receitas = await inserir('receitas', registros);
@@ -90,39 +93,39 @@ async function coletarSiconfi(ano) {
   }
 
   // ── Despesas (Anexo 02) — CORRIGIDO ──────────────────────────────────────
-  // Problema anterior: "RREO2TotalDespesas" era a ÚNICA chave porque
-  // o Siconfi retorna todas as linhas com cod_conta = "RREO2TotalDespesas"
-  // para o total. Precisamos usar a combinação cod_conta + coluna para agrupar,
-  // OU aceitar múltiplas linhas e usar (conta + coluna) como identificador único.
+  // DIAGNÓSTICO REVELOU:
+  //   cod_conta → 1 valor único ("RREO2TotalDespesas") — NÃO USAR
+  //   conta     → 42 valores únicos (funções: Saúde, Educação, etc.) ✅ USAR
+  //   coluna    → 11 valores (Dotação Inicial, Empenhado, Liquidado...) ✅ USAR
+  // Chave correta: campo 'conta' (identifica a função de despesa)
   const { itens: itensD, bimestre: bimD } = await buscarRREO(ano, 2);
   result.detalhes.push(`Anexo02: ${itensD.length} itens bim${bimD}`);
 
   if (itensD.length > 0) {
-    // Estratégia corrigida: cada LINHA do Siconfi = 1 registro de despesa
-    // (cod_conta pode ser o mesmo para totais — por isso usamos cod_conta+rotulo)
+    // Agrupa por 'conta' (ex: "Saúde", "Educação", "Administração Geral"...)
     const mapa = {};
     for (const item of itensD) {
-      // Usa combinação conta+rotulo como chave única para agrupar colunas da mesma linha
-      const contaLimpa = (item.conta || 'N/I').trim();
-      const rotulo     = (item.rotulo || 'Padrão').trim();
-      const chave      = `${item.cod_conta || contaLimpa}||${rotulo}`;
-
+      const chave = (item.conta || 'N/I').trim().substring(0, 200);
       if (!mapa[chave]) mapa[chave] = {
         ano: parseInt(ano),
-        funcao: contaLimpa.substring(0, 200),
-        categoria: (item.cod_conta || contaLimpa).substring(0, 100),
+        funcao: chave,
+        categoria: chave, // sem cod_conta útil — usa conta como categoria também
         dotacao_inicial: 0, dotacao_atualizada: 0,
         empenhado: 0, liquidado: 0, pago: 0,
         atualizado_em: new Date().toISOString()
       };
-
       const col = (item.coluna || '').toUpperCase();
       const val = parseFloat(item.valor) || 0;
-      if (col.includes('DOTAÇÃO INICIAL')    || col.includes('DOTACAO INICIAL'))    mapa[chave].dotacao_inicial    = val;
-      if (col.includes('DOTAÇÃO ATUALIZADA') || col.includes('DOTACAO ATUALIZADA')) mapa[chave].dotacao_atualizada = val;
-      if (col.includes('EMPENHADO'))                                                 mapa[chave].empenhado          = val;
-      if (col.includes('LIQUIDADO'))                                                 mapa[chave].liquidado          = val;
-      if (col.includes('PAGO') || col.includes('REALIZADO'))                        mapa[chave].pago               = val;
+      // Colunas confirmadas pelo diagnóstico:
+      // "DOTAÇÃO INICIAL", "DOTAÇÃO ATUALIZADA (a)", "DESPESAS EMPENHADAS NO BIMESTRE",
+      // "DESPESAS EMPENHADAS ATÉ O BIMESTRE (b)", "DESPESAS LIQUIDADAS NO BIMESTRE",
+      // "DESPESAS LIQUIDADAS ATÉ O BIMESTRE (d)", "SALDO (c = a-b)", "SALDO (e = a-d)",
+      // "% (b/total b)", "% (d/total d)", "INSCRITAS EM RESTOS A PAGAR NÃO PROCESSADOS (f)"
+      if (col.includes('DOTAÇÃO INICIAL') || col === 'DOTAÇÃO INICIAL')             mapa[chave].dotacao_inicial    = val;
+      if (col.includes('ATUALIZADA'))                                                mapa[chave].dotacao_atualizada = val;
+      if (col.includes('EMPENHADAS ATÉ') || col.includes('EMPENHADAS ATE'))         mapa[chave].empenhado          = val;
+      if (col.includes('LIQUIDADAS ATÉ') || col.includes('LIQUIDADAS ATE'))         mapa[chave].liquidado          = val;
+      if (col.includes('INSCRITAS EM RESTOS') || col.includes('PROCESSADOS'))       mapa[chave].pago               = val;
     }
 
     const despesas = Object.values(mapa).filter(r => r.dotacao_inicial > 0 || r.empenhado > 0);
@@ -148,10 +151,12 @@ async function coletarSiconfi(ano) {
 
       const mapa = {};
       for (const item of itens) {
+        // RGF Anexo 01: cod_conta pode ter valores únicos (diferente do Anexo 02)
         const chave = (item.cod_conta || item.conta || '').substring(0, 100);
         if (!chave) continue;
         if (!mapa[chave]) mapa[chave] = {
-          ano: parseInt(ano), nome: (item.conta || 'Indicador').substring(0, 200),
+          ano: parseInt(ano),
+          nome: (item.conta || 'Indicador').substring(0, 200),
           valor: 0, limite: null, percentual_limite: null,
           atualizado_em: new Date().toISOString()
         };
@@ -162,7 +167,7 @@ async function coletarSiconfi(ano) {
       }
       const indicadores = Object.values(mapa)
         .filter(r => r.valor > 0)
-        .map(r => ({ ...r, percentual_limite: r.limite > 0 ? +((r.valor/r.limite)*100).toFixed(2) : null }));
+        .map(r => ({ ...r, percentual_limite: r.limite > 0 ? +((r.valor / r.limite) * 100).toFixed(2) : null }));
 
       if (indicadores.length > 0) {
         await deletarAno('indicadores', ano);
@@ -177,18 +182,13 @@ async function coletarSiconfi(ano) {
 }
 
 // ─── 2. Portal da Transparência ───────────────────────────────────────────────
-// CORRIGIDO: parâmetro 'municipio' em vez de 'codigoIbge' para transferências
 async function coletarTransparencia(ano) {
   const result = { licitacoes: 0, fornecedores: 0, detalhes: [] };
   const hdrs = { 'chave-api-dados': TRANSP_KEY, 'Accept': 'application/json' };
 
-  // Endpoints corrigidos com parâmetros corretos
   const tentativas = [
-    // transferências voluntárias (convênios, obras federais no município)
-    { url: `https://api.portaldatransparencia.gov.br/api-de-dados/transferencias-voluntarias?municipio=${IBGE}&ano=${ano}&pagina=1`, tipo: 'convenios' },
-    // licitações — parâmetro correto é codigoIbge
+    { url: `https://api.portaldatransparencia.gov.br/api-de-dados/transferencias-voluntarias?municipio=${IBGE}&ano=${ano}&pagina=1`, tipo: 'transferencias-voluntarias' },
     { url: `https://api.portaldatransparencia.gov.br/api-de-dados/licitacoes?codigoIbge=${IBGE}&dataInicial=01/01/${ano}&dataFinal=31/12/${ano}&pagina=1`, tipo: 'licitacoes' },
-    // contratos — parâmetro correto é codigoIbge
     { url: `https://api.portaldatransparencia.gov.br/api-de-dados/contratos?codigoIbge=${IBGE}&dataInicial=01/01/${ano}&dataFinal=31/12/${ano}&pagina=1`, tipo: 'contratos' },
   ];
 
@@ -197,50 +197,28 @@ async function coletarTransparencia(ano) {
       const res = await fetch(url, { headers: hdrs, signal: AbortSignal.timeout(10000) });
       result.detalhes.push(`${tipo}: HTTP ${res.status}`);
       if (!res.ok) continue;
-
       const dados = await res.json();
-      if (!Array.isArray(dados) || dados.length === 0) {
-        result.detalhes.push(`${tipo}: sem dados`);
-        continue;
-      }
+      if (!Array.isArray(dados) || dados.length === 0) { result.detalhes.push(`${tipo}: sem dados`); continue; }
       result.detalhes.push(`${tipo}: ${dados.length} registros ✅`);
 
-      if (tipo === 'convenios') {
+      if (tipo === 'transferencias-voluntarias' || tipo === 'licitacoes') {
         const lics = dados.map(d => ({
           ano: parseInt(ano),
           numero: String(d.numero || d.nrConvenio || d.id || 'S/N').substring(0, 50),
-          modalidade: 'Convênio Federal',
-          objeto: String(d.objeto || d.dsObjeto || 'N/I').substring(0, 500),
-          valor_estimado: parseFloat(d.valorConvenio || d.vlConvenio || d.valor || 0) || 0,
-          valor_adjudicado: parseFloat(d.valorLiberado || d.vlDesembolsado || 0) || 0,
-          situacao: String(d.situacaoConvenio || d.situacao || 'N/I').substring(0, 100),
-          data_abertura: d.dataInicioVigencia || d.dtInicioVigencia || null,
-          vencedor: String(d.proponente?.nome || d.nmProponente || '').substring(0, 200) || null,
+          modalidade: tipo === 'transferencias-voluntarias' ? 'Transferência Voluntária' : String(d.modalidade?.descricao || 'N/I').substring(0, 100),
+          objeto: String(d.objeto || d.dsObjeto || d.acao?.descricao || 'N/I').substring(0, 500),
+          valor_estimado: parseFloat(d.valorConvenio || d.vlConvenio || d.valorEstimado || d.valor || 0) || 0,
+          valor_adjudicado: parseFloat(d.valorLiberado || d.valorAdjudicado || 0) || 0,
+          situacao: String(d.situacaoConvenio || d.situacao?.descricao || d.situacao || 'N/I').substring(0, 100),
+          data_abertura: d.dataInicioVigencia || d.dataAbertura || null,
+          vencedor: String(d.proponente?.nome || d.fornecedorVencedor?.nome || d.nomeProponente || '').substring(0, 200) || null,
           atualizado_em: new Date().toISOString()
         }));
-        await deletarAno('licitacoes', ano);
-        result.licitacoes = await inserir('licitacoes', lics);
-        await log('Portal/convenios', 'ok', result.licitacoes);
-        continue;
-      }
-
-      if (tipo === 'licitacoes' && result.licitacoes === 0) {
-        const lics = dados.map(d => ({
-          ano: parseInt(ano),
-          numero: String(d.numero || d.id || 'S/N').substring(0, 50),
-          modalidade: String(d.modalidade?.descricao || 'N/I').substring(0, 100),
-          objeto: String(d.objeto || 'N/I').substring(0, 500),
-          valor_estimado: parseFloat(d.valorEstimado || 0) || 0,
-          valor_adjudicado: parseFloat(d.valorAdjudicado || 0) || 0,
-          situacao: String(d.situacao?.descricao || 'N/I').substring(0, 100),
-          data_abertura: d.dataAbertura || null,
-          vencedor: String(d.fornecedorVencedor?.nome || '').substring(0, 200) || null,
-          atualizado_em: new Date().toISOString()
-        }));
-        await deletarAno('licitacoes', ano);
-        result.licitacoes = await inserir('licitacoes', lics);
-        await log('Portal/licitacoes', 'ok', result.licitacoes);
-        continue;
+        if (result.licitacoes === 0) {
+          await deletarAno('licitacoes', ano);
+          result.licitacoes = await inserir('licitacoes', lics);
+          await log(`Portal/${tipo}`, 'ok', result.licitacoes);
+        }
       }
 
       if (tipo === 'contratos') {
@@ -259,32 +237,27 @@ async function coletarTransparencia(ano) {
         result.fornecedores = await inserir('fornecedores', forn);
         await log('Portal/contratos', 'ok', result.fornecedores);
       }
-    } catch(e) {
-      result.detalhes.push(`${tipo} erro: ${e.message}`);
-    }
+    } catch(e) { result.detalhes.push(`${tipo} erro: ${e.message}`); }
   }
 
-  if (result.licitacoes === 0 && result.fornecedores === 0) {
+  if (result.licitacoes === 0 && result.fornecedores === 0)
     await log('Portal-Transparencia', 'parcial', 0, result.detalhes.join(' | '));
-  }
+
   return result;
 }
 
-// ─── 3. TSE — vereadores ──────────────────────────────────────────────────────
+// ─── 3. TSE ───────────────────────────────────────────────────────────────────
 async function coletarTSE() {
-  const urls = [
+  for (const url of [
     'https://resultados.tse.jus.br/oficial/ele2024/407/dados/ac/ac01392-c0013-e000407-u.json',
     'https://resultados.tse.jus.br/oficial/ele2024/407/dados-simplificados/ac/ac01392-c0013-e000407-u.json',
-  ];
-  for (const url of urls) {
+  ]) {
     try {
       const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
       if (!res.ok) continue;
       const dados = await res.json();
       const eleitos = (dados.cands || []).filter(c =>
-        (c.st || '').toLowerCase().includes('eleito') ||
-        (c.st || '').toLowerCase().includes('média') ||
-        (c.st || '').toLowerCase().includes('qp')
+        (c.st || '').toLowerCase().match(/eleito|média|media|qp/)
       );
       if (eleitos.length > 0) {
         const vereadores = eleitos.map(c => ({
@@ -302,7 +275,7 @@ async function coletarTSE() {
       }
     } catch(e) {}
   }
-  await log('TSE', 'parcial', 0, 'API TSE bloqueada para servidores — cadastre manualmente no Supabase');
+  await log('TSE', 'parcial', 0, 'API TSE bloqueada para servidores — cadastre manualmente');
   return { vereadores: 0, aviso: 'Cadastre os 9 vereadores manualmente: Supabase > Table Editor > vereadores' };
 }
 
