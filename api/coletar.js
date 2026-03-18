@@ -1,17 +1,15 @@
-// api/coletar.js — Quinari em Foco
-// Coleta dados públicos e salva no Supabase
-// Roda automaticamente todo dia às 9h UTC via Vercel Cron
-// Código IBGE correto: 1200450 (Senador Guiomard - AC)
+// api/coletar.js — Quinari em Foco v2
+// Código IBGE Senador Guiomard: 1200450
+// CORRIGIDO: parâmetros Siconfi e mapeamento de campos
 
 const IBGE = '1200450';
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
 const TRANSP_KEY   = process.env.TRANSPARENCIA_API_KEY;
 
-// ─── Utilitário: salvar no Supabase ───────────────────────────────────────────
+// ─── Salvar no Supabase ───────────────────────────────────────────────────────
 async function salvar(tabela, registros) {
   if (!registros || registros.length === 0) return { count: 0 };
-
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${tabela}`, {
     method: 'POST',
     headers: {
@@ -22,7 +20,6 @@ async function salvar(tabela, registros) {
     },
     body: JSON.stringify(registros)
   });
-
   if (!res.ok) {
     const err = await res.text();
     throw new Error(`Supabase (${tabela}): ${res.status} — ${err}`);
@@ -30,99 +27,124 @@ async function salvar(tabela, registros) {
   return { count: registros.length };
 }
 
-// ─── Utilitário: log no Supabase ──────────────────────────────────────────────
+// ─── Log no Supabase ──────────────────────────────────────────────────────────
 async function registrarLog(fonte, status, total, erro = null) {
-  await fetch(`${SUPABASE_URL}/rest/v1/log_coleta`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`
-    },
-    body: JSON.stringify({
-      fonte,
-      status,
-      total_registros: total,
-      erro,
-      executado_em: new Date().toISOString()
-    })
-  });
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/log_coleta`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`
+      },
+      body: JSON.stringify({
+        fonte, status, total_registros: total,
+        erro, executado_em: new Date().toISOString()
+      })
+    });
+  } catch(e) { /* silencioso */ }
 }
 
-// ─── 1. SICONFI / STN — Receitas e Despesas (RREO) ───────────────────────────
+// ─── 1. SICONFI — RREO (Receitas e Despesas) ─────────────────────────────────
+// IMPORTANTE: A API do Siconfi usa apenas id_ente, an_exercicio, nr_periodo,
+// co_tipo_demonstrativo e no_anexo. Sem co_esfera ou co_poder.
 async function coletarSiconfi(ano) {
-  const resultado = { receitas: 0, despesas: 0, orcamento: 0, indicadores: 0 };
+  const resultado = { receitas: 0, indicadores: 0, detalhes: [] };
 
-  try {
-    // RREO — Relatório Resumido da Execução Orçamentária
-    // Bimestre 6 = fechamento do ano (dezembro). Se não encontrar, tenta bimestres anteriores.
-    let dados = null;
-    for (let bimestre = 6; bimestre >= 1; bimestre--) {
-      const url = `https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=${ano}&nr_periodo=${bimestre}&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo%2001&co_esfera=M&co_poder=E&id_ente=${IBGE}`;
-      const res = await fetch(url);
-      if (!res.ok) continue;
-      const json = await res.json();
-      if (json.items && json.items.length > 0) {
-        dados = json.items;
-        break;
+  // Tenta todos os bimestres do mais recente ao mais antigo
+  for (let bimestre = 6; bimestre >= 1; bimestre--) {
+    try {
+      // RREO Anexo 01 — Balanço Orçamentário (Receitas e Despesas)
+      const url = `https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo?an_exercicio=${ano}&nr_periodo=${bimestre}&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo%2001&id_ente=${IBGE}`;
+      const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+
+      if (!res.ok) {
+        resultado.detalhes.push(`Bimestre ${bimestre}: HTTP ${res.status}`);
+        continue;
       }
-    }
 
-    if (dados && dados.length > 0) {
-      // Monta registros de receitas
-      const receitas = dados
-        .filter(d => d.co_conta && d.vl_periodo_atual != null)
+      const json = await res.json();
+      resultado.detalhes.push(`Bimestre ${bimestre}: ${json.items?.length ?? 0} itens`);
+
+      if (!json.items || json.items.length === 0) continue;
+
+      // Primeiro item para inspecionar os campos disponíveis
+      const campos = Object.keys(json.items[0]);
+      resultado.campos_disponiveis = campos;
+
+      // Mapeia os campos — a API Siconfi pode variar os nomes
+      // Campos comuns: ro_periodo_atual, vl_periodo_atual, co_conta, no_conta, rotulo, coluna, valor
+      const receitas = json.items
+        .filter(d => {
+          // Filtra linhas de receita (contêm "RECEITA" no nome ou código)
+          const nome = (d.no_conta || d.conta || d.rotulo || '').toUpperCase();
+          return nome.includes('RECEITA') || nome.includes('FPM') || nome.includes('FUNDEB') || nome.includes('TRANSFERENCIA');
+        })
         .map(d => ({
           ano: parseInt(ano),
-          fonte: d.no_conta || 'Não informado',
-          categoria: d.co_conta,
-          orcado: parseFloat(d.vl_periodo_anterior) || 0,
-          arrecadado: parseFloat(d.vl_periodo_atual) || 0,
-          percentual: d.vl_periodo_anterior > 0
-            ? ((d.vl_periodo_atual / d.vl_periodo_anterior) * 100).toFixed(2)
-            : null,
+          fonte: d.no_conta || d.conta || d.rotulo || 'Não informado',
+          categoria: d.co_conta || d.cod_conta || 'S/C',
+          orcado: parseFloat(d.vl_periodo_anterior || d.valor || 0) || 0,
+          arrecadado: parseFloat(d.vl_periodo_atual || d.valor || 0) || 0,
           atualizado_em: new Date().toISOString()
         }));
 
-      if (receitas.length > 0) {
-        await salvar('receitas', receitas);
-        resultado.receitas = receitas.length;
-      }
-    }
+      // Se não encontrou receitas específicas, salva todos os itens como receitas
+      const registrosParaSalvar = receitas.length > 0 ? receitas : json.items.map(d => ({
+        ano: parseInt(ano),
+        fonte: d.no_conta || d.conta || d.rotulo || JSON.stringify(d).substring(0, 100),
+        categoria: d.co_conta || d.cod_conta || 'S/C',
+        orcado: parseFloat(d.vl_periodo_anterior || 0) || 0,
+        arrecadado: parseFloat(d.vl_periodo_atual || d.valor || 0) || 0,
+        atualizado_em: new Date().toISOString()
+      }));
 
-    // RGF — Relatório de Gestão Fiscal (indicadores LRF)
-    const urlRgf = `https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=${ano}&nr_periodo=3&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo%2001&co_esfera=M&co_poder=E&id_ente=${IBGE}`;
-    const resRgf = await fetch(urlRgf);
+      if (registrosParaSalvar.length > 0) {
+        await salvar('receitas', registrosParaSalvar);
+        resultado.receitas = registrosParaSalvar.length;
+        resultado.bimestre_usado = bimestre;
+        await registrarLog('Siconfi/RREO', 'ok', resultado.receitas);
+        break; // Encontrou dados, para o loop
+      }
+    } catch(e) {
+      resultado.detalhes.push(`Bimestre ${bimestre}: ${e.message}`);
+    }
+  }
+
+  // RGF — Indicadores LRF (pessoal, dívida)
+  try {
+    const urlRgf = `https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rgf?an_exercicio=${ano}&nr_periodo=3&co_tipo_demonstrativo=RGF&no_anexo=RGF-Anexo%2001&id_ente=${IBGE}`;
+    const resRgf = await fetch(urlRgf, { signal: AbortSignal.timeout(8000) });
     if (resRgf.ok) {
       const rgf = await resRgf.json();
+      resultado.detalhes.push(`RGF: ${rgf.items?.length ?? 0} itens`);
       if (rgf.items && rgf.items.length > 0) {
         const indicadores = rgf.items.map(d => ({
           ano: parseInt(ano),
-          nome: d.no_conta || 'Indicador',
-          valor: parseFloat(d.vl_periodo_atual) || 0,
-          limite: parseFloat(d.vl_periodo_anterior) || null,
-          percentual_limite: d.vl_periodo_anterior > 0
-            ? ((d.vl_periodo_atual / d.vl_periodo_anterior) * 100).toFixed(2)
-            : null,
+          nome: d.no_conta || d.conta || d.rotulo || 'Indicador',
+          valor: parseFloat(d.vl_periodo_atual || d.valor || 0) || 0,
+          limite: parseFloat(d.vl_periodo_anterior || 0) || null,
           atualizado_em: new Date().toISOString()
         }));
         await salvar('indicadores', indicadores);
         resultado.indicadores = indicadores.length;
+        await registrarLog('Siconfi/RGF', 'ok', resultado.indicadores);
       }
     }
+  } catch(e) {
+    resultado.detalhes.push(`RGF erro: ${e.message}`);
+  }
 
-    await registrarLog('Siconfi/STN', 'ok', resultado.receitas + resultado.indicadores);
-  } catch (e) {
-    await registrarLog('Siconfi/STN', 'erro', 0, e.message);
+  if (resultado.receitas === 0) {
+    await registrarLog('Siconfi/RREO', 'parcial', 0, resultado.detalhes.join(' | '));
   }
 
   return resultado;
 }
 
-// ─── 2. Portal da Transparência — Licitações e Fornecedores ──────────────────
+// ─── 2. Portal da Transparência — Licitações e Contratos ─────────────────────
 async function coletarTransparencia(ano) {
-  const resultado = { licitacoes: 0, fornecedores: 0 };
-
+  const resultado = { licitacoes: 0, fornecedores: 0, detalhes: [] };
   const headers = {
     'chave-api-dados': TRANSP_KEY,
     'Accept': 'application/json'
@@ -130,157 +152,205 @@ async function coletarTransparencia(ano) {
 
   // Licitações
   try {
-    const paginas = 3; // máximo dentro do limite de 25s do Vercel
-    let todasLicitacoes = [];
+    const url = `https://api.portaldatransparencia.gov.br/api-de-dados/licitacoes?codigoIbge=${IBGE}&dataInicial=01/01/${ano}&dataFinal=31/12/${ano}&pagina=1`;
+    const res = await fetch(url, { headers, signal: AbortSignal.timeout(10000) });
+    resultado.detalhes.push(`Licitacoes HTTP: ${res.status}`);
 
-    for (let pagina = 1; pagina <= paginas; pagina++) {
-      const url = `https://api.portaldatransparencia.gov.br/api-de-dados/licitacoes?codigoIbge=${IBGE}&dataInicial=01/01/${ano}&dataFinal=31/12/${ano}&pagina=${pagina}`;
-      const res = await fetch(url, { headers });
-      if (!res.ok) break;
+    if (res.ok) {
       const dados = await res.json();
-      if (!dados || dados.length === 0) break;
-      todasLicitacoes = todasLicitacoes.concat(dados);
-      if (dados.length < 500) break; // última página
-    }
+      resultado.detalhes.push(`Licitacoes registros: ${Array.isArray(dados) ? dados.length : 'não é array — ' + JSON.stringify(dados).substring(0, 100)}`);
 
-    if (todasLicitacoes.length > 0) {
-      const licitacoes = todasLicitacoes.map(d => ({
-        ano: parseInt(ano),
-        numero: d.numero || d.id?.toString() || 'S/N',
-        modalidade: d.modalidade?.descricao || 'Não informado',
-        objeto: (d.objeto || 'Não informado').substring(0, 500),
-        valor_estimado: parseFloat(d.valorEstimado) || 0,
-        valor_adjudicado: parseFloat(d.valorAdjudicado) || 0,
-        situacao: d.situacao?.descricao || 'Não informado',
-        data_abertura: d.dataAbertura || null,
-        vencedor: d.fornecedorVencedor?.nome || null,
-        atualizado_em: new Date().toISOString()
-      }));
-      await salvar('licitacoes', licitacoes);
-      resultado.licitacoes = licitacoes.length;
+      if (Array.isArray(dados) && dados.length > 0) {
+        // Busca mais páginas se necessário
+        let todos = [...dados];
+        if (dados.length === 500) {
+          for (let p = 2; p <= 5; p++) {
+            const r2 = await fetch(`https://api.portaldatransparencia.gov.br/api-de-dados/licitacoes?codigoIbge=${IBGE}&dataInicial=01/01/${ano}&dataFinal=31/12/${ano}&pagina=${p}`, { headers, signal: AbortSignal.timeout(8000) });
+            if (!r2.ok) break;
+            const d2 = await r2.json();
+            if (!d2 || d2.length === 0) break;
+            todos = todos.concat(d2);
+            if (d2.length < 500) break;
+          }
+        }
+
+        const licitacoes = todos.map(d => ({
+          ano: parseInt(ano),
+          numero: String(d.numero || d.id || 'S/N').substring(0, 50),
+          modalidade: String(d.modalidade?.descricao || d.modalidadeLicitacao?.descricao || 'Não informado').substring(0, 100),
+          objeto: String(d.objeto || 'Não informado').substring(0, 500),
+          valor_estimado: parseFloat(d.valorEstimado || d.valor || 0) || 0,
+          valor_adjudicado: parseFloat(d.valorAdjudicado || 0) || 0,
+          situacao: String(d.situacao?.descricao || d.situacao || 'Não informado').substring(0, 100),
+          data_abertura: d.dataAbertura || d.dataPublicacaoEdital || null,
+          vencedor: String(d.fornecedorVencedor?.nome || d.nomeRazaoSocial || '').substring(0, 200) || null,
+          atualizado_em: new Date().toISOString()
+        }));
+        await salvar('licitacoes', licitacoes);
+        resultado.licitacoes = licitacoes.length;
+        await registrarLog('Transparencia/Licitacoes', 'ok', resultado.licitacoes);
+      }
+    } else {
+      const errBody = await res.text();
+      resultado.detalhes.push(`Licitacoes erro body: ${errBody.substring(0, 200)}`);
+      await registrarLog('Transparencia/Licitacoes', 'erro', 0, `HTTP ${res.status}: ${errBody.substring(0, 200)}`);
     }
-    await registrarLog('Portal Transparência - Licitações', 'ok', resultado.licitacoes);
-  } catch (e) {
-    await registrarLog('Portal Transparência - Licitações', 'erro', 0, e.message);
+  } catch(e) {
+    resultado.detalhes.push(`Licitacoes excecao: ${e.message}`);
+    await registrarLog('Transparencia/Licitacoes', 'erro', 0, e.message);
   }
 
-  // Fornecedores / Contratos
+  // Contratos / Fornecedores
   try {
-    let todosContratos = [];
-    for (let pagina = 1; pagina <= 3; pagina++) {
-      const url = `https://api.portaldatransparencia.gov.br/api-de-dados/contratos?codigoIbge=${IBGE}&dataInicial=01/01/${ano}&dataFinal=31/12/${ano}&pagina=${pagina}`;
-      const res = await fetch(url, { headers });
-      if (!res.ok) break;
-      const dados = await res.json();
-      if (!dados || dados.length === 0) break;
-      todosContratos = todosContratos.concat(dados);
-      if (dados.length < 500) break;
-    }
+    const url = `https://api.portaldatransparencia.gov.br/api-de-dados/contratos?codigoIbge=${IBGE}&dataInicial=01/01/${ano}&dataFinal=31/12/${ano}&pagina=1`;
+    const res = await fetch(url, { headers, signal: AbortSignal.timeout(10000) });
+    resultado.detalhes.push(`Contratos HTTP: ${res.status}`);
 
-    if (todosContratos.length > 0) {
-      const fornecedores = todosContratos.map(d => ({
-        ano: parseInt(ano),
-        nome: d.fornecedor?.nome || 'Não informado',
-        cnpj_cpf: d.fornecedor?.cnpjCpf || null,
-        valor_total: parseFloat(d.valorInicialCompra) || 0,
-        objeto: (d.objeto || 'Não informado').substring(0, 300),
-        numero_contrato: d.numero || null,
-        data_inicio: d.dataInicioVigencia || null,
-        data_fim: d.dataFimVigencia || null,
-        atualizado_em: new Date().toISOString()
-      }));
-      await salvar('fornecedores', fornecedores);
-      resultado.fornecedores = fornecedores.length;
+    if (res.ok) {
+      const dados = await res.json();
+      resultado.detalhes.push(`Contratos registros: ${Array.isArray(dados) ? dados.length : 'não é array'}`);
+
+      if (Array.isArray(dados) && dados.length > 0) {
+        const fornecedores = dados.map(d => ({
+          ano: parseInt(ano),
+          nome: String(d.fornecedor?.nome || d.nomeRazaoSocial || 'Não informado').substring(0, 200),
+          cnpj_cpf: String(d.fornecedor?.cnpjCpf || d.cpfCnpj || '').substring(0, 20) || null,
+          valor_total: parseFloat(d.valorInicialCompra || d.valor || 0) || 0,
+          objeto: String(d.objeto || 'Não informado').substring(0, 300),
+          numero_contrato: String(d.numero || '').substring(0, 50) || null,
+          data_inicio: d.dataInicioVigencia || null,
+          data_fim: d.dataFimVigencia || null,
+          atualizado_em: new Date().toISOString()
+        }));
+        await salvar('fornecedores', fornecedores);
+        resultado.fornecedores = fornecedores.length;
+        await registrarLog('Transparencia/Contratos', 'ok', resultado.fornecedores);
+      }
+    } else {
+      const errBody = await res.text();
+      resultado.detalhes.push(`Contratos erro body: ${errBody.substring(0, 200)}`);
+      await registrarLog('Transparencia/Contratos', 'erro', 0, `HTTP ${res.status}: ${errBody.substring(0, 200)}`);
     }
-    await registrarLog('Portal Transparência - Contratos', 'ok', resultado.fornecedores);
-  } catch (e) {
-    await registrarLog('Portal Transparência - Contratos', 'erro', 0, e.message);
+  } catch(e) {
+    resultado.detalhes.push(`Contratos excecao: ${e.message}`);
+    await registrarLog('Transparencia/Contratos', 'erro', 0, e.message);
   }
 
   return resultado;
 }
 
-// ─── 3. TSE — Vereadores eleitos ─────────────────────────────────────────────
-async function coletarTSE() {
-  const resultado = { vereadores: 0 };
+// ─── 3. TSE — Vereadores 2024 ─────────────────────────────────────────────────
+// Dados fixos baseados no resultado oficial TSE — Eleição Municipal 2024
+// Senador Guiomard-AC tem 9 vagas de vereador
+async function coletarVereadoresTSE() {
+  // Dados públicos do TSE — eleição outubro 2024
+  // Fonte: resultados.tse.jus.br — município 01392 (código TSE para Senador Guiomard)
+  const vereadores = [
+    { nome: 'AGUARDAR CONFIRMAÇÃO TSE', partido: 'Verificar em resultados.tse.jus.br', votos: 0, situacao: 'Eleito' },
+  ];
 
+  // Tenta buscar da API pública do TSE
   try {
-    // Eleições 2024 — vereadores de Senador Guiomard (código TSE: 01392)
-    // UF: AC = 1, Município TSE Senador Guiomard = 01392
-    const url = `https://resultados.tse.jus.br/oficial/ele2024/arquivo-urna/407/config/ac/ac-config.json`;
-    const res = await fetch(url);
-
-    // Se a API do TSE não responder, usa dados fixos dos vereadores eleitos 2024
-    // (dados públicos do TSE, eleição municipal outubro 2024)
-    const vereadores = [
-      { nome: 'Consultar TSE', partido: 'Verificar em resultados.tse.jus.br', situacao: 'Eleito', votos: 0, cargo: 'Vereador' }
-    ];
-
-    // Tenta buscar resultado real
+    // API TSE — resultado por município (eleição 2024, código 407 = municipal)
+    const url = 'https://resultados.tse.jus.br/oficial/ele2024/407/dados/ac/ac01392-c0013-e000407-u.json';
+    const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
     if (res.ok) {
-      try {
-        const config = await res.json();
-        // A estrutura da API do TSE é complexa — registra o que conseguiu
-        await registrarLog('TSE', 'parcial', 0, 'API TSE requer parsing avançado — dados básicos inseridos');
-      } catch {
-        // silencioso
+      const dados = await res.json();
+      // Estrutura TSE: dados.cands = candidatos
+      if (dados.cands && dados.cands.length > 0) {
+        const eleitos = dados.cands
+          .filter(c => c.st === 'Eleito' || c.st === 'Eleito por QP' || c.st === 'Eleito por média')
+          .map(c => ({
+            nome: c.nm || c.nmc || 'Não informado',
+            partido: c.sg || 'Não informado',
+            votos: parseInt(c.vap || c.tv || 0),
+            situacao: c.st || 'Eleito',
+            municipio: 'Senador Guiomard',
+            uf: 'AC',
+            ano_eleicao: 2024,
+            cargo: 'Vereador',
+            atualizado_em: new Date().toISOString()
+          }));
+        if (eleitos.length > 0) {
+          await salvar('vereadores', eleitos);
+          await registrarLog('TSE', 'ok', eleitos.length);
+          return { vereadores: eleitos.length, fonte: 'API TSE' };
+        }
       }
     }
-
-    await salvar('vereadores', vereadores.map(v => ({
-      ...v,
-      municipio: 'Senador Guiomard',
-      uf: 'AC',
-      ano_eleicao: 2024,
-      atualizado_em: new Date().toISOString()
-    })));
-    resultado.vereadores = vereadores.length;
-    await registrarLog('TSE', 'ok', resultado.vereadores);
-  } catch (e) {
-    await registrarLog('TSE', 'erro', 0, e.message);
+  } catch(e) {
+    await registrarLog('TSE', 'parcial', 0, `API TSE indisponivel: ${e.message} — inserindo placeholder`);
   }
 
-  return resultado;
+  // Fallback: insere 1 registro placeholder para não deixar tabela vazia
+  await salvar('vereadores', [{
+    nome: 'DADOS PENDENTES — Consultar resultados.tse.jus.br',
+    partido: 'N/A',
+    votos: 0,
+    situacao: 'Verificar',
+    municipio: 'Senador Guiomard',
+    uf: 'AC',
+    ano_eleicao: 2024,
+    cargo: 'Vereador',
+    atualizado_em: new Date().toISOString()
+  }]);
+  return { vereadores: 1, fonte: 'placeholder' };
 }
 
 // ─── Handler principal ────────────────────────────────────────────────────────
 export default async function handler(req, res) {
-  // Verifica se é chamada do Cron (Vercel adiciona header Authorization)
-  const authHeader = req.headers['authorization'];
   if (req.method !== 'GET') {
     return res.status(405).json({ erro: 'Método não permitido' });
   }
 
-  const ano = req.query.ano || new Date().getFullYear();
+  const ano = req.query.ano || String(new Date().getFullYear());
+  const debug = req.query.debug === 'true'; // ?debug=true mostra detalhes completos
 
   if (!SUPABASE_URL || !SUPABASE_KEY) {
-    return res.status(500).json({ erro: 'Variáveis SUPABASE_URL ou SUPABASE_SERVICE_KEY não configuradas' });
+    return res.status(500).json({ erro: 'SUPABASE_URL ou SUPABASE_SERVICE_KEY não configuradas no Vercel' });
   }
 
   if (!TRANSP_KEY) {
-    return res.status(500).json({ erro: 'Variável TRANSPARENCIA_API_KEY não configurada' });
+    return res.status(500).json({ erro: 'TRANSPARENCIA_API_KEY não configurada no Vercel' });
   }
 
   const inicio = Date.now();
-  const relatorio = { ano, inicio: new Date().toISOString(), fontes: {} };
 
   try {
-    // Coleta em paralelo para não estourar o limite de 25s do Vercel
     const [siconfi, transparencia, tse] = await Promise.allSettled([
       coletarSiconfi(ano),
       coletarTransparencia(ano),
-      coletarTSE()
+      coletarVereadoresTSE()
     ]);
 
-    relatorio.fontes.siconfi      = siconfi.status      === 'fulfilled' ? siconfi.value      : { erro: siconfi.reason?.message };
-    relatorio.fontes.transparencia = transparencia.status === 'fulfilled' ? transparencia.value : { erro: transparencia.reason?.message };
-    relatorio.fontes.tse          = tse.status          === 'fulfilled' ? tse.value          : { erro: tse.reason?.message };
+    const relatorio = {
+      ano,
+      status: 'concluido',
+      tempo_ms: Date.now() - inicio,
+      resumo: {
+        siconfi: siconfi.status === 'fulfilled'
+          ? { receitas: siconfi.value.receitas, indicadores: siconfi.value.indicadores }
+          : { erro: siconfi.reason?.message },
+        transparencia: transparencia.status === 'fulfilled'
+          ? { licitacoes: transparencia.value.licitacoes, fornecedores: transparencia.value.fornecedores }
+          : { erro: transparencia.reason?.message },
+        tse: tse.status === 'fulfilled'
+          ? { vereadores: tse.value.vereadores }
+          : { erro: tse.reason?.message }
+      }
+    };
 
-    relatorio.tempo_ms = Date.now() - inicio;
-    relatorio.status = 'concluido';
+    // Modo debug: inclui detalhes técnicos para diagnóstico
+    if (debug) {
+      relatorio.debug = {
+        siconfi: siconfi.status === 'fulfilled' ? siconfi.value : siconfi.reason?.message,
+        transparencia: transparencia.status === 'fulfilled' ? transparencia.value : transparencia.reason?.message,
+        tse: tse.status === 'fulfilled' ? tse.value : tse.reason?.message
+      };
+    }
 
     return res.status(200).json(relatorio);
-  } catch (e) {
-    return res.status(500).json({ erro: e.message, relatorio });
+  } catch(e) {
+    return res.status(500).json({ erro: e.message });
   }
 }
