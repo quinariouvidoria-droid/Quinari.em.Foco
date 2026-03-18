@@ -72,7 +72,12 @@ nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:3px sol
 .card-vereador:hover{background:var(--bg3)}
 .card-vereador.presidente{border-top-color:var(--yellow)}
 .card-vereador.vice{border-top-color:var(--purple)}
-.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+/* Foto circular */
+.card-foto-wrap{display:flex;justify-content:center;margin-bottom:14px}
+.card-foto{width:80px;height:80px;border-radius:50%;object-fit:cover;object-position:top center;border:3px solid var(--blue);background:var(--bg3)}
+.card-foto.presidente{border-color:var(--yellow)}
+.card-foto.vice{border-color:var(--purple)}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
 .card-cargo{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px}
 .cargo-presidente{background:rgba(255,214,0,.15);color:var(--yellow)}
 .cargo-vice{background:rgba(167,139,250,.15);color:var(--purple)}
@@ -411,18 +416,31 @@ const SUPA = '/api/dados';
 
 // ── Dados dos vereadores (hardcoded da fonte oficial — site da Câmara) ─────────
 // Fonte: senadorguiomard.ac.leg.br/vereadores (acessado em 18/03/2026)
+// Fotos: URLs públicas do site oficial da Câmara Municipal de Senador Guiomard
+// Fonte: senadorguiomard.ac.leg.br/vereadores (acessado 18/03/2026)
 const VEREADORES = [
-  { nome:'Elvys Lenon Nascimento Araújo', apelido:'Lenon', partido:'PP', votos:467, cargo:'Presidente', situacao:'Eleito' },
-  { nome:'Tammy Rodrigues de Paula Lima', apelido:'Tammy', partido:'PP', votos:1041, cargo:'Vice-Presidente', situacao:'Eleita' },
-  { nome:'Paulo Cesar Miranda Gomes', apelido:'Paulinho', partido:'União Brasil', votos:404, cargo:'1º Secretário', situacao:'Eleito' },
-  { nome:'João Rafael Tavares da Cruz Maia', apelido:'Rafael Maia', partido:'União Brasil', votos:420, cargo:'2º Secretário', situacao:'Eleito' },
-  { nome:'Williene Magda Novais Jardim', apelido:'Williene', partido:'PL', votos:479, cargo:'Vereadora', situacao:'Eleita' },
-  { nome:'Rozildo de Souza Lima', apelido:'Rozildo', partido:'Solidariedade', votos:475, cargo:'Vereador', situacao:'Eleito' },
-  { nome:'Telma Regina Cunha de Queiroz Silva', apelido:'Telma Queiroz', partido:'PP', votos:632, cargo:'Vereadora', situacao:'Eleita' },
-  { nome:'Leyryana Conceição de Oliveira', apelido:'Leiri do Mixico', partido:'Republicanos', votos:529, cargo:'Vereadora', situacao:'Eleita' },
-  { nome:'Eder Paulino Silva Bandeira', apelido:'Eder Paulino', partido:'Republicanos', votos:335, cargo:'Vereador', situacao:'Eleito' },
-  { nome:'Sandro Cunha e Souza', apelido:'Sandrão', partido:'PP', votos:733, cargo:'Vereador', situacao:'Eleito' },
-  { nome:'Ivanete Figueiredo de Souza', apelido:'Ivanete', partido:'PSD', votos:629, cargo:'Vereadora', situacao:'Eleita' },
+  { nome:'Elvys Lenon Nascimento Araújo', apelido:'Lenon', partido:'PP', votos:467, cargo:'Presidente', situacao:'Eleito',
+    foto:'https://static.wixstatic.com/media/0204e8_4712722bb0aa48b8bce493a83acf883f~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'Tammy Rodrigues de Paula Lima', apelido:'Tammy', partido:'PP', votos:1041, cargo:'Vice-Presidente', situacao:'Eleita',
+    foto:'https://static.wixstatic.com/media/0204e8_b21e72c0a28144b7a55c7ab898c248e3~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'Paulo Cesar Miranda Gomes', apelido:'Paulinho', partido:'União Brasil', votos:404, cargo:'1º Secretário', situacao:'Eleito',
+    foto:'https://static.wixstatic.com/media/0204e8_f484b55a003148ac89118f71f49a1c30~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'João Rafael Tavares da Cruz Maia', apelido:'Rafael Maia', partido:'União Brasil', votos:420, cargo:'2º Secretário', situacao:'Eleito',
+    foto:'https://static.wixstatic.com/media/0204e8_74da3a9cdc964f78bedb43ee3f063ac5~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'Williene Magda Novais Jardim', apelido:'Williene', partido:'PL', votos:479, cargo:'Vereadora', situacao:'Eleita',
+    foto:'https://static.wixstatic.com/media/0204e8_e845a469f85c4f8abdf644475e40f15a~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'Rozildo de Souza Lima', apelido:'Rozildo', partido:'Solidariedade', votos:475, cargo:'Vereador', situacao:'Eleito',
+    foto:'https://static.wixstatic.com/media/0204e8_184ef41cadee475e8cc08dd6d4b9c4a7~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'Telma Regina Cunha de Queiroz Silva', apelido:'Telma Queiroz', partido:'PP', votos:632, cargo:'Vereadora', situacao:'Eleita',
+    foto:'https://static.wixstatic.com/media/0204e8_dfd25c96531948eea2c0039db6170095~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'Leyryana Conceição de Oliveira', apelido:'Leiri do Mixico', partido:'Republicanos', votos:529, cargo:'Vereadora', situacao:'Eleita',
+    foto:'https://static.wixstatic.com/media/0204e8_9a6aca19a7544251b6e18a741ce98654~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'Eder Paulino Silva Bandeira', apelido:'Eder Paulino', partido:'Republicanos', votos:335, cargo:'Vereador', situacao:'Eleito',
+    foto:'https://static.wixstatic.com/media/0204e8_0dfe3aed6d0c4f5d921b150dd9584d6f~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'Sandro Cunha e Souza', apelido:'Sandrão', partido:'PP', votos:733, cargo:'Vereador', situacao:'Eleito',
+    foto:'https://static.wixstatic.com/media/0204e8_4381340e750b49ab9dfaf77b3eabf1e5~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'Ivanete Figueiredo de Souza', apelido:'Ivanete', partido:'PSD', votos:629, cargo:'Vereadora', situacao:'Eleita',
+    foto:'https://static.wixstatic.com/media/0204e8_13b0c7229f66445b84b559f3e52ddd43~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
 ];
 
 // Publicações reais capturadas do site da Câmara em 18/03/2026
@@ -476,8 +494,15 @@ function renderKPIsVereadores() {
 // ── Renderizar grid de cards ───────────────────────────────────────────────────
 function renderGrid() {
   const cor = getCorPartido;
-  document.getElementById('grid-vereadores').innerHTML = VEREADORES.map(v => `
+  document.getElementById('grid-vereadores').innerHTML = VEREADORES.map(v => {
+    const fotoClass = v.cargo.includes('Presidente') && !v.cargo.includes('Vice') ? 'presidente' : v.cargo.includes('Vice') ? 'vice' : '';
+    return `
     <div class="card-vereador ${cargoCardClass(v.cargo)}" onclick="window.open('https://www.senadorguiomard.ac.leg.br/vereadores','_blank')">
+      <div class="card-foto-wrap">
+        <img class="card-foto ${fotoClass}" src="${v.foto}"
+          alt="${v.apelido}" loading="lazy"
+          onerror="this.outerHTML='<div class=\'card-foto\' style=\'display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:var(--gray2)\'>👤</div>'">
+      </div>
       <div class="card-top">
         <span class="card-cargo ${cargoClass(v.cargo)}">${v.cargo}</span>
         <span class="card-partido" style="color:${cor(v.partido)}">${v.partido}</span>
@@ -498,8 +523,8 @@ function renderGrid() {
         </div>
         <a class="card-link" href="https://www.senadorguiomard.ac.leg.br/vereadores" target="_blank" onclick="event.stopPropagation()">Ver perfil →</a>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 // ── Frequência (baseada nos vereadores do banco) ───────────────────────────────
