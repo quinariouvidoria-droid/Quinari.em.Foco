@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contato | Quinari em Foco</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#15151e;--bg2:#1e1e2a;--bg3:#252533;--red:#e10600;--red2:#ff2020;--white:#fff;--gray:#a0a0b0;--gray2:#6b6b80;--green:#00d46a;--border:rgba(255,255,255,0.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--white);font-family:'Barlow',sans-serif;min-height:100vh}
+nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:3px solid var(--red);height:56px;display:flex;align-items:center;padding:0 24px;justify-content:space-between}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;letter-spacing:2px;text-transform:uppercase;color:var(--white);text-decoration:none}
+.nav-logo span{color:var(--red)}
+.nav-back{font-family:'DM Mono',monospace;font-size:.78rem;color:var(--gray);text-decoration:none;transition:color .2s}
+.nav-back:hover{color:var(--white)}
+.hero{padding:64px 24px;text-align:center;max-width:700px;margin:0 auto}
+.hero-label{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--red);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px}
+.hero-titulo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(2.5rem,6vw,4rem);text-transform:uppercase;letter-spacing:1px;line-height:1;margin-bottom:16px}
+.hero-titulo span{color:var(--red)}
+.hero-desc{color:var(--gray);font-size:1rem;line-height:1.7;margin-bottom:40px}
+.contatos{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:700px;margin:0 auto;padding:0 24px}
+.contato-card{background:var(--bg2);border:1px solid var(--border);padding:28px 24px;display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;transition:background .2s,border-color .2s}
+.contato-card:hover{background:var(--bg3);border-color:var(--red)}
+.contato-ico{font-size:2.4rem}
+.contato-nome{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
+.contato-val{font-family:'DM Mono',monospace;font-size:.78rem;color:var(--gray2);text-align:center;line-height:1.5}
+.contato-btn{margin-top:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:1px;text-transform:uppercase;color:var(--red);border:1px solid rgba(225,6,0,.3);padding:5px 14px;transition:all .2s}
+.contato-card:hover .contato-btn{background:var(--red);color:var(--white)}
+.separador{max-width:700px;margin:48px auto 32px;padding:0 24px;display:flex;align-items:center;gap:16px}
+.sep-line{flex:1;height:1px;background:var(--border)}
+.sep-txt{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--gray2);text-transform:uppercase;letter-spacing:2px;white-space:nowrap}
+.patrocinio-info{max-width:700px;margin:0 auto;padding:0 24px 64px;text-align:center}
+.pat-titulo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.4rem;text-transform:uppercase;color:var(--white);margin-bottom:12px}
+.pat-desc{color:var(--gray);font-size:.9rem;line-height:1.7;max-width:520px;margin:0 auto 24px}
+.pat-aviso{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--gray2);background:var(--bg2);border:1px solid var(--border);padding:12px 16px;line-height:1.6}
+footer{border-top:1px solid var(--border);padding:24px;text-align:center;color:var(--gray2);font-size:.8rem;font-family:'DM Mono',monospace}
+footer a{color:var(--gray2);text-decoration:none}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">QUINARI <span>EM FOCO</span></a>
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-label">Entre em contato</div>
+  <h1 class="hero-titulo">FALE COM O <span>QUINARI</span></h1>
+  <p class="hero-desc">Dúvidas, denúncias, sugestões ou interesse em patrocinar o portal. Escolha o canal de contato abaixo.</p>
+</div>
+
+<div class="contatos">
+  <a class="contato-card" href="https://wa.me/5568974003616?text=Olá!%20Vim%20pelo%20portal%20Quinari%20em%20Foco." target="_blank">
+    <div class="contato-ico">💬</div>
+    <div class="contato-nome">WhatsApp</div>
+    <div class="contato-val">(68) 97400-3616<br>Paulo Roberto</div>
+    <div class="contato-btn">Abrir conversa →</div>
+  </a>
+  <a class="contato-card" href="mailto:quinari.ouvidoria@gmail.com?subject=Contato%20via%20portal" target="_blank">
+    <div class="contato-ico">✉️</div>
+    <div class="contato-nome">E-mail</div>
+    <div class="contato-val">quinari.ouvidoria<br>@gmail.com</div>
+    <div class="contato-btn">Enviar e-mail →</div>
+  </a>
+  <a class="contato-card" href="https://instagram.com/quinariemfoco" target="_blank">
+    <div class="contato-ico">📸</div>
+    <div class="contato-nome">Instagram</div>
+    <div class="contato-val">@quinariemfoco<br>Acompanhe o portal</div>
+    <div class="contato-btn">Ver perfil →</div>
+  </a>
+</div>
+
+<div class="separador">
+  <div class="sep-line"></div>
+  <div class="sep-txt">Patrocínio</div>
+  <div class="sep-line"></div>
+</div>
+
+<div class="patrocinio-info">
+  <div class="pat-titulo">Quero patrocinar o portal</div>
+  <div class="pat-desc">
+    O Quinari em Foco é acessado por cidadãos de Senador Guiomard e região. Patrocinar o portal é apoiar a transparência municipal e ter visibilidade para o seu negócio local.
+  </div>
+  <div class="pat-aviso">
+    O patrocínio <strong style="color:var(--white)">não influencia</strong> o conteúdo publicado.<br>
+    Patrocinadores recebem um espaço com logo na página inicial com link para seu WhatsApp.<br>
+    Entre em contato pelo WhatsApp ou e-mail para saber valores e disponibilidade.
+  </div>
+  <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+    <a href="https://wa.me/5568974003616?text=Tenho%20interesse%20em%20patrocinar%20o%20Quinari%20em%20Foco!"
+       target="_blank"
+       style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:1px;text-transform:uppercase;background:var(--green);color:#000;padding:12px 24px;text-decoration:none;display:inline-block;transition:opacity .2s">
+      💬 Falar pelo WhatsApp →
+    </a>
+    <a href="mailto:quinari.ouvidoria@gmail.com?subject=Interesse%20em%20patrocinar%20o%20Quinari%20em%20Foco"
+       style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:1px;text-transform:uppercase;background:var(--bg2);color:var(--white);border:1px solid var(--border);padding:12px 24px;text-decoration:none;display:inline-block">
+      ✉️ Enviar e-mail →
+    </a>
+  </div>
+</div>
+
+<footer>
+  <p>Quinari em Foco · Portal independente · Senador Guiomard, Acre · 2026</p>
+  <p style="margin-top:6px">
+    <a href="index.html">← Voltar ao portal</a> ·
+    <a href="mailto:quinari.ouvidoria@gmail.com">quinari.ouvidoria@gmail.com</a>
+  </p>
+</footer>
+</body>
+</html>
