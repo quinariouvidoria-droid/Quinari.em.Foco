@@ -3,151 +3,174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bloco A — Prefeitura | Quinari em Foco</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Bloco B — Câmara dos Vereadores | Quinari em Foco</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg:       #15151e;
-    --bg2:      #1e1e2a;
-    --bg3:      #252533;
-    --red:      #e10600;
-    --red2:     #ff2020;
-    --white:    #ffffff;
-    --gray:     #a0a0b0;
-    --gray2:    #6b6b80;
-    --green:    #00d46a;
-    --yellow:   #ffd600;
-    --border:   rgba(255,255,255,0.08);
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior: smooth; }
-  body { background:var(--bg); color:var(--white); font-family:'Barlow',sans-serif; min-height:100vh; }
+:root {
+  --bg:#15151e; --bg2:#1e1e2a; --bg3:#252533; --bg4:#2e2e3e;
+  --red:#e10600; --red2:#ff2020;
+  --blue:#4da6ff; --green:#00d46a; --yellow:#ffd600; --purple:#a78bfa;
+  --white:#ffffff; --gray:#a0a0b0; --gray2:#6b6b80;
+  --border:rgba(255,255,255,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Barlow',sans-serif;min-height:100vh;overflow-x:hidden}
 
-  /* ── NAV ── */
-  nav {
-    position:sticky; top:0; z-index:100;
-    background:var(--bg); border-bottom:3px solid var(--red);
-    padding:0 24px; display:flex; align-items:center; justify-content:space-between;
-    height:56px;
-  }
-  .nav-logo { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:1.3rem; letter-spacing:2px; text-transform:uppercase; color:var(--white); text-decoration:none; }
-  .nav-logo span { color:var(--red); }
-  .nav-links { display:flex; gap:24px; list-style:none; }
-  .nav-links a { color:var(--gray); text-decoration:none; font-size:.85rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; transition:color .2s; }
-  .nav-links a:hover, .nav-links a.ativo { color:var(--white); }
-  .nav-links a.ativo { border-bottom:2px solid var(--red); padding-bottom:2px; }
-  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
-  .hamburger span { width:24px; height:2px; background:var(--white); display:block; }
-  @media(max-width:768px){
-    .nav-links { display:none; position:absolute; top:56px; left:0; right:0; background:var(--bg); flex-direction:column; padding:16px 24px; gap:12px; border-bottom:2px solid var(--border); }
-    .nav-links.aberto { display:flex; }
-    .hamburger { display:flex; }
-  }
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:3px solid var(--blue);height:56px;display:flex;align-items:center;padding:0 24px;justify-content:space-between}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;letter-spacing:2px;text-transform:uppercase;color:var(--white);text-decoration:none}
+.nav-logo span{color:var(--red)}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{color:var(--gray);text-decoration:none;font-size:.85rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover,.nav-links a.ativo{color:var(--white)}
+.nav-links a.ativo{border-bottom:2px solid var(--blue);padding-bottom:2px}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.hamburger span{width:24px;height:2px;background:var(--white);display:block}
+@media(max-width:768px){
+  .nav-links{display:none;position:absolute;top:56px;left:0;right:0;background:var(--bg);flex-direction:column;padding:16px 24px;gap:12px;border-bottom:2px solid var(--border)}
+  .nav-links.aberto{display:flex}
+  .hamburger{display:flex}
+}
 
-  /* ── TICKER ── */
-  .ticker { background:var(--red); overflow:hidden; height:32px; display:flex; align-items:center; }
-  .ticker-label { background:var(--bg); color:var(--red); font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:.75rem; letter-spacing:2px; padding:0 16px; white-space:nowrap; height:100%; display:flex; align-items:center; }
-  .ticker-track { display:flex; animation:ticker 30s linear infinite; white-space:nowrap; }
-  .ticker-track span { padding:0 32px; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:.8rem; letter-spacing:1px; color:var(--white); }
-  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+/* TICKER */
+.ticker{background:var(--blue);overflow:hidden;height:32px;display:flex;align-items:center}
+.ticker-label{background:var(--bg);color:var(--blue);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:2px;padding:0 16px;white-space:nowrap;height:100%;display:flex;align-items:center}
+.ticker-track{display:flex;animation:ticker 35s linear infinite;white-space:nowrap}
+.ticker-track span{padding:0 32px;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.8rem;letter-spacing:1px;color:var(--white)}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-  /* ── HEADER ── */
-  .page-header { padding:32px 24px 0; max-width:1200px; margin:0 auto; }
-  .breadcrumb { display:flex; align-items:center; gap:8px; font-size:.75rem; color:var(--gray2); font-family:'DM Mono',monospace; margin-bottom:16px; }
-  .breadcrumb a { color:var(--gray2); text-decoration:none; }
-  .breadcrumb a:hover { color:var(--white); }
-  .breadcrumb .sep { color:var(--red); }
-  .page-title { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:clamp(2rem,5vw,3.5rem); text-transform:uppercase; letter-spacing:2px; line-height:1; }
-  .page-title span { color:var(--red); }
-  .page-sub { color:var(--gray); font-size:.9rem; margin-top:8px; }
+/* HEADER */
+.page-header{padding:32px 24px 0;max-width:1200px;margin:0 auto}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--gray2);font-family:'DM Mono',monospace;margin-bottom:16px}
+.breadcrumb a{color:var(--gray2);text-decoration:none}
+.breadcrumb a:hover{color:var(--white)}
+.breadcrumb .sep{color:var(--blue)}
+.page-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(2rem,5vw,3.5rem);text-transform:uppercase;letter-spacing:2px;line-height:1}
+.page-title span{color:var(--blue)}
+.page-sub{color:var(--gray);font-size:.9rem;margin-top:8px}
+.page-meta{display:flex;gap:24px;margin-top:16px;flex-wrap:wrap}
+.meta-item{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--gray2);display:flex;align-items:center;gap:6px}
+.meta-item a{color:var(--blue);text-decoration:none}
+.meta-item a:hover{color:var(--white)}
 
-  /* ── SELETOR DE ANO ── */
-  .ano-bar { max-width:1200px; margin:24px auto 0; padding:0 24px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-  .ano-label { font-family:'DM Mono',monospace; font-size:.75rem; color:var(--gray2); text-transform:uppercase; letter-spacing:1px; }
-  .ano-btns { display:flex; gap:6px; flex-wrap:wrap; }
-  .ano-btn { background:var(--bg3); border:1px solid var(--border); color:var(--gray); font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:.85rem; letter-spacing:1px; padding:6px 14px; cursor:pointer; transition:all .2s; border-radius:2px; }
-  .ano-btn:hover { border-color:var(--gray2); color:var(--white); }
-  .ano-btn.ativo { background:var(--red); border-color:var(--red); color:var(--white); }
+/* ABAS */
+.abas-wrap{max-width:1200px;margin:24px auto 0;padding:0 24px}
+.abas{display:flex;gap:0;border-bottom:2px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.abas::-webkit-scrollbar{display:none}
+.aba-btn{background:none;border:none;color:var(--gray2);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:1px;text-transform:uppercase;padding:12px 20px;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
+.aba-btn:hover{color:var(--gray)}
+.aba-btn.ativa{color:var(--white);border-bottom-color:var(--blue)}
 
-  /* ── ABAS ── */
-  .abas-wrap { max-width:1200px; margin:24px auto 0; padding:0 24px; }
-  .abas { display:flex; gap:0; border-bottom:2px solid var(--border); overflow-x:auto; scrollbar-width:none; }
-  .abas::-webkit-scrollbar { display:none; }
-  .aba-btn { background:none; border:none; color:var(--gray2); font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:.9rem; letter-spacing:1px; text-transform:uppercase; padding:12px 20px; cursor:pointer; white-space:nowrap; border-bottom:2px solid transparent; margin-bottom:-2px; transition:all .2s; }
-  .aba-btn:hover { color:var(--gray); }
-  .aba-btn.ativa { color:var(--white); border-bottom-color:var(--red); }
+/* CONTEÚDO */
+.aba-content{display:none;max-width:1200px;margin:0 auto;padding:24px}
+.aba-content.ativa{display:block}
 
-  /* ── CONTEÚDO ABAS ── */
-  .aba-content { display:none; max-width:1200px; margin:0 auto; padding:24px; }
-  .aba-content.ativa { display:block; }
+/* CARDS VEREADORES */
+.vereadores-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:8px}
+.card-vereador{background:var(--bg2);border:1px solid var(--border);border-top:3px solid var(--blue);padding:20px;transition:background .2s;cursor:pointer}
+.card-vereador:hover{background:var(--bg3)}
+.card-vereador.presidente{border-top-color:var(--yellow)}
+.card-vereador.vice{border-top-color:var(--purple)}
+/* Foto circular */
+.card-foto-wrap{display:flex;justify-content:flex-start;margin-bottom:12px}
+.card-foto{width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:top center;border:3px solid var(--blue);background:var(--bg3)}
+.card-foto.presidente{border-color:var(--yellow)}
+.card-foto.vice{border-color:var(--purple)}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.card-cargo{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px}
+.cargo-presidente{background:rgba(255,214,0,.15);color:var(--yellow)}
+.cargo-vice{background:rgba(167,139,250,.15);color:var(--purple)}
+.cargo-secretario{background:rgba(77,166,255,.15);color:var(--blue)}
+.cargo-vereador{background:rgba(255,255,255,.08);color:var(--gray)}
+.card-partido{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;color:var(--gray2)}
+.card-nome{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.15rem;text-transform:uppercase;letter-spacing:.5px;color:var(--white);margin-bottom:4px;line-height:1.2}
+.card-votos{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--gray2);margin-top:8px}
+.card-votos span{color:var(--green)}
+.card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.card-stats{display:flex;gap:16px}
+.stat-mini{text-align:center}
+.stat-mini-n{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;color:var(--white)}
+.stat-mini-l{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--gray2);text-transform:uppercase;letter-spacing:.5px}
+.card-link{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:1px;text-transform:uppercase;color:var(--blue);text-decoration:none;transition:color .2s}
+.card-link:hover{color:var(--white)}
 
-  /* ── KPIs ── */
-  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:24px; }
-  .kpi { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--red); padding:16px 20px; }
-  .kpi-label { font-family:'DM Mono',monospace; font-size:.7rem; color:var(--gray2); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
-  .kpi-valor { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:1.6rem; color:var(--white); line-height:1; }
-  .kpi-valor.verde { color:var(--green); }
-  .kpi-valor.amarelo { color:var(--yellow); }
-  .kpi-valor.vermelho { color:var(--red2); }
-  .kpi-sub { font-size:.75rem; color:var(--gray2); margin-top:4px; }
+/* MESA DIRETORA */
+.mesa-banner{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--yellow);padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.mesa-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);margin-bottom:4px}
+.mesa-membros{display:flex;gap:32px;flex-wrap:wrap}
+.mesa-membro{font-size:.85rem}
+.mesa-membro-cargo{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gray2);text-transform:uppercase;letter-spacing:1px}
+.mesa-membro-nome{color:var(--white);font-weight:600;margin-top:2px}
+.mesa-membro-partido{color:var(--gray2);font-size:.8rem}
 
-  /* ── GRÁFICO DE BARRAS ── */
-  .grafico-titulo { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:1rem; letter-spacing:1px; text-transform:uppercase; color:var(--gray); margin:24px 0 12px; }
-  .barra-item { display:grid; grid-template-columns:1fr auto; align-items:center; gap:8px; margin-bottom:10px; }
-  .barra-nome { font-size:.82rem; color:var(--gray); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .barra-track { background:var(--bg3); height:8px; border-radius:2px; overflow:hidden; flex:1; }
-  .barra-fill { height:100%; background:var(--red); border-radius:2px; transition:width .6s ease; }
-  .barra-fill.azul { background:#4a9eff; }
-  .barra-fill.verde { background:var(--green); }
-  .barra-row { display:grid; grid-template-columns:200px 1fr auto; gap:10px; align-items:center; margin-bottom:8px; }
-  .barra-valor { font-family:'DM Mono',monospace; font-size:.75rem; color:var(--gray); white-space:nowrap; }
-  @media(max-width:600px){ .barra-row { grid-template-columns:1fr; gap:4px; } }
+/* TABELA */
+.tabela-wrap{overflow-x:auto;margin-top:16px}
+.tabela-busca{background:var(--bg3);border:1px solid var(--border);color:var(--white);font-family:'Barlow',sans-serif;font-size:.85rem;padding:8px 14px;width:100%;max-width:360px;margin-bottom:12px;outline:none}
+.tabela-busca:focus{border-color:var(--blue)}
+table{width:100%;border-collapse:collapse;font-size:.83rem}
+th{background:var(--bg3);color:var(--gray2);font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--gray);vertical-align:top}
+tr:hover td{background:var(--bg2)}
+.badge{display:inline-block;padding:2px 8px;border-radius:2px;font-family:'DM Mono',monospace;font-size:.7rem;font-weight:500;letter-spacing:.5px}
+.badge-blue{background:rgba(77,166,255,.15);color:var(--blue)}
+.badge-green{background:rgba(0,212,106,.15);color:var(--green)}
+.badge-yellow{background:rgba(255,214,0,.15);color:var(--yellow)}
+.badge-gray{background:rgba(255,255,255,.08);color:var(--gray)}
 
-  /* ── TABELA ── */
-  .tabela-wrap { overflow-x:auto; margin-top:16px; }
-  .tabela-busca { background:var(--bg3); border:1px solid var(--border); color:var(--white); font-family:'Barlow',sans-serif; font-size:.85rem; padding:8px 14px; width:100%; max-width:320px; margin-bottom:12px; outline:none; }
-  .tabela-busca:focus { border-color:var(--red); }
-  table { width:100%; border-collapse:collapse; font-size:.83rem; }
-  th { background:var(--bg3); color:var(--gray2); font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:1px; text-transform:uppercase; padding:10px 12px; text-align:left; border-bottom:2px solid var(--border); white-space:nowrap; }
-  td { padding:10px 12px; border-bottom:1px solid var(--border); color:var(--gray); vertical-align:top; }
-  tr:hover td { background:var(--bg2); }
-  .badge { display:inline-block; padding:2px 8px; border-radius:2px; font-family:'DM Mono',monospace; font-size:.7rem; font-weight:500; letter-spacing:.5px; }
-  .badge-verde { background:rgba(0,212,106,.15); color:var(--green); }
-  .badge-amarelo { background:rgba(255,214,0,.15); color:var(--yellow); }
-  .badge-vermelho { background:rgba(225,6,0,.15); color:var(--red2); }
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:24px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--blue);padding:16px 20px}
+.kpi-label{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gray2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.kpi-valor{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.6rem;color:var(--white);line-height:1}
+.kpi-valor.azul{color:var(--blue)}
+.kpi-valor.verde{color:var(--green)}
+.kpi-valor.amarelo{color:var(--yellow)}
+.kpi-sub{font-size:.75rem;color:var(--gray2);margin-top:4px}
 
-  /* ── SEMÁFORO ── */
-  .semaforo-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; margin:24px 0; }
-  .semaforo-card { background:var(--bg2); border:1px solid var(--border); padding:20px; }
-  .semaforo-nome { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:1rem; letter-spacing:1px; text-transform:uppercase; margin-bottom:12px; }
-  .semaforo-barra-wrap { background:var(--bg3); border-radius:2px; height:12px; overflow:hidden; margin-bottom:8px; }
-  .semaforo-barra { height:100%; border-radius:2px; transition:width .8s ease; }
-  .semaforo-info { display:flex; justify-content:space-between; font-family:'DM Mono',monospace; font-size:.75rem; }
+/* SEÇÃO TÍTULO */
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin:24px 0 16px;display:flex;align-items:center;gap:12px}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
 
-  /* ── IA RESUMO ── */
-  .ia-box { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--red); padding:20px; margin:24px 0; }
-  .ia-header { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
-  .ia-dot { width:8px; height:8px; background:var(--red); border-radius:50%; animation:pulse 1.5s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
-  .ia-titulo { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:.85rem; letter-spacing:2px; text-transform:uppercase; color:var(--gray2); }
-  .ia-texto { color:var(--gray); font-size:.88rem; line-height:1.6; }
+/* PUBLICAÇÕES */
+.pub-item{background:var(--bg2);border:1px solid var(--border);padding:14px 16px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;transition:background .2s;text-decoration:none}
+.pub-item:hover{background:var(--bg3)}
+.pub-tipo{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.pub-corpo{flex:1}
+.pub-titulo{color:var(--white);font-size:.88rem;font-weight:500;line-height:1.4;margin-bottom:4px}
+.pub-data{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gray2)}
+.pub-go{color:var(--blue);font-size:.8rem;flex-shrink:0;align-self:center}
 
-  /* ── PAGINAÇÃO ── */
-  .paginacao { display:flex; gap:6px; margin-top:16px; flex-wrap:wrap; }
-  .pag-btn { background:var(--bg3); border:1px solid var(--border); color:var(--gray); font-family:'DM Mono',monospace; font-size:.75rem; padding:6px 12px; cursor:pointer; transition:all .2s; }
-  .pag-btn:hover { border-color:var(--gray2); color:var(--white); }
-  .pag-btn.ativo { background:var(--red); border-color:var(--red); color:var(--white); }
+/* FREQUÊNCIA */
+.freq-table-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:2px;overflow:hidden;margin-bottom:16px}
+.freq-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.freq-titulo{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:1px;text-transform:uppercase}
+.freq-link{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--blue);text-decoration:none;border:1px solid rgba(77,166,255,.3);padding:4px 10px;transition:all .2s}
+.freq-link:hover{background:rgba(77,166,255,.1)}
+.freq-row{display:grid;grid-template-columns:1fr auto auto;gap:12px;padding:12px 20px;border-bottom:1px solid var(--border);align-items:center}
+.freq-row:last-child{border-bottom:none}
+.freq-row:hover{background:var(--bg3)}
+.freq-nome{font-size:.88rem;color:var(--white);font-weight:500}
+.freq-partido{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gray2)}
+.freq-barra-wrap{display:flex;align-items:center;gap:10px}
+.freq-barra{height:6px;border-radius:2px;background:var(--bg4);width:100px;overflow:hidden}
+.freq-fill{height:100%;background:var(--green);border-radius:2px;transition:width .6s ease}
+.freq-pct{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--green);min-width:36px;text-align:right}
 
-  /* ── LOADING ── */
-  .loading { display:flex; align-items:center; gap:12px; padding:32px; color:var(--gray2); font-family:'DM Mono',monospace; font-size:.8rem; }
-  .spin { width:20px; height:20px; border:2px solid var(--border); border-top-color:var(--red); border-radius:50%; animation:spin .8s linear infinite; }
-  @keyframes spin { to{transform:rotate(360deg)} }
-  .vazio { padding:48px; text-align:center; color:var(--gray2); font-family:'DM Mono',monospace; font-size:.8rem; }
+/* LOADING / VAZIO */
+.loading{display:flex;align-items:center;gap:12px;padding:32px;color:var(--gray2);font-family:'DM Mono',monospace;font-size:.8rem}
+.spin{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.vazio{padding:48px;text-align:center;color:var(--gray2);font-family:'DM Mono',monospace;font-size:.8rem}
 
-  /* ── RODAPÉ ── */
-  footer { border-top:1px solid var(--border); margin-top:48px; padding:24px; text-align:center; color:var(--gray2); font-size:.8rem; }
-  footer a { color:var(--gray2); }
+/* INFO BOX */
+.info-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--blue);padding:16px 20px;margin-bottom:20px;font-size:.85rem;color:var(--gray);line-height:1.6}
+.info-box a{color:var(--blue)}
+.info-box strong{color:var(--white)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);margin-top:48px;padding:24px;text-align:center;color:var(--gray2);font-size:.8rem}
+footer a{color:var(--gray2)}
 /* NAV PADRÃO */
 .ticker{background:var(--red);overflow:hidden;height:32px;display:flex;align-items:center}
 .ticker-label{background:var(--bg);color:var(--red);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:2px;padding:0 16px;white-space:nowrap;height:100%;display:flex;align-items:center;flex-shrink:0}
@@ -222,119 +245,207 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:40px 24px
   <div class="breadcrumb">
     <a href="index.html">Home</a>
     <span class="sep">›</span>
-    <span>Bloco A — Prefeitura Municipal</span>
+    <span>Bloco B — Câmara dos Vereadores</span>
   </div>
-  <h1 class="page-title">BLOCO A — <span>PREFEITURA</span></h1>
-  <p class="page-sub">Receitas, despesas, licitações e execução orçamentária de Senador Guiomard · Fonte: Siconfi/STN · IBGE: 1200450</p>
-</div>
-
-<!-- SELETOR DE ANO -->
-<div class="ano-bar">
-  <span class="ano-label">Exercício:</span>
-  <div class="ano-btns" id="anoBtns">
-    <button class="ano-btn" onclick="trocarAno(2020)">2020</button>
-    <button class="ano-btn" onclick="trocarAno(2021)">2021</button>
-    <button class="ano-btn" onclick="trocarAno(2022)">2022</button>
-    <button class="ano-btn" onclick="trocarAno(2023)">2023</button>
-    <button class="ano-btn ativo" onclick="trocarAno(2024)">2024</button>
-    <button class="ano-btn" onclick="trocarAno(2025)">2025</button>
+  <h1 class="page-title">BLOCO B — <span>CÂMARA</span></h1>
+  <p class="page-sub">9ª Legislatura · Quadriênio 2025–2028 · Senador Guiomard, Acre</p>
+  <div class="page-meta">
+    <span class="meta-item">🌐 <a href="https://www.senadorguiomard.ac.leg.br" target="_blank">senadorguiomard.ac.leg.br</a></span>
+    <span class="meta-item">📞 (68) 3232-2256</span>
+    <span class="meta-item">📧 <a href="/cdn-cgi/l/email-protection#1e7d7f737f6c7f306d796b7771737f6c7a5e79737f7772307d7173"><span class="__cf_email__" data-cfemail="b2d1d3dfd3c0d39cc1d5c7dbdddfd3c0d6f2d5dfd3dbde9cd1dddf">[email&#160;protected]</span></a></span>
+    <span class="meta-item">🎥 <a href="https://www.youtube.com/@camarasenadorguiomard8100" target="_blank">YouTube ao vivo</a></span>
   </div>
 </div>
 
 <!-- ABAS -->
 <div class="abas-wrap">
   <div class="abas">
-    <button class="aba-btn ativa" onclick="trocarAba('receitas')">Receitas</button>
-    <button class="aba-btn" onclick="trocarAba('despesas')">Despesas</button>
+    <button class="aba-btn ativa" onclick="trocarAba('vereadores')">Vereadores</button>
+    <button class="aba-btn" onclick="trocarAba('frequencia')">Frequência</button>
+    <button class="aba-btn" onclick="trocarAba('publicacoes')">Publicações</button>
     <button class="aba-btn" onclick="trocarAba('licitacoes')">Licitações</button>
-    <button class="aba-btn" onclick="trocarAba('fornecedores')">Fornecedores</button>
-    <button class="aba-btn" onclick="trocarAba('orcamento')">Orçamento</button>
-    <button class="aba-btn" onclick="trocarAba('indicadores')">Indicadores LRF</button>
+    <button class="aba-btn" onclick="trocarAba('contato')">Contato</button>
   </div>
 </div>
 
-<!-- ABA: RECEITAS -->
-<div class="aba-content ativa" id="aba-receitas">
-  <div class="kpis" id="kpis-receitas">
-    <div class="loading"><div class="spin"></div> Carregando receitas...</div>
+<!-- ABA: VEREADORES -->
+<div class="aba-content ativa" id="aba-vereadores">
+
+  <!-- Mesa Diretora -->
+  <div class="mesa-banner">
+    <div>
+      <div class="mesa-title">Mesa Diretora 2025–2026</div>
+      <div class="mesa-membros" id="mesa-membros">
+        <div class="mesa-membro"><div class="mesa-membro-cargo">Presidente</div><div class="mesa-membro-nome">Elvys Lenon Nascimento Araújo</div><div class="mesa-membro-partido">PP</div></div>
+        <div class="mesa-membro"><div class="mesa-membro-cargo">Vice-Presidente</div><div class="mesa-membro-nome">Tammy Rodrigues de Paula Lima</div><div class="mesa-membro-partido">PP</div></div>
+        <div class="mesa-membro"><div class="mesa-membro-cargo">1º Secretário</div><div class="mesa-membro-nome">Paulo Cesar Miranda Gomes</div><div class="mesa-membro-partido">União Brasil</div></div>
+        <div class="mesa-membro"><div class="mesa-membro-cargo">2º Secretário</div><div class="mesa-membro-nome">João Rafael Tavares da Cruz Maia</div><div class="mesa-membro-partido">União Brasil</div></div>
+      </div>
+    </div>
   </div>
-  <div class="grafico-titulo">Top 10 fontes de receita — valores arrecadados</div>
-  <div id="grafico-receitas"></div>
-  <div class="ia-box" id="ia-receitas" style="display:none">
-    <div class="ia-header"><div class="ia-dot"></div><span class="ia-titulo">Análise da IA</span></div>
-    <div class="ia-texto" id="ia-receitas-texto"></div>
+
+  <!-- KPIs -->
+  <div class="kpis" id="kpis-vereadores">
+    <div class="loading"><div class="spin"></div> Carregando...</div>
   </div>
-  <div class="tabela-wrap">
-    <input class="tabela-busca" type="text" placeholder="Buscar fonte de receita..." oninput="filtrarTabela('tabela-receitas', this.value)">
-    <table id="tabela-receitas">
-      <thead><tr><th>Fonte de Receita</th><th>Previsto</th><th>Arrecadado</th><th>%</th></tr></thead>
-      <tbody></tbody>
-    </table>
-    <div class="paginacao" id="pag-receitas"></div>
+
+  <!-- Grid de cards -->
+  <div class="sec-title">Todos os vereadores — 9ª Legislatura</div>
+  <div class="vereadores-grid" id="grid-vereadores">
+    <div class="loading"><div class="spin"></div> Carregando vereadores...</div>
   </div>
 </div>
 
-<!-- ABA: DESPESAS -->
-<div class="aba-content" id="aba-despesas">
-  <div class="kpis" id="kpis-despesas">
-    <div class="loading"><div class="spin"></div> Carregando despesas...</div>
+<!-- ABA: FREQUÊNCIA -->
+<div class="aba-content" id="aba-frequencia">
+  <div class="info-box">
+    A frequência parlamentar é publicada pela Câmara em planilhas abertas. Dados de 2025 e 2026 disponíveis diretamente no site oficial.
+    A partir de 2027, o portal integrará automaticamente os dados de presença.
   </div>
-  <div class="grafico-titulo">Despesas por função — valores empenhados</div>
-  <div id="grafico-despesas"></div>
-  <div class="tabela-wrap">
-    <input class="tabela-busca" type="text" placeholder="Buscar função..." oninput="filtrarTabela('tabela-despesas', this.value)">
-    <table id="tabela-despesas">
-      <thead><tr><th>Função</th><th>Dotação Inicial</th><th>Dotação Atualizada</th><th>Empenhado</th><th>Liquidado</th><th>Pago</th></tr></thead>
-      <tbody></tbody>
-    </table>
-    <div class="paginacao" id="pag-despesas"></div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-label">Sessões em 2025</div><div class="kpi-valor azul">—</div><div class="kpi-sub">Verificar planilha oficial</div></div>
+    <div class="kpi"><div class="kpi-label">Sessões em 2026</div><div class="kpi-valor azul">2</div><div class="kpi-sub">Registradas até março/2026</div></div>
+    <div class="kpi"><div class="kpi-label">Frequência publicada</div><div class="kpi-valor verde">Sim</div><div class="kpi-sub">Dados abertos (CSV)</div></div>
+  </div>
+
+  <div class="sec-title">Frequência oficial — fontes diretas</div>
+
+  <div class="freq-table-wrap">
+    <div class="freq-header">
+      <span class="freq-titulo">Lista de Frequência 2026</span>
+      <a class="freq-link" href="https://docs.google.com/spreadsheets/d/17yV6lYMlycmheq1CADwjdZAEmFX5WqbBGx72f6CgFdQ/edit" target="_blank">Abrir planilha →</a>
+    </div>
+    <div id="freq-vereadores-2026">
+      <div class="loading"><div class="spin"></div> Carregando lista de vereadores...</div>
+    </div>
+  </div>
+
+  <div class="freq-table-wrap">
+    <div class="freq-header">
+      <span class="freq-titulo">Lista de Frequência 2025</span>
+      <a class="freq-link" href="https://docs.google.com/spreadsheets/d/1O4jCj924S_ZHxmW-YeMKB9tHffDAm8ciqAjwu8PG5dY/edit" target="_blank">Abrir planilha →</a>
+    </div>
+    <div style="padding:16px 20px;font-family:'DM Mono',monospace;font-size:.78rem;color:var(--gray2)">
+      Clique em "Abrir planilha" para ver a frequência completa de 2025 com dados oficiais da Câmara.
+    </div>
   </div>
 </div>
 
-<!-- ABA: LICITAÇÕES -->
+<!-- ABA: PUBLICAÇÕES -->
+<div class="aba-content" id="aba-publicacoes">
+  <div class="info-box">
+    Publicações oficiais extraídas diretamente do portal da Câmara Municipal de Senador Guiomard.
+    Fonte: <a href="https://www.senadorguiomard.ac.leg.br/bdpublicacoes" target="_blank">senadorguiomard.ac.leg.br</a>
+  </div>
+
+  <div class="kpis" id="kpis-pubs">
+    <div class="kpi"><div class="kpi-label">Indicações (2026)</div><div class="kpi-valor azul" id="count-indicacoes">—</div></div>
+    <div class="kpi"><div class="kpi-label">Licitações (2026)</div><div class="kpi-valor azul" id="count-lics">—</div></div>
+    <div class="kpi"><div class="kpi-label">Sessões (2026)</div><div class="kpi-valor azul" id="count-sessoes">—</div></div>
+    <div class="kpi"><div class="kpi-label">Última publicação</div><div class="kpi-valor azul" style="font-size:1rem" id="ultima-pub">18/03/2026</div></div>
+  </div>
+
+  <div class="sec-title">Publicações recentes</div>
+  <div id="lista-publicacoes">
+    <div class="loading"><div class="spin"></div> Carregando publicações...</div>
+  </div>
+
+  <div style="text-align:center;margin-top:16px">
+    <a href="https://www.senadorguiomard.ac.leg.br/bdpublicacoes" target="_blank"
+       style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:1px;text-transform:uppercase;color:var(--blue);border:1px solid rgba(77,166,255,.3);padding:10px 24px;display:inline-block;text-decoration:none;transition:all .2s">
+      Ver todas as publicações no site da Câmara →
+    </a>
+  </div>
+</div>
+
+<!-- ABA: LICITAÇÕES CÂMARA -->
 <div class="aba-content" id="aba-licitacoes">
-  <div id="kpis-licitacoes" class="kpis"></div>
-  <div class="tabela-wrap">
-    <input class="tabela-busca" type="text" placeholder="Buscar licitação..." oninput="filtrarTabela('tabela-licitacoes', this.value)">
-    <table id="tabela-licitacoes">
-      <thead><tr><th>Número</th><th>Modalidade</th><th>Objeto</th><th>Valor Estimado</th><th>Situação</th></tr></thead>
-      <tbody></tbody>
-    </table>
-    <div class="paginacao" id="pag-licitacoes"></div>
+  <div class="info-box">
+    Licitações e contratos da <strong>Câmara Municipal</strong> (CNPJ 04.088.175/0001-53).
+    Dados publicados no portal da transparência da Câmara e no TCE-AC (LICON).
+  </div>
+
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">
+    <a href="https://transparencia.betha.cloud/#/KIdrSULcQvxa4QpYXfRIHQ==" target="_blank"
+       style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:1px;text-transform:uppercase;background:var(--blue);color:var(--bg);padding:10px 20px;text-decoration:none;display:inline-flex;align-items:center;gap:8px">
+      Portal da Transparência da Câmara →
+    </a>
+    <a href="https://externo.tceac.tc.br/portaldaslicitacoes/licitacoes_entidade/licitacoes_entidade.php?ID_ENTIDADE=155&COR_GRID=135" target="_blank"
+       style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:1px;text-transform:uppercase;background:var(--bg2);color:var(--blue);border:1px solid rgba(77,166,255,.3);padding:10px 20px;text-decoration:none;display:inline-flex;align-items:center;gap:8px">
+      LICON / TCE-AC →
+    </a>
+  </div>
+
+  <div class="sec-title">Licitações recentes publicadas</div>
+  <div id="lista-licitacoes-camara">
+    <div class="loading"><div class="spin"></div> Carregando...</div>
   </div>
 </div>
 
-<!-- ABA: FORNECEDORES -->
-<div class="aba-content" id="aba-fornecedores">
-  <div id="kpis-fornecedores" class="kpis"></div>
-  <div class="tabela-wrap">
-    <input class="tabela-busca" type="text" placeholder="Buscar fornecedor..." oninput="filtrarTabela('tabela-fornecedores', this.value)">
-    <table id="tabela-fornecedores">
-      <thead><tr><th>Fornecedor</th><th>CNPJ/CPF</th><th>Objeto</th><th>Valor Total</th><th>Vigência</th></tr></thead>
-      <tbody></tbody>
-    </table>
-    <div class="paginacao" id="pag-fornecedores"></div>
+<!-- ABA: CONTATO -->
+<div class="aba-content" id="aba-contato">
+  <div class="kpis">
+    <div class="kpi" style="border-left-color:var(--blue)">
+      <div class="kpi-label">Endereço</div>
+      <div style="font-size:.9rem;color:var(--white);margin-top:6px;line-height:1.6">Rua Três de Maio, nº 1637<br>CEP 69970-000<br>Senador Guiomard — AC</div>
+    </div>
+    <div class="kpi" style="border-left-color:var(--blue)">
+      <div class="kpi-label">Telefone</div>
+      <div class="kpi-valor azul">(68) 3232-2256</div>
+      <div class="kpi-sub">Seg a Sex — 8h às 17h</div>
+    </div>
+    <div class="kpi" style="border-left-color:var(--blue)">
+      <div class="kpi-label">E-mail</div>
+      <div style="font-size:.9rem;color:var(--blue);margin-top:6px"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7615171b170417580511031f191b17041236111b171f1a5815191b">[email&#160;protected]</a></div>
+      <div class="kpi-sub">Resposta em até 48h</div>
+    </div>
+    <div class="kpi" style="border-left-color:var(--blue)">
+      <div class="kpi-label">Sessões</div>
+      <div class="kpi-valor azul">Terça</div>
+      <div class="kpi-sub">Toda semana às 19h</div>
+    </div>
   </div>
-</div>
 
-<!-- ABA: ORÇAMENTO -->
-<div class="aba-content" id="aba-orcamento">
-  <p style="color:var(--gray);padding:24px 0;font-size:.9rem;">Dados do RREO bimestral — disponíveis após coleta completa.</p>
-  <div class="semaforo-grid" id="semaforo"></div>
-</div>
-
-<!-- ABA: INDICADORES LRF -->
-<div class="aba-content" id="aba-indicadores">
-  <div id="kpis-indicadores" class="kpis">
-    <div class="loading"><div class="spin"></div> Carregando indicadores...</div>
+  <div class="sec-title">Links oficiais</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px">
+    <a href="https://www.senadorguiomard.ac.leg.br" target="_blank" class="pub-item">
+      <div class="pub-tipo badge-blue">Site</div>
+      <div class="pub-corpo"><div class="pub-titulo">Site oficial da Câmara Municipal</div></div>
+      <div class="pub-go">→</div>
+    </a>
+    <a href="https://transparencia.betha.cloud/#/KIdrSULcQvxa4QpYXfRIHQ==" target="_blank" class="pub-item">
+      <div class="pub-tipo badge-green">Transparência</div>
+      <div class="pub-corpo"><div class="pub-titulo">Portal da Transparência da Câmara</div></div>
+      <div class="pub-go">→</div>
+    </a>
+    <a href="https://www.youtube.com/@camarasenadorguiomard8100" target="_blank" class="pub-item">
+      <div class="pub-tipo badge-yellow">YouTube</div>
+      <div class="pub-corpo"><div class="pub-titulo">Sessões ao vivo e gravadas</div></div>
+      <div class="pub-go">→</div>
+    </a>
+    <a href="https://www.instagram.com/camaramunicipal_sg/" target="_blank" class="pub-item">
+      <div class="pub-tipo badge-gray">Instagram</div>
+      <div class="pub-corpo"><div class="pub-titulo">@camaramunicipal_sg</div></div>
+      <div class="pub-go">→</div>
+    </a>
+    <a href="https://www.senadorguiomard.ac.leg.br/paginas/ouvidoria" target="_blank" class="pub-item">
+      <div class="pub-tipo badge-blue">SIC</div>
+      <div class="pub-corpo"><div class="pub-titulo">Ouvidoria e SIC — Serviço de Informação ao Cidadão</div></div>
+      <div class="pub-go">→</div>
+    </a>
+    <a href="https://www.senadorguiomard.ac.leg.br/paginas/assista-as-sess%C3%B5es" target="_blank" class="pub-item">
+      <div class="pub-tipo badge-green">Ao vivo</div>
+      <div class="pub-corpo"><div class="pub-titulo">Assista às sessões ao vivo</div></div>
+      <div class="pub-go">→</div>
+    </a>
   </div>
-  <div class="semaforo-grid" id="semaforo-indicadores"></div>
 </div>
 
 <footer>
   <p>Quinari em Foco · Portal independente · Senador Guiomard, Acre · 2026</p>
-  <p style="margin-top:6px">Dados públicos via Siconfi/STN · Este portal não é oficial da Prefeitura ou Câmara Municipal</p>
-  <p style="margin-top:6px"><a href="/cdn-cgi/l/email-protection#5223273b3c33203b7c3d27243b363d203b3312353f333b3e7c313d3f"><span class="__cf_email__" data-cfemail="e8999d8186899a81c6879d9e818c879a8189a88f85898184c68b8785">[email&#160;protected]</span></a></p>
+  <p style="margin-top:6px">Dados: Câmara Municipal de Senador Guiomard · senadorguiomard.ac.leg.br</p>
+  <p style="margin-top:6px"><a href="/cdn-cgi/l/email-protection#7f0e0a16111e0d1651100a09161b100d161e3f18121e1613511c1012"><span class="__cf_email__" data-cfemail="becfcbd7d0dfccd790d1cbc8d7dad1ccd7dffed9d3dfd7d290ddd1d3">[email&#160;protected]</span></a></p>
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js">
@@ -348,259 +459,179 @@ document.getElementById('hamburger').addEventListener('click',()=>
   const id=map[p]; if(id) document.getElementById(id)?.classList.add('ativo');
 })();
 </script><script>
-const API = '/api/dados';
-let anoAtual = 2024;
-let abaAtual = 'receitas';
-const dadosCache = {};
-const paginaAtual = {};
+const SUPA = '/api/dados';
 
-// ── Utilitários ────────────────────────────────────────────────────────────────
-const fmt = v => v == null ? '—' : 'R$ ' + Number(v).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
-const fmtN = v => v == null ? '—' : Number(v).toLocaleString('pt-BR');
-const pct = (a,b) => b > 0 ? ((a/b)*100).toFixed(1)+'%' : '—';
-const corPct = p => p >= 90 ? 'verde' : p >= 60 ? 'amarelo' : 'vermelho';
+// ── Dados dos vereadores (hardcoded da fonte oficial — site da Câmara) ─────────
+// Fonte: senadorguiomard.ac.leg.br/vereadores (acessado em 18/03/2026)
+// Fotos: URLs públicas do site oficial da Câmara Municipal de Senador Guiomard
+// Fonte: senadorguiomard.ac.leg.br/vereadores (acessado 18/03/2026)
+const VEREADORES = [
+  { nome:'Elvys Lenon Nascimento Araújo', apelido:'Lenon', partido:'PP', votos:467, cargo:'Presidente', situacao:'Eleito',
+    foto:'https://static.wixstatic.com/media/0204e8_4712722bb0aa48b8bce493a83acf883f~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'Tammy Rodrigues de Paula Lima', apelido:'Tammy', partido:'PP', votos:1041, cargo:'Vice-Presidente', situacao:'Eleita',
+    foto:'https://static.wixstatic.com/media/0204e8_b21e72c0a28144b7a55c7ab898c248e3~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'Paulo Cesar Miranda Gomes', apelido:'Paulinho', partido:'União Brasil', votos:404, cargo:'1º Secretário', situacao:'Eleito',
+    foto:'https://static.wixstatic.com/media/0204e8_f484b55a003148ac89118f71f49a1c30~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'João Rafael Tavares da Cruz Maia', apelido:'Rafael Maia', partido:'União Brasil', votos:420, cargo:'2º Secretário', situacao:'Eleito',
+    foto:'https://static.wixstatic.com/media/0204e8_74da3a9cdc964f78bedb43ee3f063ac5~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'Williene Magda Novais Jardim', apelido:'Williene', partido:'PL', votos:479, cargo:'Vereadora', situacao:'Eleita',
+    foto:'https://static.wixstatic.com/media/0204e8_e845a469f85c4f8abdf644475e40f15a~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'Rozildo de Souza Lima', apelido:'Rozildo', partido:'Solidariedade', votos:475, cargo:'Vereador', situacao:'Eleito',
+    foto:'https://static.wixstatic.com/media/0204e8_184ef41cadee475e8cc08dd6d4b9c4a7~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'Telma Regina Cunha de Queiroz Silva', apelido:'Telma Queiroz', partido:'PP', votos:632, cargo:'Vereadora', situacao:'Eleita',
+    foto:'https://static.wixstatic.com/media/0204e8_dfd25c96531948eea2c0039db6170095~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'Leyryana Conceição de Oliveira', apelido:'Leiri do Mixico', partido:'Republicanos', votos:529, cargo:'Vereadora', situacao:'Eleita',
+    foto:'https://static.wixstatic.com/media/0204e8_9a6aca19a7544251b6e18a741ce98654~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'Eder Paulino Silva Bandeira', apelido:'Eder Paulino', partido:'Republicanos', votos:335, cargo:'Vereador', situacao:'Eleito',
+    foto:'https://static.wixstatic.com/media/0204e8_0dfe3aed6d0c4f5d921b150dd9584d6f~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'Sandro Cunha e Souza', apelido:'Sandrão', partido:'PP', votos:733, cargo:'Vereador', situacao:'Eleito',
+    foto:'https://static.wixstatic.com/media/0204e8_4381340e750b49ab9dfaf77b3eabf1e5~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+  { nome:'Ivanete Figueiredo de Souza', apelido:'Ivanete', partido:'PSD', votos:629, cargo:'Vereadora', situacao:'Eleita',
+    foto:'https://static.wixstatic.com/media/0204e8_13b0c7229f66445b84b559f3e52ddd43~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg' },
+];
 
-async function buscarDados(tabela, ano, limite=500) {
-  const chave = `${tabela}_${ano}`;
-  if (dadosCache[chave]) return dadosCache[chave];
-  try {
-    const r = await fetch(`${API}?tabela=${tabela}&ano=${ano}&limite=${limite}`);
-    if (!r.ok) return [];
-    const d = await r.json();
-    dadosCache[chave] = Array.isArray(d) ? d : (d.dados || []);
-    return dadosCache[chave];
-  } catch(e) { return []; }
+// Publicações reais capturadas do site da Câmara em 18/03/2026
+const PUBLICACOES = [
+  { tipo:'Legislação', subtipo:'Termo de Cooperação', titulo:'Termo de Cooperação Técnica N°002/2026 — Disponibilização de Advogado', data:'18/03/2026', url:'https://www.senadorguiomard.ac.leg.br/publicacoes-transparencia/termo-de-coopera%C3%A7%C3%A3o-t%C3%A9cnica-n%C2%B0002%2F2026---disponibiliza%C3%A7%C3%A3o-de-advogado' },
+  { tipo:'Legislação', subtipo:'Termo de Cooperação', titulo:'Termo de Cooperação Técnica N°001/2026 — Disponibilização de Engenharia', data:'18/03/2026', url:'https://www.senadorguiomard.ac.leg.br/publicacoes-transparencia/termo-de-coopera%C3%A7%C3%A3o-t%C3%A9cnica-n-001-2026-disponibiliza%C3%A7%C3%A3o-de-profissionais-da-engenharia' },
+  { tipo:'Licitações', subtipo:'Dispensa', titulo:'DL/2026 — Assistência, manutenção e configuração de aparelhos de informática', data:'12/03/2026', url:'https://www.senadorguiomard.ac.leg.br/publicacoes-transparencia/dl%2F2026---assist%C3%AAncia%2C-manuten%C3%A7%C3%A3o%2C-configura%C3%A7%C3%A3o-em-aparelhos-de-inform%C3%A1tica' },
+  { tipo:'Licitações', subtipo:'Dispensa', titulo:'DL/2026 — Prestação de Serviços Técnicos de Contador', data:'12/03/2026', url:'https://www.senadorguiomard.ac.leg.br/publicacoes-transparencia/dl-2026---presta%C3%A7%C3%A3o-de-servi%C3%A7os-t%C3%A9cnicos-profissionaide-contabilidade-atrav%C3%A9s-de-profissional' },
+  { tipo:'Legislação', subtipo:'Sessão ordinária', titulo:'2ª Sessão Ordinária — 03/03/2026', data:'11/03/2026', url:'https://www.senadorguiomard.ac.leg.br/publicacoes-transparencia/2%C2%B0-sess%C3%A3o-ordin%C3%A1ria---03%2F03%2F2026' },
+  { tipo:'Licitações', subtipo:'Dispensa', titulo:'DL Nº009/2026 — Instalação e manutenção de extintores e sinalização', data:'11/03/2026', url:'https://www.senadorguiomard.ac.leg.br/publicacoes-transparencia/dl-n-009-2026-instala%C3%A7%C3%A3o-manuten%C3%A7%C3%A3o-e-recarga-de-extintores-placa-de-sinaliza%C3%A7%C3%A3o' },
+  { tipo:'Legislação', subtipo:'Indicação', titulo:'Indicação N°047/2026 — Roçagem às margens da BR-317, km 52, Vila Pia', data:'10/03/2026', url:'https://www.senadorguiomard.ac.leg.br/publicacoes-transparencia/indica%C3%A7%C3%A3o-n047-2026' },
+  { tipo:'Legislação', subtipo:'Indicação', titulo:'Indicação N°063/2026 — Incentivo ao empreendedorismo feminino', data:'10/03/2026', url:'https://www.senadorguiomard.ac.leg.br/publicacoes-transparencia/indica%C3%A7%C3%A3o-n063-2026' },
+  { tipo:'Legislação', subtipo:'Indicação', titulo:'Indicação N°062/2026 — Placas "Proibido jogar lixo" no Km 70 da BR-317', data:'10/03/2026', url:'https://www.senadorguiomard.ac.leg.br/publicacoes-transparencia/indica%C3%A7%C3%A3o-n062-2026' },
+  { tipo:'Legislação', subtipo:'Indicação', titulo:'Indicação N°042/2026 — Canos expostos no trecho estreito do Ramal Limeira', data:'10/03/2026', url:'https://www.senadorguiomard.ac.leg.br/publicacoes-transparencia/indica%C3%A7%C3%A3o-n%C2%B0042%2F2026---paliativo-para-corre%C3%A7%C3%A3o-da-situa%C3%A7%C3%A3o-dos-canos-expostos-no-trecho-de-tr%C3%A1fego-estreito-do-ramal-limeira' },
+  { tipo:'Licitações', subtipo:'Extrato', titulo:'Extrato de Contrato Nº007/2026 — JOSÉ GLEISON MARTINS DE LIMA', data:'10/03/2026', url:'https://www.senadorguiomard.ac.leg.br/publicacoes-transparencia/extrato-de-contrato-n%C2%BA007%2F2026---jos%C3%A9-gleison-martins-de-lima' },
+  { tipo:'Legislação', subtipo:'Indicação', titulo:'Indicação N°029/2026 — Pavimentação das ruas do Bairro Democracia', data:'10/03/2026', url:'https://www.senadorguiomard.ac.leg.br/publicacoes-transparencia/indica%C3%A7%C3%A3o-n029-2026' },
+];
+
+// ── Cores por partido ──────────────────────────────────────────────────────────
+const corPartido = { PP:'#4da6ff', PL:'#ff6b6b', PSD:'#ffd600', 'União Brasil':'#22d3ee', Solidariedade:'#00d46a', Republicanos:'#a78bfa', MDB:'#f472b6' };
+
+function getCorPartido(p) { return corPartido[p] || '#6b6b80'; }
+
+function cargoClass(c) {
+  if (c.includes('Presidente') && !c.includes('Vice')) return 'cargo-presidente';
+  if (c.includes('Vice')) return 'cargo-vice';
+  if (c.includes('Secretário') || c.includes('Secretária')) return 'cargo-secretario';
+  return 'cargo-vereador';
 }
 
-// ── Trocar ano ────────────────────────────────────────────────────────────────
-function trocarAno(ano) {
-  anoAtual = ano;
-  document.querySelectorAll('.ano-btn').forEach(b => {
-    b.classList.toggle('ativo', parseInt(b.textContent) === ano);
-  });
-  carregarAba(abaAtual);
+function cargoCardClass(c) {
+  if (c.includes('Presidente') && !c.includes('Vice')) return 'presidente';
+  if (c.includes('Vice')) return 'vice';
+  return '';
 }
 
-// ── Trocar aba ────────────────────────────────────────────────────────────────
-function trocarAba(aba) {
-  abaAtual = aba;
-  document.querySelectorAll('.aba-btn').forEach((b,i) => {
-    const abas = ['receitas','despesas','licitacoes','fornecedores','orcamento','indicadores'];
-    b.classList.toggle('ativa', abas[i] === aba);
-  });
-  document.querySelectorAll('.aba-content').forEach(el => {
-    el.classList.toggle('ativa', el.id === `aba-${aba}`);
-  });
-  carregarAba(aba);
-}
+// ── Renderizar KPIs ────────────────────────────────────────────────────────────
+function renderKPIsVereadores() {
+  const partidos = [...new Set(VEREADORES.map(v => v.partido))];
+  const totalVotos = VEREADORES.reduce((s,v) => s + v.votos, 0);
+  const maisvotado = VEREADORES.reduce((a,b) => a.votos > b.votos ? a : b);
 
-async function carregarAba(aba) {
-  if (aba === 'receitas')    await carregarReceitas();
-  if (aba === 'despesas')    await carregarDespesas();
-  if (aba === 'licitacoes')  await carregarLicitacoes();
-  if (aba === 'fornecedores') await carregarFornecedores();
-  if (aba === 'indicadores') await carregarIndicadores();
-}
-
-// ── Gráfico de barras ─────────────────────────────────────────────────────────
-function renderGrafico(containerId, itens, campoNome, campoValor, cor='') {
-  const el = document.getElementById(containerId);
-  if (!el) return;
-  if (!itens || itens.length === 0) { el.innerHTML = '<div class="vazio">Sem dados disponíveis</div>'; return; }
-  const max = Math.max(...itens.map(i => i[campoValor] || 0));
-  el.innerHTML = itens.slice(0,10).map(item => {
-    const val = item[campoValor] || 0;
-    const w = max > 0 ? (val/max*100).toFixed(1) : 0;
-    return `<div class="barra-row">
-      <div class="barra-nome" title="${item[campoNome]}">${item[campoNome]}</div>
-      <div class="barra-track"><div class="barra-fill ${cor}" style="width:${w}%"></div></div>
-      <div class="barra-valor">${fmt(val)}</div>
-    </div>`;
-  }).join('');
-}
-
-// ── Tabela com paginação ───────────────────────────────────────────────────────
-function renderTabela(tabelaId, pagId, linhas, pagina=1) {
-  const tbody = document.querySelector(`#${tabelaId} tbody`);
-  const pagEl = document.getElementById(pagId);
-  if (!tbody) return;
-  if (!linhas || linhas.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--gray2);padding:32px">Sem dados para este ano</td></tr>';
-    if (pagEl) pagEl.innerHTML = '';
-    return;
-  }
-  const POR_PAG = 20;
-  const total = Math.ceil(linhas.length / POR_PAG);
-  const inicio = (pagina-1)*POR_PAG;
-  const fatia = linhas.slice(inicio, inicio+POR_PAG);
-  tbody.innerHTML = fatia.map(l => l._html).join('');
-  if (pagEl && total > 1) {
-    pagEl.innerHTML = Array.from({length:total},(_,i) =>
-      `<button class="pag-btn ${i+1===pagina?'ativo':''}" onclick="mudarPag('${tabelaId}','${pagId}',${i+1})">${i+1}</button>`
-    ).join('');
-  } else if (pagEl) { pagEl.innerHTML = ''; }
-}
-
-function mudarPag(tabelaId, pagId, pag) {
-  paginaAtual[tabelaId] = pag;
-  const chave = `linhas_${tabelaId}`;
-  if (window[chave]) renderTabela(tabelaId, pagId, window[chave], pag);
-}
-
-function filtrarTabela(tabelaId, busca) {
-  const chave = `linhas_${tabelaId}`;
-  const todas = window[`todas_${tabelaId}`] || [];
-  const b = busca.toLowerCase();
-  window[chave] = b ? todas.filter(l => l._texto.includes(b)) : todas;
-  paginaAtual[tabelaId] = 1;
-  const pagId = tabelaId.replace('tabela-','pag-');
-  renderTabela(tabelaId, pagId, window[chave], 1);
-}
-
-// ── RECEITAS ──────────────────────────────────────────────────────────────────
-async function carregarReceitas() {
-  const el = document.getElementById('kpis-receitas');
-  el.innerHTML = '<div class="loading"><div class="spin"></div> Carregando...</div>';
-  const dados = await buscarDados('receitas', anoAtual);
-
-  if (!dados.length) {
-    el.innerHTML = '<div class="vazio">Sem dados de receitas para este ano. Execute a coleta em /api/coletar?ano='+anoAtual+'</div>';
-    document.getElementById('grafico-receitas').innerHTML = '';
-    return;
-  }
-
-  const totalOrcado = dados.reduce((s,r) => s + (r.orcado||0), 0);
-  const totalArrecadado = dados.reduce((s,r) => s + (r.arrecadado||0), 0);
-  const pctExec = totalOrcado > 0 ? (totalArrecadado/totalOrcado*100).toFixed(1) : 0;
-
-  el.innerHTML = `
-    <div class="kpi"><div class="kpi-label">Total Previsto</div><div class="kpi-valor">${fmt(totalOrcado)}</div></div>
-    <div class="kpi"><div class="kpi-label">Total Arrecadado</div><div class="kpi-valor verde">${fmt(totalArrecadado)}</div></div>
-    <div class="kpi"><div class="kpi-label">Execução</div><div class="kpi-valor ${corPct(pctExec)}">${pctExec}%</div></div>
-    <div class="kpi"><div class="kpi-label">Fontes</div><div class="kpi-valor">${dados.length}</div><div class="kpi-sub">categorias</div></div>
+  document.getElementById('kpis-vereadores').innerHTML = `
+    <div class="kpi"><div class="kpi-label">Total de vereadores</div><div class="kpi-valor azul">11</div><div class="kpi-sub">9ª Legislatura 2025–2028</div></div>
+    <div class="kpi"><div class="kpi-label">Partidos representados</div><div class="kpi-valor azul">${partidos.length}</div><div class="kpi-sub">${partidos.join(' · ')}</div></div>
+    <div class="kpi"><div class="kpi-label">Mais votada(o)</div><div class="kpi-valor" style="font-size:1rem;color:var(--yellow)">${maisvotado.apelido}</div><div class="kpi-sub">${maisvotado.votos.toLocaleString('pt-BR')} votos · ${maisvotado.partido}</div></div>
+    <div class="kpi"><div class="kpi-label">Total de votos (eleitos)</div><div class="kpi-valor verde">${totalVotos.toLocaleString('pt-BR')}</div><div class="kpi-sub">Eleição outubro 2024</div></div>
   `;
-
-  const ordenados = [...dados].sort((a,b) => (b.arrecadado||0)-(a.arrecadado||0));
-  renderGrafico('grafico-receitas', ordenados, 'fonte', 'arrecadado', 'verde');
-
-  const linhas = ordenados.map(r => {
-    const p = r.orcado > 0 ? (r.arrecadado/r.orcado*100).toFixed(1) : 0;
-    return {
-      _html: `<tr><td>${r.fonte}</td><td>${fmt(r.orcado)}</td><td>${fmt(r.arrecadado)}</td><td><span class="badge badge-${corPct(p)}">${p}%</span></td></tr>`,
-      _texto: (r.fonte||'').toLowerCase()
-    };
-  });
-  window['todas_tabela-receitas'] = linhas;
-  window['linhas_tabela-receitas'] = linhas;
-  renderTabela('tabela-receitas','pag-receitas', linhas, 1);
 }
 
-// ── DESPESAS ──────────────────────────────────────────────────────────────────
-async function carregarDespesas() {
-  const el = document.getElementById('kpis-despesas');
-  el.innerHTML = '<div class="loading"><div class="spin"></div> Carregando...</div>';
-  const dados = await buscarDados('despesas', anoAtual);
-
-  if (!dados.length) {
-    el.innerHTML = '<div class="vazio">Sem dados de despesas para este ano.</div>';
-    document.getElementById('grafico-despesas').innerHTML = '';
-    return;
-  }
-
-  const totalDot = dados.reduce((s,r) => s + (r.dotacao_inicial||0), 0);
-  const totalEmp = dados.reduce((s,r) => s + (r.empenhado||0), 0);
-  const totalPago = dados.reduce((s,r) => s + (r.pago||0), 0);
-  const pctEmp = totalDot > 0 ? (totalEmp/totalDot*100).toFixed(1) : 0;
-
-  el.innerHTML = `
-    <div class="kpi"><div class="kpi-label">Dotação Inicial</div><div class="kpi-valor">${fmt(totalDot)}</div></div>
-    <div class="kpi"><div class="kpi-label">Total Empenhado</div><div class="kpi-valor amarelo">${fmt(totalEmp)}</div></div>
-    <div class="kpi"><div class="kpi-label">Total Pago</div><div class="kpi-valor verde">${fmt(totalPago)}</div></div>
-    <div class="kpi"><div class="kpi-label">Execução</div><div class="kpi-valor ${corPct(pctEmp)}">${pctEmp}%</div></div>
-  `;
-
-  const ordenados = [...dados].sort((a,b) => (b.empenhado||0)-(a.empenhado||0));
-  renderGrafico('grafico-despesas', ordenados, 'funcao', 'empenhado');
-
-  const linhas = ordenados.map(r => ({
-    _html: `<tr><td>${r.funcao}</td><td>${fmt(r.dotacao_inicial)}</td><td>${fmt(r.dotacao_atualizada)}</td><td>${fmt(r.empenhado)}</td><td>${fmt(r.liquidado)}</td><td>${fmt(r.pago)}</td></tr>`,
-    _texto: (r.funcao||'').toLowerCase()
-  }));
-  window['todas_tabela-despesas'] = linhas;
-  window['linhas_tabela-despesas'] = linhas;
-  renderTabela('tabela-despesas','pag-despesas', linhas, 1);
-}
-
-// ── LICITAÇÕES ────────────────────────────────────────────────────────────────
-async function carregarLicitacoes() {
-  const dados = await buscarDados('licitacoes', anoAtual);
-  const el = document.getElementById('kpis-licitacoes');
-  if (!dados.length) {
-    el.innerHTML = '<div class="vazio">Sem dados de licitações. Aguardando chave do Portal da Transparência com acesso a municípios.</div>';
-    return;
-  }
-  const totalVal = dados.reduce((s,r) => s + (r.valor_estimado||0), 0);
-  el.innerHTML = `
-    <div class="kpi"><div class="kpi-label">Total de Licitações</div><div class="kpi-valor">${dados.length}</div></div>
-    <div class="kpi"><div class="kpi-label">Valor Total Estimado</div><div class="kpi-valor">${fmt(totalVal)}</div></div>
-  `;
-  const linhas = dados.map(r => ({
-    _html: `<tr><td><code style="font-size:.75rem;color:var(--gray2)">${r.numero||'—'}</code></td><td>${r.modalidade||'—'}</td><td>${(r.objeto||'—').substring(0,80)}${r.objeto?.length>80?'...':''}</td><td>${fmt(r.valor_estimado)}</td><td><span class="badge badge-verde">${r.situacao||'—'}</span></td></tr>`,
-    _texto: [(r.numero||''),(r.objeto||''),(r.modalidade||'')].join(' ').toLowerCase()
-  }));
-  window['todas_tabela-licitacoes'] = linhas;
-  window['linhas_tabela-licitacoes'] = linhas;
-  renderTabela('tabela-licitacoes','pag-licitacoes', linhas, 1);
-}
-
-// ── FORNECEDORES ──────────────────────────────────────────────────────────────
-async function carregarFornecedores() {
-  const dados = await buscarDados('fornecedores', anoAtual);
-  const el = document.getElementById('kpis-fornecedores');
-  if (!dados.length) {
-    el.innerHTML = '<div class="vazio">Sem dados de fornecedores para este ano.</div>';
-    return;
-  }
-  const totalVal = dados.reduce((s,r) => s + (r.valor_total||0), 0);
-  el.innerHTML = `
-    <div class="kpi"><div class="kpi-label">Total de Contratos</div><div class="kpi-valor">${dados.length}</div></div>
-    <div class="kpi"><div class="kpi-label">Valor Total</div><div class="kpi-valor">${fmt(totalVal)}</div></div>
-  `;
-  const ordenados = [...dados].sort((a,b) => (b.valor_total||0)-(a.valor_total||0));
-  const linhas = ordenados.map(r => ({
-    _html: `<tr><td>${r.nome}</td><td><code style="font-size:.75rem;color:var(--gray2)">${r.cnpj_cpf||'—'}</code></td><td>${(r.objeto||'—').substring(0,60)}...</td><td>${fmt(r.valor_total)}</td><td style="font-size:.78rem;color:var(--gray2)">${r.data_inicio||'—'} / ${r.data_fim||'—'}</td></tr>`,
-    _texto: [(r.nome||''),(r.objeto||'')].join(' ').toLowerCase()
-  }));
-  window['todas_tabela-fornecedores'] = linhas;
-  window['linhas_tabela-fornecedores'] = linhas;
-  renderTabela('tabela-fornecedores','pag-fornecedores', linhas, 1);
-}
-
-// ── INDICADORES LRF ───────────────────────────────────────────────────────────
-async function carregarIndicadores() {
-  const dados = await buscarDados('indicadores', anoAtual);
-  const el = document.getElementById('kpis-indicadores');
-  const semEl = document.getElementById('semaforo-indicadores');
-  if (!dados.length) {
-    el.innerHTML = '<div class="vazio">Indicadores LRF não disponíveis para este ano. Os dados do RGF são publicados trimestralmente.</div>';
-    semEl.innerHTML = '';
-    return;
-  }
-  el.innerHTML = `<div class="kpi"><div class="kpi-label">Indicadores encontrados</div><div class="kpi-valor">${dados.length}</div></div>`;
-  semEl.innerHTML = dados.map(ind => {
-    const pct = ind.percentual_limite || 0;
-    const cor = pct > 95 ? '#e10600' : pct > 80 ? '#ffd600' : '#00d46a';
-    const w = Math.min(pct, 100);
-    return `<div class="semaforo-card">
-      <div class="semaforo-nome">${ind.nome}</div>
-      <div class="semaforo-barra-wrap"><div class="semaforo-barra" style="width:${w}%;background:${cor}"></div></div>
-      <div class="semaforo-info">
-        <span style="color:var(--gray)">${fmt(ind.valor)}</span>
-        <span style="color:${cor}">${pct}% do limite</span>
-        ${ind.limite ? `<span style="color:var(--gray2)">Limite: ${fmt(ind.limite)}</span>` : ''}
+// ── Renderizar grid de cards ───────────────────────────────────────────────────
+function renderGrid() {
+  const cor = getCorPartido;
+  document.getElementById('grid-vereadores').innerHTML = VEREADORES.map(v => {
+    const fotoClass = v.cargo.includes('Presidente') && !v.cargo.includes('Vice') ? 'presidente' : v.cargo.includes('Vice') ? 'vice' : '';
+    return `
+    <div class="card-vereador ${cargoCardClass(v.cargo)}" onclick="window.open('https://www.senadorguiomard.ac.leg.br/vereadores','_blank')">
+      <div class="card-foto-wrap">
+        <img class="card-foto ${fotoClass}" src="${v.foto}"
+          alt="${v.apelido}" loading="lazy"
+          onerror="this.outerHTML='<div class=\'card-foto\' style=\'display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:var(--gray2)\'>👤</div>'">
+      </div>
+      <div class="card-top">
+        <span class="card-cargo ${cargoClass(v.cargo)}">${v.cargo}</span>
+        <span class="card-partido" style="color:${cor(v.partido)}">${v.partido}</span>
+      </div>
+      <div class="card-nome">${v.apelido || v.nome}</div>
+      <div style="font-size:.78rem;color:var(--gray2);margin-top:2px">${v.nome}</div>
+      <div class="card-votos">Votos: <span>${v.votos.toLocaleString('pt-BR')}</span> · ${v.situacao}</div>
+      <div class="card-footer">
+        <div class="card-stats">
+          <div class="stat-mini">
+            <div class="stat-mini-n" style="color:${cor(v.partido)}">${v.partido}</div>
+            <div class="stat-mini-l">Partido</div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-n">${v.votos.toLocaleString('pt-BR')}</div>
+            <div class="stat-mini-l">Votos</div>
+          </div>
+        </div>
+        <a class="card-link" href="https://www.senadorguiomard.ac.leg.br/vereadores" target="_blank" onclick="event.stopPropagation()">Ver perfil →</a>
       </div>
     </div>`;
   }).join('');
 }
 
-// ── Inicialização ─────────────────────
+// ── Frequência (baseada nos vereadores do banco) ───────────────────────────────
+function renderFrequencia() {
+  const el = document.getElementById('freq-vereadores-2026');
+  el.innerHTML = VEREADORES.map(v => `
+    <div class="freq-row">
+      <div>
+        <div class="freq-nome">${v.nome}</div>
+        <div class="freq-partido">${v.partido} · ${v.cargo}</div>
+      </div>
+      <div class="freq-barra-wrap">
+        <div class="freq-barra"><div class="freq-fill" style="width:100%"></div></div>
+        <span class="freq-pct">—</span>
+      </div>
+      <a href="https://docs.google.com/spreadsheets/d/17yV6lYMlycmheq1CADwjdZAEmFX5WqbBGx72f6CgFdQ/edit" target="_blank" style="font-family:'DM Mono',monospace;font-size:.7rem;color:var(--blue);text-decoration:none">Ver →</a>
+    </div>
+  `).join('');
+}
+
+// ── Publicações ────────────────────────────────────────────────────────────────
+function renderPublicacoes() {
+  const corTipo = { 'Licitações':'badge-yellow', 'Legislação':'badge-blue', 'Contas Públicas':'badge-green' };
+
+  const indicacoes = PUBLICACOES.filter(p => p.subtipo === 'Indicação').length;
+  const lics = PUBLICACOES.filter(p => p.tipo === 'Licitações').length;
+  const sessoes = PUBLICACOES.filter(p => p.subtipo === 'Sessão ordinária').length;
+  document.getElementById('count-indicacoes').textContent = indicacoes + '+';
+  document.getElementById('count-lics').textContent = lics + '+';
+  document.getElementById('count-sessoes').textContent = sessoes;
+
+  document.getElementById('lista-publicacoes').innerHTML = PUBLICACOES.map(p => `
+    <a href="${p.url}" target="_blank" class="pub-item">
+      <span class="pub-tipo badge ${corTipo[p.tipo]||'badge-gray'}">${p.subtipo}</span>
+      <div class="pub-corpo">
+        <div class="pub-titulo">${p.titulo}</div>
+        <div class="pub-data">${p.data}</div>
+      </div>
+      <span class="pub-go">→</span>
+    </a>
+  `).join('');
+}
+
+// ── Licitações Câmara ──────────────────────────────────────────────────────────
+function renderLicitacoesCamara() {
+  const lics = PUBLICACOES.filter(p => p.tipo === 'Licitações');
+  document.getElementById('lista-licitacoes-camara').innerHTML = lics.map(p => `
+    <a href="${p.url}" target="_blank" class="pub-item">
+      <span class="pub-tipo badge badge-yellow">${p.subtipo}</span>
+      <div class="pub-corpo">
+        <div class="pub-titulo">${p.titulo}</div>
+        <div class="pub-data">${p.data}</div>
+      </div>
+      <span class="pub-go">→</span>
+    </a>
+  `).join('');
+}
+
+// ── Trocar aba ────────────────────────────────────────────────────────────────
+function trocarAba(aba) {
+  const abas = ['vereadores','frequencia','publicacoes','licitacoes','contato'];
+  document.querySelectorAll('.aba-btn').forEach((b,i) => b.classList.toggle('ativa', abas[i] === aba));
+  document.querySelectorAll('.aba-content').forEach(el => el.classList.toggle('ativa', el.id === `ab
