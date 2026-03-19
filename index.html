@@ -889,53 +889,29 @@ footer {
 </div><!-- /wrap -->
 
 <!-- ═══ PARCEIROS ═══ -->
-<section class="parceiros">
+<section class="parceiros" id="parceiros-section">
   <div class="parc-hdr">
     <div class="parc-title">Nossos Parceiros</div>
-    <a href="parceiros.html" class="parc-link" id="btn-patrocinar">Quero patrocinar →</a>
+    <a href="parceiros.html" class="parc-link" id="btn-apoiar">Quero apoiar →</a>
   </div>
   <div class="parc-grid" id="parc-grid">
-    <!-- carregado via JS abaixo -->
+    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
+    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
+    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
+    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
+    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
+    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
+    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
+    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
+    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
+    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
   </div>
   <p class="parc-note">
-    O Quinari em Foco é um projeto independente e sem fins lucrativos.
-    Patrocinadores apoiam os custos de manutenção do portal.<br>
-    O patrocínio <strong style="color:var(--off)">não influencia</strong>
-    o conteúdo publicado.
-    <a href="parceiros.html" style="color:var(--red)">Saiba mais →</a>
+    O Quinari em Foco é um projeto independente e sem fins lucrativos. Patrocinadores apoiam os custos de manutenção do portal.<br>
+    O patrocínio <strong style="color:var(--off)">não influencia</strong> o conteúdo publicado.
+    Contato: <a href="parceiros.html" style="color:var(--red)">quinari.ouvidoria@gmail.com</a>
   </p>
-  <!-- Barra admin (só visível quando logado) -->
-  <div id="admin-bar" style="display:none;margin-top:20px;padding:14px 18px;background:rgba(225,6,0,.1);border:1px solid rgba(225,6,0,.3)">
-    <span style="font-family:'DM Mono',monospace;font-size:.78rem;color:var(--red)">🔑 Modo administrador ativo</span>
-    <button onclick="abrirAdminModal()" style="margin-left:16px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:1px;text-transform:uppercase;background:var(--red);color:var(--white);border:none;padding:6px 16px;cursor:pointer">Gerenciar Patrocinadores</button>
-    <button onclick="fazerLogout()" style="margin-left:8px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:1px;text-transform:uppercase;background:transparent;color:var(--red);border:1px solid rgba(225,6,0,.4);padding:6px 14px;cursor:pointer">Sair</button>
-  </div>
 </section>
-
-<!-- ═══ MODAL LOGIN ADMIN ═══ -->
-<div id="modal-login" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:1001;align-items:center;justify-content:center">
-  <div style="background:#1e1e2a;border:1px solid rgba(255,255,255,.1);width:100%;max-width:400px;padding:32px;margin:20px;position:relative">
-    <button onclick="fecharLogin()" style="position:absolute;top:12px;right:16px;background:none;border:none;color:#909099;font-size:1.4rem;cursor:pointer">×</button>
-    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px;color:#e10600">🔑 Acesso Administrativo</div>
-    <input id="admin-email" type="email" placeholder="E-mail administrador"
-      style="width:100%;background:#26262f;border:1px solid #383842;color:#fff;font-family:'Barlow',sans-serif;font-size:.9rem;padding:10px 14px;margin-bottom:10px;outline:none;border-radius:2px">
-    <input id="admin-senha" type="password" placeholder="Senha"
-      style="width:100%;background:#26262f;border:1px solid #383842;color:#fff;font-family:'Barlow',sans-serif;font-size:.9rem;padding:10px 14px;margin-bottom:14px;outline:none;border-radius:2px"
-      onkeydown="if(event.key==='Enter')fazerLogin()">
-    <div id="login-erro" style="color:#ff1f1a;font-size:.82rem;margin-bottom:10px;display:none"></div>
-    <button onclick="fazerLogin()" style="width:100%;background:#e10600;border:none;color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:1px;text-transform:uppercase;padding:12px;cursor:pointer;border-radius:2px">Entrar →</button>
-    <button onclick="fecharLogin()" style="width:100%;margin-top:8px;background:transparent;border:1px solid #383842;color:#909099;font-family:'DM Mono',monospace;font-size:.78rem;padding:8px;cursor:pointer">Cancelar</button>
-  </div>
-</div>
-
-<!-- ═══ MODAL ADMIN PATROCINADORES ═══ -->
-<div id="modal-admin" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:1000;overflow-y:auto">
-  <div style="background:#1e1e2a;border:1px solid rgba(255,255,255,.1);max-width:760px;margin:32px auto;padding:32px;position:relative">
-    <button onclick="fecharAdminModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:#909099;font-size:1.5rem;cursor:pointer">×</button>
-    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.3rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:24px">Gerenciar Patrocinadores</div>
-    <div id="admin-lista"></div>
-  </div>
-</div>
 
 <!-- ═══ FOOTER ═══ -->
 <footer>
@@ -944,7 +920,7 @@ footer {
     <p class="f-sub">Portal independente de transparência municipal<br>Senador Guiomard, Acre · Atualizado diariamente por IA</p>
     <div style="margin-top:4px">
       <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--red);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">Ouvidoria</div>
-      <a href="/cdn-cgi/l/email-protection#2a5b5f43444b584304455f5c434e4558434b6a4d474b434604494547" class="f-email"><span class="f-email-icon">✉</span><span class="__cf_email__" data-cfemail="5524203c3b34273c7b3a20233c313a273c34153238343c397b363a38">[email&#160;protected]</span></a>
+      <a href="parceiros.html" data-orig="/cdn-cgi/l/email-protection#2a5b5f43444b584304455f5c434e4558434b6a4d474b434604494547" class="f-email"><span class="f-email-icon">✉</span><span class="__cf_email__" data-cfemail="5524203c3b34273c7b3a20233c313a273c34153238343c397b363a38">[email&#160;protected]</span></a>
       <div class="f-email-note">Dúvidas, sugestões e denúncias · Resp. em até 48h</div>
     </div>
   </div>
@@ -965,7 +941,7 @@ footer {
       <a class="f-link" href="#">Fontes de dados</a>
       <a class="f-link" href="#">Como coletamos os dados</a>
       <a class="f-link" href="#">Fazer denúncia anônima</a>
-      <a class="f-link" href="/cdn-cgi/l/email-protection#1667637f7877647f387963607f7279647f7756717b777f7a3875797b">Contato da ouvidoria</a>
+      <a class="f-link" href="parceiros.html" data-orig="/cdn-cgi/l/email-protection#1667637f7877647f387963607f7279647f7756717b777f7a3875797b">Contato da ouvidoria</a>
     </div>
   </div>
 </footer>
@@ -993,218 +969,7 @@ footer {
   <span class="f-disc">Não somos o site oficial da Prefeitura ou Câmara · Dados de fontes públicas federais</span>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js">
-// ══ SISTEMA DE PARCEIROS + ADMIN ══════════════════════════════
-const SUPA = 'https://lzgztviajtcthqgekvrr.supabase.co';
-const SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6Z3p0dmlhanRjdGhxZ2VrdnJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzMTgxNDMsImV4cCI6MjA1Nzg5NDE0M30.placeholder';
-
-let adminToken = localStorage.getItem('qf_admin_token') || null;
-let adminAtivo = false;
-
-// Carrega patrocinadores do Supabase
-async function carregarPatrocinadores() {
-  const grid = document.getElementById('parc-grid');
-  try {
-    const r = await fetch('/api/admin-patrocinadores');
-    const data = await r.json();
-    if (!Array.isArray(data) || data.length === 0) {
-      renderVagas(6);
-      return;
-    }
-    grid.innerHTML = data.map(p => renderCard(p)).join('');
-  } catch(e) {
-    renderVagas(6);
-  }
-}
-
-function renderCard(p) {
-  if (!p.ativo || !p.logo_url) {
-    // Vaga vazia — clica vai para parceiros.html
-    return `<a href="parceiros.html" class="parc-vaga" title="Vaga disponível para patrocinador">
-      <div class="parc-vaga-ico">＋</div>
-      <div class="parc-vaga-txt">Vaga disponível<br>para empresa local</div>
-    </a>`;
-  }
-  // Patrocinador ativo — clica abre WhatsApp
-  const wa = p.whatsapp ? `https://wa.me/55${p.whatsapp.replace(/\D/g,'')}?text=Olá!%20Vi%20sua%20empresa%20no%20Quinari%20em%20Foco.` : (p.link_externo || 'parceiros.html');
-  return `<a href="${wa}" target="_blank" class="parc-vaga parc-ativo" title="${p.nome}" style="border-color:rgba(255,255,255,.2);background:var(--bg2)">
-    <img src="${p.logo_url}" alt="${p.nome}" style="max-width:120px;max-height:60px;object-fit:contain;filter:brightness(1.1)">
-    <div class="parc-vaga-txt" style="color:var(--off)">${p.nome}</div>
-  </a>`;
-}
-
-function renderVagas(n) {
-  document.getElementById('parc-grid').innerHTML = Array.from({length:n}, () =>
-    `<a href="parceiros.html" class="parc-vaga">
-      <div class="parc-vaga-ico">＋</div>
-      <div class="parc-vaga-txt">Vaga disponível<br>para empresa local</div>
-    </a>`
-  ).join('');
-}
-
-// ── LOGIN ADMIN ──────────────────────────────────────────────
-function abrirLogin() {
-  const m = document.getElementById('modal-login');
-  m.style.display = 'flex';
-}
-function fecharLogin() {
-  document.getElementById('modal-login').style.display = 'none';
-  document.getElementById('login-erro').style.display = 'none';
-}
-
-async function fazerLogin() {
-  const email = document.getElementById('admin-email').value.trim();
-  const senha = document.getElementById('admin-senha').value;
-  const erro = document.getElementById('login-erro');
-  erro.style.display = 'none';
-
-  try {
-    // Autentica via Supabase Auth
-    const r = await fetch(`${SUPA}/auth/v1/token?grant_type=password`, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json', 'apikey': SUPA_ANON},
-      body: JSON.stringify({email, password: senha})
-    });
-    const d = await r.json();
-    if (!d.access_token) {
-      erro.textContent = d.error_description || 'E-mail ou senha incorretos.';
-      erro.style.display = 'block';
-      return;
-    }
-    // Verifica se é admin
-    const check = await fetch('/api/admin-patrocinadores', {
-      headers: {'Authorization': `Bearer ${d.access_token}`}
-    });
-    // Testa com POST vazio para verificar permissão
-    const testAdmin = await fetch(`${SUPA}/rest/v1/admins?email=eq.${encodeURIComponent(email)}&select=email`, {
-      headers: {'apikey': SUPA_ANON, 'Authorization': `Bearer ${d.access_token}`}
-    });
-    const admins = await testAdmin.json();
-    if (!Array.isArray(admins) || admins.length === 0) {
-      erro.textContent = 'Acesso negado — você não é administrador.';
-      erro.style.display = 'block';
-      return;
-    }
-    adminToken = d.access_token;
-    localStorage.setItem('qf_admin_token', adminToken);
-    adminAtivo = true;
-    fecharLogin();
-    ativarModoAdmin();
-  } catch(e) {
-    erro.textContent = 'Erro de conexão. Tente novamente.';
-    erro.style.display = 'block';
-  }
-}
-
-function fazerLogout() {
-  adminToken = null;
-  adminAtivo = false;
-  localStorage.removeItem('qf_admin_token');
-  document.getElementById('admin-bar').style.display = 'none';
-}
-
-function ativarModoAdmin() {
-  document.getElementById('admin-bar').style.display = 'block';
-}
-
-// Verifica se já tem token salvo
-async function verificarSessaoAdmin() {
-  if (!adminToken) return;
-  try {
-    const r = await fetch(`${SUPA}/auth/v1/user`, {
-      headers: {'Authorization': `Bearer ${adminToken}`, 'apikey': SUPA_ANON}
-    });
-    if (r.ok) { adminAtivo = true; ativarModoAdmin(); }
-    else { adminToken = null; localStorage.removeItem('qf_admin_token'); }
-  } catch(e) {}
-}
-
-// ── MODAL ADMIN ──────────────────────────────────────────────
-async function abrirAdminModal() {
-  document.getElementById('modal-admin').style.display = 'block';
-  document.body.style.overflow = 'hidden';
-  await renderAdminLista();
-}
-function fecharAdminModal() {
-  document.getElementById('modal-admin').style.display = 'none';
-  document.body.style.overflow = '';
-  carregarPatrocinadores();
-}
-
-async function renderAdminLista() {
-  const lista = document.getElementById('admin-lista');
-  lista.innerHTML = '<div style="color:#909099;font-family:'DM Mono',monospace;font-size:.8rem;padding:16px">Carregando...</div>';
-  const r = await fetch('/api/admin-patrocinadores');
-  const data = await r.json();
-  if (!Array.isArray(data)) { lista.innerHTML = '<div style="color:#ff1f1a">Erro ao carregar</div>'; return; }
-
-  lista.innerHTML = data.map(p => `
-    <div style="background:#26262f;border:1px solid #383842;padding:18px;margin-bottom:12px" id="parc-item-${p.id}">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-        <div style="font-family:'DM Mono',monospace;font-size:.7rem;color:#909099;text-transform:uppercase;letter-spacing:1px">Posição ${p.posicao}</div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;text-transform:uppercase;color:${p.ativo&&p.logo_url?'#00d46a':'#909099'}">${p.ativo&&p.logo_url?'● ATIVO':'○ VAGA'}</div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-        <div>
-          <div style="font-family:'DM Mono',monospace;font-size:.68rem;color:#6b6b80;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Nome da empresa</div>
-          <input id="nome-${p.id}" value="${p.nome||''}" style="width:100%;background:#15151e;border:1px solid #383842;color:#fff;font-family:'Barlow',sans-serif;font-size:.85rem;padding:8px 12px;outline:none" placeholder="Nome do patrocinador">
-        </div>
-        <div>
-          <div style="font-family:'DM Mono',monospace;font-size:.68rem;color:#6b6b80;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">WhatsApp (somente números)</div>
-          <input id="wa-${p.id}" value="${p.whatsapp||''}" style="width:100%;background:#15151e;border:1px solid #383842;color:#fff;font-family:'Barlow',sans-serif;font-size:.85rem;padding:8px 12px;outline:none" placeholder="68999999999">
-        </div>
-      </div>
-      <div style="margin-bottom:12px">
-        <div style="font-family:'DM Mono',monospace;font-size:.68rem;color:#6b6b80;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">URL da logo (link direto para imagem)</div>
-        <input id="logo-${p.id}" value="${p.logo_url||''}" style="width:100%;background:#15151e;border:1px solid #383842;color:#fff;font-family:'Barlow',sans-serif;font-size:.85rem;padding:8px 12px;outline:none" placeholder="https://...">
-      </div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <button onclick="salvarPatrocinador(${p.id})" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:1px;text-transform:uppercase;background:#e10600;color:#fff;border:none;padding:8px 20px;cursor:pointer">Salvar</button>
-        ${p.ativo&&p.logo_url?`<button onclick="limparPatrocinador(${p.id})" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:1px;text-transform:uppercase;background:transparent;color:#909099;border:1px solid #383842;padding:8px 16px;cursor:pointer">Limpar vaga</button>`:''}
-        <span id="status-${p.id}" style="font-family:'DM Mono',monospace;font-size:.75rem;color:#00d46a;display:none">✓ Salvo!</span>
-      </div>
-    </div>
-  `).join('');
-}
-
-async function salvarPatrocinador(id) {
-  const nome = document.getElementById('nome-'+id).value.trim();
-  const wa = document.getElementById('wa-'+id).value.trim().replace(/\D/g,'');
-  const logo = document.getElementById('logo-'+id).value.trim();
-  const ativo = !!(nome && logo);
-  const r = await fetch('/api/admin-patrocinadores', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json','Authorization':`Bearer ${adminToken}`},
-    body: JSON.stringify({id, nome, whatsapp:wa||null, logo_url:logo||null, ativo})
-  });
-  const status = document.getElementById('status-'+id);
-  if (r.ok) { status.style.display='inline'; setTimeout(()=>status.style.display='none',2000); }
-  else { status.textContent='✗ Erro'; status.style.color='#ff1f1a'; status.style.display='inline'; }
-}
-
-async function limparPatrocinador(id) {
-  if (!confirm('Remover este patrocinador e liberar a vaga?')) return;
-  await fetch(`/api/admin-patrocinadores?id=${id}`, {
-    method: 'DELETE',
-    headers: {'Authorization': `Bearer ${adminToken}`}
-  });
-  await renderAdminLista();
-}
-
-// Link "Quero patrocinar" ativa login se não logado, abre modal se já logado
-document.getElementById('btn-patrocinar').addEventListener('click', function(e) {
-  if (adminAtivo) {
-    e.preventDefault();
-    abrirAdminModal();
-  }
-});
-
-// Inicializa
-carregarPatrocinadores();
-verificarSessaoAdmin();
-// ══ FIM SISTEMA DE PARCEIROS ══════════════════════════════════
-
-</script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Data
 document.getElementById('data-hoje').textContent =
   new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
