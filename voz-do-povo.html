@@ -212,6 +212,27 @@ footer a{color:var(--red);text-decoration:none;}
   .ideia-foot{flex-direction:column;align-items:flex-start;}
   .sign-btn{width:100%;justify-content:center;}
 }
+
+/* Nav principal no voz-do-povo */
+#nav-principal{position:sticky;top:0;z-index:200;background:#15151e;border-bottom:3px solid #e10600;height:56px;display:flex;align-items:center;padding:0 24px;justify-content:space-between;gap:8px}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;letter-spacing:2px;text-transform:uppercase;color:#fff;text-decoration:none;flex-shrink:0}
+.nav-logo span{color:#e10600}
+.nav-links-principal{display:flex;gap:0;list-style:none}
+.nav-links-principal a{color:#a0a0b0;text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:0 10px;height:56px;display:flex;align-items:center;border-bottom:3px solid transparent;margin-bottom:-3px;transition:color .2s;white-space:nowrap}
+.nav-links-principal a:hover,.nav-links-principal a.ativo-voz{color:#fff;border-bottom-color:#e10600}
+.hamburger-principal{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.hamburger-principal span{width:24px;height:2px;background:#fff;display:block}
+@media(max-width:900px){
+  .nav-links-principal{display:none;position:absolute;top:56px;left:0;right:0;background:#15151e;flex-direction:column;padding:16px 24px;gap:0;border-bottom:1px solid rgba(255,255,255,.08);z-index:199}
+  .nav-links-principal.aberto{display:flex}
+  .nav-links-principal a{height:44px;padding:0 8px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .hamburger-principal{display:flex}
+}
+.ticker{background:#e10600;overflow:hidden;height:32px;display:flex;align-items:center}
+.ticker-label{background:#15151e;color:#e10600;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:2px;padding:0 16px;white-space:nowrap;height:100%;display:flex;align-items:center;flex-shrink:0}
+.ticker-track{display:flex;animation:ticker-anim 35s linear infinite;white-space:nowrap}
+.ticker-track span{padding:0 32px;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.8rem;color:#fff}
+@keyframes ticker-anim{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 </style>
 </head>
 <body>
@@ -287,7 +308,7 @@ footer a{color:var(--red);text-decoration:none;}
 
 <footer>
   <a href="index.html">← Quinari em Foco</a> · Portal independente · Senador Guiomard, Acre · 2026 ·
-  <a href="mailto:quinari.ouvidoria@gmail.com">quinari.ouvidoria@gmail.com</a>
+  <a href="/cdn-cgi/l/email-protection#2b5a5e42454a594205445e5d424f4459424a6b4c464a424705484446"><span class="__cf_email__" data-cfemail="5b2a2e32353a293275342e2d323f3429323a1b3c363a323775383436">[email&#160;protected]</span></a>
 </footer>
 
 <!-- ══ MODAL LOGIN ══ -->
@@ -400,7 +421,7 @@ footer a{color:var(--red);text-decoration:none;}
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ─── DB (localStorage) ───
 const KEY = 'qf_db2';
 function getDB(){try{return JSON.parse(localStorage.getItem(KEY))||seed();}catch{return seed();}}
@@ -638,15 +659,4 @@ function cnt(el,id,max){document.getElementById(id).textContent=el.value.length;
 function toggleMenu(){
   const nav=document.getElementById('mobile-nav');
   const btn=document.getElementById('menu-btn');
-  const open=nav.classList.toggle('open');
-  btn.textContent=open?'✕':'☰';
-  document.body.style.overflow=open?'hidden':'';
-}
-
-// ─── INIT ───
-document.addEventListener('DOMContentLoaded',()=>{
-  getDB();atualizarNav();renderProj();renderIdeias();
-});
-</script>
-</body>
-</html>
+  const open=nav.classList.toggle('
