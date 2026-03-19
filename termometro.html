@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloco E — Termômetro Popular | Quinari em Foco</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+/* ══ CSS PADRÃO QUINARI EM FOCO ══ */
+:root{
+  --bg:#15151e;--bg2:#1e1e2a;--bg3:#252533;--bg4:#2e2e3e;
+  --red:#e10600;--red2:#ff2020;
+  --white:#ffffff;--gray:#a0a0b0;--gray2:#6b6b80;
+  --green:#00d46a;--yellow:#ffd600;--blue:#4da6ff;
+  --purple:#a78bfa;--pink:#f472b6;--teal:#22d3ee;--orange:#fb923c;
+  --border:rgba(255,255,255,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Barlow',sans-serif;min-height:100vh;overflow-x:hidden}
+/* TICKER */
+.ticker{background:var(--red);overflow:hidden;height:32px;display:flex;align-items:center}
+.ticker-label{background:var(--bg);color:var(--red);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:2px;padding:0 16px;white-space:nowrap;height:100%;display:flex;align-items:center;flex-shrink:0}
+.ticker-track{display:flex;animation:ticker 40s linear infinite;white-space:nowrap}
+.ticker-track span{padding:0 32px;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.8rem;letter-spacing:1px;color:var(--white)}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:3px solid var(--red);height:56px;display:flex;align-items:center;padding:0 24px;justify-content:space-between;gap:8px}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;letter-spacing:2px;text-transform:uppercase;color:var(--white);text-decoration:none;flex-shrink:0}
+.nav-logo span{color:var(--red)}
+.nav-links{display:flex;gap:0;list-style:none;flex-wrap:nowrap}
+.nav-links a{color:var(--gray);text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:0 10px;height:56px;display:flex;align-items:center;border-bottom:3px solid transparent;margin-bottom:-3px;transition:color .2s,border-color .2s;white-space:nowrap}
+.nav-links a:hover{color:var(--white)}
+.nav-links a.ativo{color:var(--white);border-bottom-color:var(--red)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;flex-shrink:0}
+.hamburger span{width:24px;height:2px;background:var(--white);display:block}
+@media(max-width:900px){
+  .nav-links{display:none;position:absolute;top:56px;left:0;right:0;background:var(--bg);flex-direction:column;padding:16px 24px;gap:0;border-bottom:2px solid var(--border);z-index:99}
+  .nav-links.aberto{display:flex}
+  .nav-links a{height:44px;padding:0 8px;border-bottom:1px solid var(--border);border-right:none}
+  .nav-links a.ativo{border-left:3px solid var(--red);border-bottom:1px solid var(--border)}
+  .hamburger{display:flex}
+}
+/* PAGE HEADER */
+.page-header{padding:32px 24px 0;max-width:1200px;margin:0 auto}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--gray2);font-family:'DM Mono',monospace;margin-bottom:16px}
+.breadcrumb a{color:var(--gray2);text-decoration:none}.breadcrumb a:hover{color:var(--white)}
+.breadcrumb .sep{color:var(--red)}
+.page-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(2rem,5vw,3.5rem);text-transform:uppercase;letter-spacing:2px;line-height:1}
+.page-sub{color:var(--gray);font-size:.9rem;margin-top:8px}
+/* ANO BAR */
+.ano-bar{max-width:1200px;margin:20px auto 0;padding:0 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ano-label{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--gray2);text-transform:uppercase;letter-spacing:1px}
+.ano-btns{display:flex;gap:6px;flex-wrap:wrap}
+.ano-btn{background:var(--bg3);border:1px solid var(--border);color:var(--gray);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:1px;padding:6px 14px;cursor:pointer;transition:all .2s;border-radius:2px}
+.ano-btn:hover{border-color:var(--gray2);color:var(--white)}
+.ano-btn.ativo{background:var(--red);border-color:var(--red);color:var(--white)}
+/* ABAS */
+.abas-wrap{max-width:1200px;margin:24px auto 0;padding:0 24px}
+.abas{display:flex;gap:0;border-bottom:2px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.abas::-webkit-scrollbar{display:none}
+.aba-btn{background:none;border:none;color:var(--gray2);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:1px;text-transform:uppercase;padding:12px 20px;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
+.aba-btn:hover{color:var(--gray)}
+.aba-btn.ativa{color:var(--white);border-bottom-color:var(--red)}
+.aba-content{display:none;max-width:1200px;margin:0 auto;padding:24px}
+.aba-content.ativa{display:block}
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:24px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:16px 20px}
+.kpi-label{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gray2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.kpi-valor{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.6rem;color:var(--white);line-height:1}
+.kpi-sub{font-size:.75rem;color:var(--gray2);margin-top:4px}
+/* TABELA */
+.tabela-wrap{overflow-x:auto;margin-top:16px}
+.tabela-busca{background:var(--bg3);border:1px solid var(--border);color:var(--white);font-family:'Barlow',sans-serif;font-size:.85rem;padding:8px 14px;width:100%;max-width:360px;margin-bottom:12px;outline:none}
+.tabela-busca:focus{border-color:var(--red)}
+table{width:100%;border-collapse:collapse;font-size:.83rem}
+th{background:var(--bg3);color:var(--gray2);font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--gray);vertical-align:top}
+tr:hover td{background:var(--bg2)}
+.badge{display:inline-block;padding:2px 8px;border-radius:2px;font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.5px}
+.badge-green{background:rgba(0,212,106,.15);color:var(--green)}
+.badge-yellow{background:rgba(255,214,0,.15);color:var(--yellow)}
+.badge-red{background:rgba(225,6,0,.15);color:var(--red2)}
+.badge-blue{background:rgba(77,166,255,.15);color:var(--blue)}
+.badge-gray{background:rgba(255,255,255,.08);color:var(--gray)}
+/* INFO BOX */
+.info-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:14px 18px;margin-bottom:20px;font-size:.85rem;color:var(--gray);line-height:1.6}
+.info-box a{color:var(--red)}.info-box strong{color:var(--white)}
+/* LOADING */
+.loading{display:flex;align-items:center;gap:12px;padding:32px;color:var(--gray2);font-family:'DM Mono',monospace;font-size:.8rem}
+.spin{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.vazio{padding:32px;text-align:center;color:var(--gray2);font-family:'DM Mono',monospace;font-size:.8rem}
+/* SEÇÃO TÍTULO */
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin:24px 0 16px;display:flex;align-items:center;gap:12px}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
+/* FOOTER */
+footer{background:var(--bg);border-top:1px solid var(--border);padding:40px 24px;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:32px;max-width:100%}
+@media(max-width:768px){footer{grid-template-columns:1fr}}
+.f-logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.3rem;text-transform:uppercase;letter-spacing:.5px;color:var(--white);margin-bottom:8px}
+.f-logo span{color:var(--red)}
+.f-sub{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--gray2);line-height:1.7;margin-bottom:12px}
+.f-email{font-family:'DM Mono',monospace;font-size:.8rem;color:var(--gray2);text-decoration:none;display:block;margin-bottom:4px;transition:color .2s}
+.f-email:hover{color:var(--red)}
+.f-email-note{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gray2);opacity:.6}
+.f-col-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+.f-links{display:flex;flex-direction:column;gap:8px}
+.f-link{font-size:.85rem;color:var(--gray2);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
+.f-link::before{content:'›';color:var(--red);font-size:1rem}
+.f-link:hover{color:var(--white)}
+.footer-bottom{background:var(--bg);border-top:1px solid var(--border);padding:14px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-family:'DM Mono',monospace;font-size:.72rem;color:var(--gray2)}
+.f-disc{opacity:.5}
+/* GRÁFICO BARRAS */
+.barra-row{display:grid;grid-template-columns:200px 1fr 140px;gap:10px;align-items:center;margin-bottom:10px}
+@media(max-width:600px){.barra-row{grid-template-columns:1fr;gap:4px}}
+.barra-nome{font-size:.82rem;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.barra-track{background:var(--bg3);height:8px;border-radius:2px;overflow:hidden}
+.barra-fill{height:100%;border-radius:2px;transition:width .6s ease}
+.barra-vals{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--gray2);text-align:right}
+.t-card{background:var(--bg2);border:1px solid var(--border);padding:20px;margin-bottom:12px}
+.t-header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.t-foto{width:56px;height:56px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid var(--border);flex-shrink:0}
+.t-nome{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;text-transform:uppercase;color:var(--white)}
+.t-cargo{font-size:.78rem;color:var(--gray2);margin-top:2px}
+.t-barras{margin-bottom:12px}
+.t-barra-row{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.t-barra-label{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--gray2);width:80px;flex-shrink:0}
+.t-barra-track{flex:1;height:10px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.t-barra-fill{height:100%;border-radius:2px;transition:width .8s ease}
+.t-barra-val{font-family:'DM Mono',monospace;font-size:.72rem;min-width:48px;text-align:right}
+.t-total{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--gray2);border-top:1px solid var(--border);padding-top:10px;margin-top:4px}
+.btn-votar{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:1px;text-transform:uppercase;border:none;padding:8px 20px;cursor:pointer;border-radius:2px;transition:all .2s;margin-right:8px}
+.btn-aprovar{background:var(--green);color:#000}
+.btn-aprovar:hover{opacity:.85}
+.btn-reprovar{background:var(--red);color:var(--white)}
+.btn-reprovar:hover{background:var(--red2)}
+.btn-votado{background:var(--bg4);color:var(--gray2);cursor:not-allowed}
+.aviso-voto{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--yellow);margin-top:8px}
+</style>
+</head>
+<body>
+<div class="ticker">
+  <div class="ticker-label">TERMÔMETRO</div>
+  <div class="ticker-track">
+    <span>Vote em cada político — Aprovo ou Desaprovo</span>
+    <span>1 voto por dispositivo · Resultado em tempo real</span>
+    <span>Sua opinião conta — sem cadastro necessário</span>
+    <span>Vote em cada político — Aprovo ou Desaprovo</span>
+    <span>1 voto por dispositivo · Resultado em tempo real</span>
+    <span>Sua opinião conta — sem cadastro necessário</span>
+  </div>
+</div>
+<nav>
+  <a href="index.html" class="nav-logo">QUINARI <span>EM FOCO</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html" id="nl-home">Home</a></li>
+    <li><a href="prefeitura.html" id="nl-pref">Prefeitura</a></li>
+    <li><a href="camara.html" id="nl-cam">Câmara</a></li>
+    <li><a href="secretarias.html" id="nl-sec">Secretarias</a></li>
+    <li><a href="ranking.html" id="nl-rank">Ranking</a></li>
+    <li><a href="voz-do-povo.html" id="nl-voz">Voz do Povo</a></li>
+    <li><a href="mailto:quinari.ouvidoria@gmail.com">Ouvidoria</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="page-header">
+  <div class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span>Bloco E — Termômetro Popular</span></div>
+  <h1 class="page-title">BLOCO E — <span style="color:var(--purple)">TERMÔMETRO</span></h1>
+  <p class="page-sub">Vote em cada político · 1 voto por dispositivo · Resultado em tempo real · Sem cadastro</p>
+</div>
+
+<div class="abas-wrap">
+  <div class="abas">
+    <button class="aba-btn ativa" onclick="trocarAba('vereadores')">🗳️ Vereadores</button>
+    <button class="aba-btn" onclick="trocarAba('prefeita')">🏛️ Prefeita</button>
+    <button class="aba-btn" onclick="trocarAba('resultado')">📊 Resultado Geral</button>
+  </div>
+</div>
+
+<div class="aba-content ativa" id="aba-vereadores">
+  <div class="info-box">
+    <strong>Como funciona:</strong> Vote Aprovo ou Desaprovo em cada vereador. Um voto por dispositivo (salvo no seu navegador). Os resultados são anônimos — apenas a contagem é registrada. Votos não identificam o votante.
+  </div>
+  <div id="lista-vereadores"><div class="loading"><div class="spin"></div>Carregando...</div></div>
+</div>
+
+<div class="aba-content" id="aba-prefeita">
+  <div class="info-box">Vote na gestão da Prefeita Municipal de Senador Guiomard. O resultado reflete a opinião dos visitantes do portal.</div>
+  <div id="card-prefeita"></div>
+</div>
+
+<div class="aba-content" id="aba-resultado">
+  <div class="kpis" id="kpis-resultado"></div>
+  <div class="sec-title">Resultado consolidado</div>
+  <div id="resultado-geral"></div>
+</div>
+
+<footer>
+  <div class="f-col"><div class="f-logo">QUINARI <span>EM FOCO</span></div><p class="f-sub">Portal independente de transparência municipal<br>Senador Guiomard, Acre · Atualizado diariamente por IA</p><a href="mailto:quinari.ouvidoria@gmail.com" class="f-email">✉ quinari.ouvidoria@gmail.com</a><div class="f-email-note">Dúvidas, sugestões e denúncias · Resp. em até 48h</div></div>
+  <div class="f-col"><div class="f-col-title">Seções</div><div class="f-links"><a class="f-link" href="prefeitura.html">Prefeitura Municipal</a><a class="f-link" href="camara.html">Câmara dos Vereadores</a><a class="f-link" href="secretarias.html">Secretarias Municipais</a><a class="f-link" href="ranking.html">Ranking dos Políticos</a><a class="f-link" href="termometro.html">Termômetro Popular</a><a class="f-link" href="voz-do-povo.html">Voz do Povo</a></div></div>
+  <div class="f-col"><div class="f-col-title">Transparência</div><div class="f-links"><a class="f-link" href="https://apidatalake.tesouro.gov.br" target="_blank">Siconfi / STN</a><a class="f-link" href="https://www.senadorguiomard.ac.leg.br" target="_blank">Câmara Municipal</a><a class="f-link" href="mailto:quinari.ouvidoria@gmail.com">Ouvidoria</a></div></div>
+</footer>
+<div class="footer-bottom"><span>Quinari em Foco · Portal independente · Senador Guiomard – AC · 2026</span><span class="f-disc">Não somos o site oficial da Prefeitura ou Câmara · Dados de fontes públicas federais</span></div>
+
+<script>
+const POLITICOS = [
+  {id:'lenon',nome:'Elvys Lenon Nascimento Araújo',apelido:'Lenon',partido:'PP',cargo:'Presidente da Câmara',foto:'https://static.wixstatic.com/media/0204e8_4712722bb0aa48b8bce493a83acf883f~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {id:'tammy',nome:'Tammy Rodrigues de Paula Lima',apelido:'Tammy',partido:'PP',cargo:'Vice-Presidente',foto:'https://static.wixstatic.com/media/0204e8_b21e72c0a28144b7a55c7ab898c248e3~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {id:'sandrao',nome:'Sandro Cunha e Souza',apelido:'Sandrão',partido:'PP',cargo:'Vereador',foto:'https://static.wixstatic.com/media/0204e8_4381340e750b49ab9dfaf77b3eabf1e5~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {id:'telma',nome:'Telma Regina Cunha de Queiroz Silva',apelido:'Telma Queiroz',partido:'PP',cargo:'Vereadora',foto:'https://static.wixstatic.com/media/0204e8_dfd25c96531948eea2c0039db6170095~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {id:'ivanete',nome:'Ivanete Figueiredo de Souza',apelido:'Ivanete',partido:'PSD',cargo:'Vereadora',foto:'https://static.wixstatic.com/media/0204e8_13b0c7229f66445b84b559f3e52ddd43~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {id:'leiri',nome:'Leyryana Conceição de Oliveira',apelido:'Leiri do Mixico',partido:'Republicanos',cargo:'Vereadora',foto:'https://static.wixstatic.com/media/0204e8_9a6aca19a7544251b6e18a741ce98654~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {id:'williene',nome:'Williene Magda Novais Jardim',apelido:'Williene',partido:'PL',cargo:'Vereadora',foto:'https://static.wixstatic.com/media/0204e8_e845a469f85c4f8abdf644475e40f15a~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {id:'rozildo',nome:'Rozildo de Souza Lima',apelido:'Rozildo',partido:'Solidariedade',cargo:'Vereador',foto:'https://static.wixstatic.com/media/0204e8_184ef41cadee475e8cc08dd6d4b9c4a7~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {id:'rafael',nome:'João Rafael Tavares da Cruz Maia',apelido:'Rafael Maia',partido:'União Brasil',cargo:'2º Secretário',foto:'https://static.wixstatic.com/media/0204e8_74da3a9cdc964f78bedb43ee3f063ac5~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {id:'paulinho',nome:'Paulo Cesar Miranda Gomes',apelido:'Paulinho',partido:'União Brasil',cargo:'1º Secretário',foto:'https://static.wixstatic.com/media/0204e8_f484b55a003148ac89118f71f49a1c30~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {id:'eder',nome:'Eder Paulino Silva Bandeira',apelido:'Eder Paulino',partido:'Republicanos',cargo:'Vereador',foto:'https://static.wixstatic.com/media/0204e8_0dfe3aed6d0c4f5d921b150dd9584d6f~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+];
+
+const PREFEITA = {id:'prefeita',nome:'Prefeita Municipal',apelido:'Prefeita de Senador Guiomard',partido:'—',cargo:'Prefeita Municipal',foto:''};
+
+// localStorage para votos (1 voto por id por dispositivo)
+function getVotos(id){
+  try{return JSON.parse(localStorage.getItem('t_votos_'+id)||'{"a":0,"d":0}')}catch{return{a:0,d:0}}
+}
+function getMeuVoto(id){return localStorage.getItem('t_meu_'+id)||null}
+function registrarVoto(id,tipo){
+  if(getMeuVoto(id)) return false;
+  const v = getVotos(id);
+  v[tipo]++;
+  localStorage.setItem('t_votos_'+id,JSON.stringify(v));
+  localStorage.setItem('t_meu_'+id,tipo);
+  return true;
+}
+
+function renderCard(p,containerId){
+  const v = getVotos(p.id);
+  const meu = getMeuVoto(p.id);
+  const total = v.a+v.d;
+  const pA = total>0?Math.round(v.a/total*100):50;
+  const pD = 100-pA;
+  const corP = {PP:'#4da6ff',PL:'#ff6b6b',PSD:'#ffd600','União Brasil':'#22d3ee',Solidariedade:'#00d46a',Republicanos:'#a78bfa'};
+  const c = corP[p.partido]||'#6b6b80';
+  const el = document.getElementById(containerId||'c_'+p.id);
+  if(!el)return;
+  el.innerHTML = `<div class="t-card">
+    <div class="t-header">
+      ${p.foto?`<img class="t-foto" src="${p.foto}" alt="${p.apelido}" onerror="this.style.display='none'">`:''}
+      <div>
+        <div class="t-nome">${p.apelido}</div>
+        <div class="t-cargo" style="color:${c}">${p.partido} · ${p.cargo}</div>
+        <div style="font-size:.75rem;color:var(--gray2)">${p.nome}</div>
+      </div>
+    </div>
+    <div class="t-barras">
+      <div class="t-barra-row">
+        <div class="t-barra-label" style="color:var(--green)">✅ Aprovo</div>
+        <div class="t-barra-track"><div class="t-barra-fill" style="width:${pA}%;background:var(--green)"></div></div>
+        <div class="t-barra-val" style="color:var(--green)">${v.a} (${pA}%)</div>
+      </div>
+      <div class="t-barra-row">
+        <div class="t-barra-label" style="color:var(--red)">❌ Desaprovo</div>
+        <div class="t-barra-track"><div class="t-barra-fill" style="width:${pD}%;background:var(--red)"></div></div>
+        <div class="t-barra-val" style="color:var(--red)">${v.d} (${pD}%)</div>
+      </div>
+    </div>
+    <div class="t-total">${total} voto${total!==1?'s':''} registrado${total!==1?'s':''} neste dispositivo</div>
+    ${meu
+      ? `<div style="margin-top:10px"><span class="btn-votar btn-votado">Você votou: ${meu==='a'?'✅ Aprovo':'❌ Desaprovo'}</span></div>`
+      : `<div style="margin-top:10px">
+          <button class="btn-votar btn-aprovar" onclick="votar('${p.id}','a','${containerId||'c_'+p.id}')">✅ Aprovo</button>
+          <button class="btn-votar btn-reprovar" onclick="votar('${p.id}','d','${containerId||'c_'+p.id}')">❌ Desaprovo</button>
+        </div>`
+    }
+  </div>`;
+}
+
+function votar(id,tipo,containerId){
+  registrarVoto(id,tipo);
+  const p = [...POLITICOS,PREFEITA].find(x=>x.id===id);
+  if(p) renderCard(p,containerId);
+}
+
+function trocarAba(a){
+  document.querySelectorAll('.aba-btn').forEach((b,i)=>b.classList.toggle('ativa',['vereadores','prefeita','resultado'][i]===a));
+  document.querySelectorAll('.aba-content').forEach(el=>el.classList.toggle('ativa',el.id==='aba-'+a));
+  if(a==='resultado') renderResultado();
+}
+
+function renderResultado(){
+  const todos = [...POLITICOS,PREFEITA];
+  let totalA=0,totalD=0;
+  todos.forEach(p=>{const v=getVotos(p.id);totalA+=v.a;totalD+=v.d;});
+  const t=totalA+totalD;
+  document.getElementById('kpis-resultado').innerHTML=`
+    <div class="kpi" style="border-left-color:var(--green)"><div class="kpi-label">Total Aprovo</div><div class="kpi-valor" style="color:var(--green)">${totalA}</div></div>
+    <div class="kpi" style="border-left-color:var(--red)"><div class="kpi-label">Total Desaprovo</div><div class="kpi-valor" style="color:var(--red)">${totalD}</div></div>
+    <div class="kpi"><div class="kpi-label">Total de votos</div><div class="kpi-valor">${t}</div><div class="kpi-sub">Neste dispositivo</div></div>`;
+
+  const ord = [...POLITICOS].map(p=>{const v=getVotos(p.id);return{...p,...v,total:v.a+v.d,pA:v.a+v.d>0?Math.round(v.a/(v.a+v.d)*100):50}}).sort((a,b)=>b.pA-a.pA);
+  document.getElementById('resultado-geral').innerHTML = ord.map(p=>`
+    <div class="barra-row">
+      <div class="barra-nome">${p.apelido}</div>
+      <div class="barra-track"><div class="barra-fill" style="width:${p.pA}%;background:${p.pA>=50?'var(--green)':'var(--red)'}"></div></div>
+      <div class="barra-vals">${p.pA}% aprovação</div>
+    </div>`).join('');
+}
+
+// Inicializa
+document.getElementById('lista-vereadores').innerHTML = POLITICOS.map(p=>`<div id="c_${p.id}"></div>`).join('');
+POLITICOS.forEach(p=>renderCard(p));
+document.getElementById('card-prefeita').innerHTML = `<div id="c_prefeita"></div>`;
+renderCard(PREFEITA,'c_prefeita');
+document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('navLinks').classList.toggle('aberto'));
+</script>
+</body></html>
