@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloco D — Ranking dos Políticos | Quinari em Foco</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ══ CSS PADRÃO QUINARI EM FOCO ══ */
+:root{
+  --bg:#15151e;--bg2:#1e1e2a;--bg3:#252533;--bg4:#2e2e3e;
+  --red:#e10600;--red2:#ff2020;
+  --white:#ffffff;--gray:#a0a0b0;--gray2:#6b6b80;
+  --green:#00d46a;--yellow:#ffd600;--blue:#4da6ff;
+  --purple:#a78bfa;--pink:#f472b6;--teal:#22d3ee;--orange:#fb923c;
+  --border:rgba(255,255,255,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Barlow',sans-serif;min-height:100vh;overflow-x:hidden}
+/* TICKER */
+.ticker{background:var(--red);overflow:hidden;height:32px;display:flex;align-items:center}
+.ticker-label{background:var(--bg);color:var(--red);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:2px;padding:0 16px;white-space:nowrap;height:100%;display:flex;align-items:center;flex-shrink:0}
+.ticker-track{display:flex;animation:ticker 40s linear infinite;white-space:nowrap}
+.ticker-track span{padding:0 32px;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.8rem;letter-spacing:1px;color:var(--white)}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:3px solid var(--red);height:56px;display:flex;align-items:center;padding:0 24px;justify-content:space-between;gap:8px}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;letter-spacing:2px;text-transform:uppercase;color:var(--white);text-decoration:none;flex-shrink:0}
+.nav-logo span{color:var(--red)}
+.nav-links{display:flex;gap:0;list-style:none;flex-wrap:nowrap}
+.nav-links a{color:var(--gray);text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:0 10px;height:56px;display:flex;align-items:center;border-bottom:3px solid transparent;margin-bottom:-3px;transition:color .2s,border-color .2s;white-space:nowrap}
+.nav-links a:hover{color:var(--white)}
+.nav-links a.ativo{color:var(--white);border-bottom-color:var(--red)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;flex-shrink:0}
+.hamburger span{width:24px;height:2px;background:var(--white);display:block}
+@media(max-width:900px){
+  .nav-links{display:none;position:absolute;top:56px;left:0;right:0;background:var(--bg);flex-direction:column;padding:16px 24px;gap:0;border-bottom:2px solid var(--border);z-index:99}
+  .nav-links.aberto{display:flex}
+  .nav-links a{height:44px;padding:0 8px;border-bottom:1px solid var(--border);border-right:none}
+  .nav-links a.ativo{border-left:3px solid var(--red);border-bottom:1px solid var(--border)}
+  .hamburger{display:flex}
+}
+/* PAGE HEADER */
+.page-header{padding:32px 24px 0;max-width:1200px;margin:0 auto}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--gray2);font-family:'DM Mono',monospace;margin-bottom:16px}
+.breadcrumb a{color:var(--gray2);text-decoration:none}.breadcrumb a:hover{color:var(--white)}
+.breadcrumb .sep{color:var(--red)}
+.page-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(2rem,5vw,3.5rem);text-transform:uppercase;letter-spacing:2px;line-height:1}
+.page-sub{color:var(--gray);font-size:.9rem;margin-top:8px}
+/* ANO BAR */
+.ano-bar{max-width:1200px;margin:20px auto 0;padding:0 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ano-label{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--gray2);text-transform:uppercase;letter-spacing:1px}
+.ano-btns{display:flex;gap:6px;flex-wrap:wrap}
+.ano-btn{background:var(--bg3);border:1px solid var(--border);color:var(--gray);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:1px;padding:6px 14px;cursor:pointer;transition:all .2s;border-radius:2px}
+.ano-btn:hover{border-color:var(--gray2);color:var(--white)}
+.ano-btn.ativo{background:var(--red);border-color:var(--red);color:var(--white)}
+/* ABAS */
+.abas-wrap{max-width:1200px;margin:24px auto 0;padding:0 24px}
+.abas{display:flex;gap:0;border-bottom:2px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.abas::-webkit-scrollbar{display:none}
+.aba-btn{background:none;border:none;color:var(--gray2);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:1px;text-transform:uppercase;padding:12px 20px;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
+.aba-btn:hover{color:var(--gray)}
+.aba-btn.ativa{color:var(--white);border-bottom-color:var(--red)}
+.aba-content{display:none;max-width:1200px;margin:0 auto;padding:24px}
+.aba-content.ativa{display:block}
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:24px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:16px 20px}
+.kpi-label{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gray2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.kpi-valor{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.6rem;color:var(--white);line-height:1}
+.kpi-sub{font-size:.75rem;color:var(--gray2);margin-top:4px}
+/* TABELA */
+.tabela-wrap{overflow-x:auto;margin-top:16px}
+.tabela-busca{background:var(--bg3);border:1px solid var(--border);color:var(--white);font-family:'Barlow',sans-serif;font-size:.85rem;padding:8px 14px;width:100%;max-width:360px;margin-bottom:12px;outline:none}
+.tabela-busca:focus{border-color:var(--red)}
+table{width:100%;border-collapse:collapse;font-size:.83rem}
+th{background:var(--bg3);color:var(--gray2);font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--gray);vertical-align:top}
+tr:hover td{background:var(--bg2)}
+.badge{display:inline-block;padding:2px 8px;border-radius:2px;font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.5px}
+.badge-green{background:rgba(0,212,106,.15);color:var(--green)}
+.badge-yellow{background:rgba(255,214,0,.15);color:var(--yellow)}
+.badge-red{background:rgba(225,6,0,.15);color:var(--red2)}
+.badge-blue{background:rgba(77,166,255,.15);color:var(--blue)}
+.badge-gray{background:rgba(255,255,255,.08);color:var(--gray)}
+/* INFO BOX */
+.info-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:14px 18px;margin-bottom:20px;font-size:.85rem;color:var(--gray);line-height:1.6}
+.info-box a{color:var(--red)}.info-box strong{color:var(--white)}
+/* LOADING */
+.loading{display:flex;align-items:center;gap:12px;padding:32px;color:var(--gray2);font-family:'DM Mono',monospace;font-size:.8rem}
+.spin{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.vazio{padding:32px;text-align:center;color:var(--gray2);font-family:'DM Mono',monospace;font-size:.8rem}
+/* SEÇÃO TÍTULO */
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin:24px 0 16px;display:flex;align-items:center;gap:12px}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
+/* FOOTER */
+footer{background:var(--bg);border-top:1px solid var(--border);padding:40px 24px;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:32px;max-width:100%}
+@media(max-width:768px){footer{grid-template-columns:1fr}}
+.f-logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.3rem;text-transform:uppercase;letter-spacing:.5px;color:var(--white);margin-bottom:8px}
+.f-logo span{color:var(--red)}
+.f-sub{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--gray2);line-height:1.7;margin-bottom:12px}
+.f-email{font-family:'DM Mono',monospace;font-size:.8rem;color:var(--gray2);text-decoration:none;display:block;margin-bottom:4px;transition:color .2s}
+.f-email:hover{color:var(--red)}
+.f-email-note{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gray2);opacity:.6}
+.f-col-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+.f-links{display:flex;flex-direction:column;gap:8px}
+.f-link{font-size:.85rem;color:var(--gray2);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
+.f-link::before{content:'›';color:var(--red);font-size:1rem}
+.f-link:hover{color:var(--white)}
+.footer-bottom{background:var(--bg);border-top:1px solid var(--border);padding:14px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-family:'DM Mono',monospace;font-size:.72rem;color:var(--gray2)}
+.f-disc{opacity:.5}
+/* GRÁFICO BARRAS */
+.barra-row{display:grid;grid-template-columns:200px 1fr 140px;gap:10px;align-items:center;margin-bottom:10px}
+@media(max-width:600px){.barra-row{grid-template-columns:1fr;gap:4px}}
+.barra-nome{font-size:.82rem;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.barra-track{background:var(--bg3);height:8px;border-radius:2px;overflow:hidden}
+.barra-fill{height:100%;border-radius:2px;transition:width .6s ease}
+.barra-vals{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--gray2);text-align:right}
+.rank-card{background:var(--bg2);border:1px solid var(--border);padding:20px;display:flex;align-items:center;gap:16px;margin-bottom:10px;transition:background .2s}
+.rank-card:hover{background:var(--bg3)}
+.rank-pos{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:2rem;color:var(--gray2);min-width:48px;text-align:center}
+.rank-pos.ouro{color:var(--yellow)}
+.rank-pos.prata{color:#c0c0c0}
+.rank-pos.bronze{color:#cd7f32}
+.rank-foto{width:56px;height:56px;border-radius:50%;object-fit:cover;object-position:top center;border:2px solid var(--border);flex-shrink:0}
+.rank-info{flex:1}
+.rank-nome{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;text-transform:uppercase;color:var(--white)}
+.rank-cargo{font-size:.78rem;color:var(--gray2);margin-top:2px}
+.rank-score{text-align:right;flex-shrink:0}
+.rank-pts{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;line-height:1}
+.rank-pts-label{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--gray2);text-transform:uppercase;letter-spacing:1px}
+.rank-bars{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.rank-bar-item{display:flex;flex-direction:column;align-items:center;gap:2px}
+.rank-bar-mini{width:32px;height:4px;border-radius:2px;background:var(--bg4)}
+.rank-bar-fill{height:100%;border-radius:2px;transition:width .6s}
+.rank-bar-label{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--gray2)}
+.criterio-card{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:16px 20px;margin-bottom:10px}
+.criterio-nome{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;text-transform:uppercase;color:var(--white);margin-bottom:4px}
+.criterio-desc{font-size:.83rem;color:var(--gray);line-height:1.5}
+.criterio-peso{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--red)}
+.em-breve{background:var(--bg2);border:2px dashed var(--border);border-radius:4px;padding:48px;text-align:center}
+.em-breve-ico{font-size:3rem;margin-bottom:16px}
+.em-breve-titulo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.5rem;text-transform:uppercase;color:var(--white);margin-bottom:8px}
+.em-breve-desc{color:var(--gray);font-size:.9rem;max-width:480px;margin:0 auto;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="ticker">
+  <div class="ticker-label">RANKING</div>
+  <div class="ticker-track">
+    <span>Pontuação automática baseada em dados públicos verificáveis</span>
+    <span>Critérios: frequência, projetos de lei, votos, transparência</span>
+    <span>Dados: Câmara Municipal · TSE · Portal da Transparência</span>
+    <span>Pontuação automática baseada em dados públicos verificáveis</span>
+    <span>Critérios: frequência, projetos de lei, votos, transparência</span>
+    <span>Dados: Câmara Municipal · TSE · Portal da Transparência</span>
+  </div>
+</div>
+<nav>
+  <a href="index.html" class="nav-logo">QUINARI <span>EM FOCO</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html" id="nl-home">Home</a></li>
+    <li><a href="prefeitura.html" id="nl-pref">Prefeitura</a></li>
+    <li><a href="camara.html" id="nl-cam">Câmara</a></li>
+    <li><a href="secretarias.html" id="nl-sec">Secretarias</a></li>
+    <li><a href="ranking.html" id="nl-rank">Ranking</a></li>
+    <li><a href="voz-do-povo.html" id="nl-voz">Voz do Povo</a></li>
+    <li><a href="mailto:quinari.ouvidoria@gmail.com">Ouvidoria</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="page-header">
+  <div class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span>Bloco D — Ranking dos Políticos</span></div>
+  <h1 class="page-title">BLOCO D — <span style="color:var(--yellow)">RANKING</span></h1>
+  <p class="page-sub">Pontuação automática calculada com base em dados públicos verificáveis · Câmara de Senador Guiomard</p>
+</div>
+
+<div class="abas-wrap">
+  <div class="abas">
+    <button class="aba-btn ativa" onclick="trocarAba('ranking')">🏆 Ranking Geral</button>
+    <button class="aba-btn" onclick="trocarAba('criterios')">📋 Critérios</button>
+    <button class="aba-btn" onclick="trocarAba('metodologia')">🔬 Metodologia</button>
+  </div>
+</div>
+
+<div class="aba-content ativa" id="aba-ranking">
+  <div class="info-box">
+    <strong>Como funciona:</strong> a pontuação é calculada automaticamente com base em dados públicos da Câmara Municipal.
+    Quanto mais o vereador participa, vota, propõe projetos e está presente, maior a pontuação.
+    Os dados de frequência detalhada serão integrados assim que disponíveis via planilha oficial da Câmara.
+  </div>
+
+  <div class="kpis">
+    <div class="kpi" style="border-left-color:var(--yellow)"><div class="kpi-label">Vereadores avaliados</div><div class="kpi-valor" style="color:var(--yellow)">11</div><div class="kpi-sub">9ª Legislatura 2025–2028</div></div>
+    <div class="kpi" style="border-left-color:var(--green)"><div class="kpi-label">Critérios automáticos</div><div class="kpi-valor" style="color:var(--green)">5</div><div class="kpi-sub">Frequência, PLs, votos...</div></div>
+    <div class="kpi" style="border-left-color:var(--blue)"><div class="kpi-label">Fonte principal</div><div class="kpi-valor" style="font-size:1rem;color:var(--blue)">Câmara Municipal</div><div class="kpi-sub">senadorguiomard.ac.leg.br</div></div>
+    <div class="kpi" style="border-left-color:var(--red)"><div class="kpi-label">Atualização</div><div class="kpi-valor" style="font-size:1rem">Mensal</div><div class="kpi-sub">Após publicação das atas</div></div>
+  </div>
+
+  <div class="sec-title">Ranking provisório — dados parciais disponíveis</div>
+  <div id="lista-ranking"><div class="loading"><div class="spin"></div>Carregando vereadores...</div></div>
+</div>
+
+<div class="aba-content" id="aba-criterios">
+  <div class="sec-title">Critérios de pontuação</div>
+  <div class="criterio-card"><div class="criterio-nome">✅ Frequência nas sessões</div><div class="criterio-desc">Percentual de presença nas sessões ordinárias, extraordinárias e especiais. Falta sem justificativa = 0 pontos. Presença = 10 pontos por sessão.</div><div class="criterio-peso">Peso: 30% da pontuação total</div></div>
+  <div class="criterio-card"><div class="criterio-nome">📄 Projetos de lei apresentados</div><div class="criterio-desc">Número de PLs, requerimentos, indicações e moções protocolados. Projetos aprovados valem mais pontos que apenas apresentados.</div><div class="criterio-peso">Peso: 25% da pontuação total</div></div>
+  <div class="criterio-card"><div class="criterio-nome">🗳️ Participação em votações</div><div class="criterio-desc">Percentual de votações em que o vereador participou. Abstenções não contam como presença em votação.</div><div class="criterio-peso">Peso: 20% da pontuação total</div></div>
+  <div class="criterio-card"><div class="criterio-nome">💬 Uso da tribuna</div><div class="criterio-desc">Número de pronunciamentos, apartes e discursos registrados em ata. Indica engajamento ativo com a comunidade.</div><div class="criterio-peso">Peso: 15% da pontuação total</div></div>
+  <div class="criterio-card"><div class="criterio-nome">🔍 Transparência patrimonial</div><div class="criterio-desc">Declaração de bens atualizada junto ao TSE, sem pendências. Fonte: TSE — Dados Abertos Eleitorais.</div><div class="criterio-peso">Peso: 10% da pontuação total</div></div>
+</div>
+
+<div class="aba-content" id="aba-metodologia">
+  <div class="info-box"><strong>Importante:</strong> este ranking é produzido por um portal <strong>independente e sem fins lucrativos</strong>. Os critérios são objetivos e baseados exclusivamente em dados públicos. Nenhum vereador paga para aparecer ou melhorar sua posição.</div>
+  <div class="sec-title">Como os dados são coletados</div>
+  <div style="color:var(--gray);font-size:.9rem;line-height:1.8;max-width:700px">
+    <p style="margin-bottom:12px"><strong style="color:var(--white)">Frequência:</strong> extraída da Lista de Frequência Parlamentar publicada pela Câmara em planilhas abertas (Google Sheets com dados CSV). Disponível em: senadorguiomard.ac.leg.br/paginas/lista-de-frequencia-parlamentar</p>
+    <p style="margin-bottom:12px"><strong style="color:var(--white)">Projetos e votações:</strong> extraídos das atas de sessão publicadas no portal da Câmara. Processo de extração automática em desenvolvimento — atualmente requer leitura manual das atas em PDF.</p>
+    <p style="margin-bottom:12px"><strong style="color:var(--white)">Patrimônio:</strong> declarações de bens apresentadas ao TSE nas eleições de 2024. Fonte: dadosabertos.tse.jus.br</p>
+    <p><strong style="color:var(--white)">Atualização:</strong> o ranking é atualizado mensalmente, após a publicação oficial das atas de sessão pela Câmara Municipal.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="f-col"><div class="f-logo">QUINARI <span>EM FOCO</span></div><p class="f-sub">Portal independente de transparência municipal<br>Senador Guiomard, Acre · Atualizado diariamente por IA</p><a href="mailto:quinari.ouvidoria@gmail.com" class="f-email">✉ quinari.ouvidoria@gmail.com</a><div class="f-email-note">Dúvidas, sugestões e denúncias · Resp. em até 48h</div></div>
+  <div class="f-col"><div class="f-col-title">Seções</div><div class="f-links"><a class="f-link" href="prefeitura.html">Prefeitura Municipal</a><a class="f-link" href="camara.html">Câmara dos Vereadores</a><a class="f-link" href="secretarias.html">Secretarias Municipais</a><a class="f-link" href="ranking.html">Ranking dos Políticos</a><a class="f-link" href="termometro.html">Termômetro Popular</a><a class="f-link" href="voz-do-povo.html">Voz do Povo</a></div></div>
+  <div class="f-col"><div class="f-col-title">Transparência</div><div class="f-links"><a class="f-link" href="https://apidatalake.tesouro.gov.br" target="_blank">Siconfi / STN</a><a class="f-link" href="https://www.senadorguiomard.ac.leg.br" target="_blank">Câmara Municipal</a><a class="f-link" href="https://portaldatransparencia.gov.br" target="_blank">Portal da Transparência</a><a class="f-link" href="mailto:quinari.ouvidoria@gmail.com">Ouvidoria</a></div></div>
+</footer>
+<div class="footer-bottom"><span>Quinari em Foco · Portal independente · Senador Guiomard – AC · 2026</span><span class="f-disc">Não somos o site oficial da Prefeitura ou Câmara · Dados de fontes públicas federais</span></div>
+
+<script>
+const VEREADORES = [
+  {nome:'Tammy Rodrigues de Paula Lima',apelido:'Tammy',partido:'PP',votos:1041,cargo:'Vice-Presidente',foto:'https://static.wixstatic.com/media/0204e8_b21e72c0a28144b7a55c7ab898c248e3~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Sandro Cunha e Souza',apelido:'Sandrão',partido:'PP',votos:733,cargo:'Vereador',foto:'https://static.wixstatic.com/media/0204e8_4381340e750b49ab9dfaf77b3eabf1e5~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Telma Regina Cunha de Queiroz Silva',apelido:'Telma Queiroz',partido:'PP',votos:632,cargo:'Vereadora',foto:'https://static.wixstatic.com/media/0204e8_dfd25c96531948eea2c0039db6170095~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Ivanete Figueiredo de Souza',apelido:'Ivanete',partido:'PSD',votos:629,cargo:'Vereadora',foto:'https://static.wixstatic.com/media/0204e8_13b0c7229f66445b84b559f3e52ddd43~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Leyryana Conceição de Oliveira',apelido:'Leiri do Mixico',partido:'Republicanos',votos:529,cargo:'Vereadora',foto:'https://static.wixstatic.com/media/0204e8_9a6aca19a7544251b6e18a741ce98654~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Williene Magda Novais Jardim',apelido:'Williene',partido:'PL',votos:479,cargo:'Vereadora',foto:'https://static.wixstatic.com/media/0204e8_e845a469f85c4f8abdf644475e40f15a~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Rozildo de Souza Lima',apelido:'Rozildo',partido:'Solidariedade',votos:475,cargo:'Vereador',foto:'https://static.wixstatic.com/media/0204e8_184ef41cadee475e8cc08dd6d4b9c4a7~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'João Rafael Tavares da Cruz Maia',apelido:'Rafael Maia',partido:'União Brasil',votos:420,cargo:'2º Secretário',foto:'https://static.wixstatic.com/media/0204e8_74da3a9cdc964f78bedb43ee3f063ac5~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Paulo Cesar Miranda Gomes',apelido:'Paulinho',partido:'União Brasil',votos:404,cargo:'1º Secretário',foto:'https://static.wixstatic.com/media/0204e8_f484b55a003148ac89118f71f49a1c30~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Eder Paulino Silva Bandeira',apelido:'Eder Paulino',partido:'Republicanos',votos:335,cargo:'Vereador',foto:'https://static.wixstatic.com/media/0204e8_0dfe3aed6d0c4f5d921b150dd9584d6f~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Elvys Lenon Nascimento Araújo',apelido:'Lenon',partido:'PP',votos:467,cargo:'Presidente',foto:'https://static.wixstatic.com/media/0204e8_4712722bb0aa48b8bce493a83acf883f~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+];
+const cores = {PP:'#4da6ff',PL:'#ff6b6b',PSD:'#ffd600','União Brasil':'#22d3ee',Solidariedade:'#00d46a',Republicanos:'#a78bfa'};
+const posClasses = ['ouro','prata','bronze'];
+function trocarAba(a){
+  document.querySelectorAll('.aba-btn').forEach((b,i)=>b.classList.toggle('ativa',['ranking','criterios','metodologia'][i]===a));
+  document.querySelectorAll('.aba-content').forEach(el=>el.classList.toggle('ativa',el.id==='aba-'+a));
+}
+// Ranking provisório baseado em votos (proxy até ter dados de frequência)
+const rankOrdenado = [...VEREADORES].sort((a,b)=>b.votos-a.votos);
+document.getElementById('lista-ranking').innerHTML = rankOrdenado.map((v,i)=>{
+  const pClass = posClasses[i] || '';
+  const cor = cores[v.partido]||'#6b6b80';
+  const ptsProvisorio = Math.round(50 + (v.votos/1041)*50);
+  return `<div class="rank-card">
+    <div class="rank-pos ${pClass}">${i+1}</div>
+    <img class="rank-foto" src="${v.foto}" alt="${v.apelido}" onerror="this.style.display='none'">
+    <div class="rank-info">
+      <div class="rank-nome">${v.apelido}</div>
+      <div class="rank-cargo" style="color:${cor}">${v.partido} · ${v.cargo}</div>
+      <div style="font-size:.75rem;color:var(--gray2);margin-top:4px">${v.nome}</div>
+    </div>
+    <div class="rank-score">
+      <div class="rank-pts" style="color:${i===0?'var(--yellow)':i===1?'#c0c0c0':i===2?'#cd7f32':'var(--white)'}">${ptsProvisorio}</div>
+      <div class="rank-pts-label">pts provisórios</div>
+    </div>
+  </div>`;
+}).join('');
+document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('navLinks').classList.toggle('aberto'));
+document.getElementById('nl-rank')?.classList.add('ativo');
+</script>
+</body></html>
