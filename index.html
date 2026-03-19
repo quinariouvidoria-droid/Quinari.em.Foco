@@ -909,7 +909,7 @@ footer {
   <p class="parc-note">
     O Quinari em Foco é um projeto independente e sem fins lucrativos. Patrocinadores apoiam os custos de manutenção do portal.<br>
     O patrocínio <strong style="color:var(--off)">não influencia</strong> o conteúdo publicado.
-    Contato: <a href="parceiros.html">quinari.ouvidoria@gmail.com</a>
+    Contato: <a href="parceiros.html"><span class="__cf_email__" data-cfemail="1263677b7c73607b3c7d67647b767d607b7352757f737b7e3c717d7f">[email&#160;protected]</span></a>
   </p>
 </section>
 
@@ -969,7 +969,7 @@ footer {
   <span class="f-disc">Não somos o site oficial da Prefeitura ou Câmara · Dados de fontes públicas federais</span>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Data
 document.getElementById('data-hoje').textContent =
   new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
@@ -1019,9 +1019,9 @@ async function sendChat(){
   <span class="f-copy"><em>Quinari em Foco</em> · Portal independente · Senador Guiomard – AC · 2026</span>
   <span class="f-disc">Não somos o site oficial da Prefeitura ou Câmara · Dados de fontes públicas federais</span>
   <button id="btn-adm-login" onclick="abrirLoginAdmin()"
-    style="background:none;border:none;color:rgba(255,255,255,.12);font-family:'DM Mono',monospace;font-size:.65rem;cursor:pointer;padding:2px 6px;letter-spacing:1px;transition:color .3s"
+    style="background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);border-radius:3px;font-family:'DM Mono',monospace;font-size:.65rem;cursor:pointer;padding:2px 6px;letter-spacing:1px;transition:color .3s"
     onmouseover="this.style.color='rgba(225,6,0,.5)'"
-    onmouseout="this.style.color='rgba(255,255,255,.12)'">⚙ admin</button>
+    onmouseout="this.style.color='rgba(255,255,255,.35)'">⚙ admin</button>
 </div>
 
 <!-- BARRA ADMIN (aparece após login) -->
@@ -1183,13 +1183,4 @@ async function carregarParceiros() {
     grid.innerHTML = data.map(p => {
       if (!p.ativo || !p.logo_url) return `<a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>`;
       const wa = p.whatsapp ? 'https://wa.me/55' + p.whatsapp + '?text=Ol%C3%A1!%20Vi%20sua%20empresa%20no%20Quinari%20em%20Foco.' : 'parceiros.html';
-      return `<a href="${wa}" target="_blank" class="parc-vaga" style="border-color:rgba(255,255,255,.2)"><img src="${p.logo_url}" alt="${p.nome}" style="max-width:110px;max-height:55px;object-fit:contain"><div class="parc-vaga-txt" style="color:#f0f0f0">${p.nome}</div></a>`;
-    }).join('');
-  } catch(e) {}
-}
-
-// Restaura sessão ao carregar
-if (_TOKEN) { document.getElementById('adm-bar').style.display = 'flex'; }
-carregarParceiros();
-</script>
-</body>
+      return `<a href="${wa}" target="_blank" class="parc-vaga" style="border-color:rgba(255,255,255,.2)"><img src="${p.logo_url}" alt="${p.nome}" style="max-width:110px;max-height:55px;object-fit:contain"><div class="parc-vaga-txt" style="color:#f0
