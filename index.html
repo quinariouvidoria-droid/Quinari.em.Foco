@@ -909,7 +909,7 @@ footer {
   <p class="parc-note">
     O Quinari em Foco é um projeto independente e sem fins lucrativos. Patrocinadores apoiam os custos de manutenção do portal.<br>
     O patrocínio <strong style="color:var(--off)">não influencia</strong> o conteúdo publicado.
-    Contato: <a href="parceiros.html" style="color:var(--red)">quinari.ouvidoria@gmail.com</a>
+    Contato: <a href="parceiros.html" style="color:var(--red)"><span class="__cf_email__" data-cfemail="f8898d9196998a91d6978d8e919c978a9199b89f95999194d69b9795">[email&#160;protected]</span></a>
   </p>
 </section>
 
@@ -967,9 +967,10 @@ footer {
 <div class="footer-bottom">
   <span class="f-copy"><em>Quinari em Foco</em> · Portal independente · Senador Guiomard – AC · 2026</span>
   <span class="f-disc">Não somos o site oficial da Prefeitura ou Câmara · Dados de fontes públicas federais</span>
+  <button onclick="document.getElementById('modal-login').style.display='flex'" style="background:none;border:none;color:rgba(255,255,255,.15);font-family:'DM Mono',monospace;font-size:.65rem;cursor:pointer;padding:2px 6px;transition:color .3s" onmouseover="this.style.color='rgba(225,6,0,.6)'" onmouseout="this.style.color='rgba(255,255,255,.15)'">⚙ admin</button>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Data
 document.getElementById('data-hoje').textContent =
   new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
@@ -1008,8 +1009,4 @@ async function sendChat(){
       body: JSON.stringify({ messages: chatHistory })
     });
     const data = await res.json();
-    const resposta = data.resposta || data.error || 'Não consegui processar sua pergunta.';
-
-    // Atualiza o placeholder com a resposta
-    loadDiv.innerHTML = '<div class="cm-label">Quinari IA</div>' + resposta.replace(/\n/g, '<br>');
-    chatHistory.push({
+    const resposta = data.resposta || data.error || '
