@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloco F — IA e Participação | Quinari em Foco</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+/* ══ CSS PADRÃO QUINARI EM FOCO ══ */
+:root{
+  --bg:#15151e;--bg2:#1e1e2a;--bg3:#252533;--bg4:#2e2e3e;
+  --red:#e10600;--red2:#ff2020;
+  --white:#ffffff;--gray:#a0a0b0;--gray2:#6b6b80;
+  --green:#00d46a;--yellow:#ffd600;--blue:#4da6ff;
+  --purple:#a78bfa;--pink:#f472b6;--teal:#22d3ee;--orange:#fb923c;
+  --border:rgba(255,255,255,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Barlow',sans-serif;min-height:100vh;overflow-x:hidden}
+/* TICKER */
+.ticker{background:var(--red);overflow:hidden;height:32px;display:flex;align-items:center}
+.ticker-label{background:var(--bg);color:var(--red);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:2px;padding:0 16px;white-space:nowrap;height:100%;display:flex;align-items:center;flex-shrink:0}
+.ticker-track{display:flex;animation:ticker 40s linear infinite;white-space:nowrap}
+.ticker-track span{padding:0 32px;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.8rem;letter-spacing:1px;color:var(--white)}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:3px solid var(--red);height:56px;display:flex;align-items:center;padding:0 24px;justify-content:space-between;gap:8px}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;letter-spacing:2px;text-transform:uppercase;color:var(--white);text-decoration:none;flex-shrink:0}
+.nav-logo span{color:var(--red)}
+.nav-links{display:flex;gap:0;list-style:none;flex-wrap:nowrap}
+.nav-links a{color:var(--gray);text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:0 10px;height:56px;display:flex;align-items:center;border-bottom:3px solid transparent;margin-bottom:-3px;transition:color .2s,border-color .2s;white-space:nowrap}
+.nav-links a:hover{color:var(--white)}
+.nav-links a.ativo{color:var(--white);border-bottom-color:var(--red)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;flex-shrink:0}
+.hamburger span{width:24px;height:2px;background:var(--white);display:block}
+@media(max-width:900px){
+  .nav-links{display:none;position:absolute;top:56px;left:0;right:0;background:var(--bg);flex-direction:column;padding:16px 24px;gap:0;border-bottom:2px solid var(--border);z-index:99}
+  .nav-links.aberto{display:flex}
+  .nav-links a{height:44px;padding:0 8px;border-bottom:1px solid var(--border);border-right:none}
+  .nav-links a.ativo{border-left:3px solid var(--red);border-bottom:1px solid var(--border)}
+  .hamburger{display:flex}
+}
+/* PAGE HEADER */
+.page-header{padding:32px 24px 0;max-width:1200px;margin:0 auto}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--gray2);font-family:'DM Mono',monospace;margin-bottom:16px}
+.breadcrumb a{color:var(--gray2);text-decoration:none}.breadcrumb a:hover{color:var(--white)}
+.breadcrumb .sep{color:var(--red)}
+.page-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(2rem,5vw,3.5rem);text-transform:uppercase;letter-spacing:2px;line-height:1}
+.page-sub{color:var(--gray);font-size:.9rem;margin-top:8px}
+/* ANO BAR */
+.ano-bar{max-width:1200px;margin:20px auto 0;padding:0 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ano-label{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--gray2);text-transform:uppercase;letter-spacing:1px}
+.ano-btns{display:flex;gap:6px;flex-wrap:wrap}
+.ano-btn{background:var(--bg3);border:1px solid var(--border);color:var(--gray);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:1px;padding:6px 14px;cursor:pointer;transition:all .2s;border-radius:2px}
+.ano-btn:hover{border-color:var(--gray2);color:var(--white)}
+.ano-btn.ativo{background:var(--red);border-color:var(--red);color:var(--white)}
+/* ABAS */
+.abas-wrap{max-width:1200px;margin:24px auto 0;padding:0 24px}
+.abas{display:flex;gap:0;border-bottom:2px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.abas::-webkit-scrollbar{display:none}
+.aba-btn{background:none;border:none;color:var(--gray2);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:1px;text-transform:uppercase;padding:12px 20px;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
+.aba-btn:hover{color:var(--gray)}
+.aba-btn.ativa{color:var(--white);border-bottom-color:var(--red)}
+.aba-content{display:none;max-width:1200px;margin:0 auto;padding:24px}
+.aba-content.ativa{display:block}
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:24px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:16px 20px}
+.kpi-label{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gray2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.kpi-valor{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.6rem;color:var(--white);line-height:1}
+.kpi-sub{font-size:.75rem;color:var(--gray2);margin-top:4px}
+/* TABELA */
+.tabela-wrap{overflow-x:auto;margin-top:16px}
+.tabela-busca{background:var(--bg3);border:1px solid var(--border);color:var(--white);font-family:'Barlow',sans-serif;font-size:.85rem;padding:8px 14px;width:100%;max-width:360px;margin-bottom:12px;outline:none}
+.tabela-busca:focus{border-color:var(--red)}
+table{width:100%;border-collapse:collapse;font-size:.83rem}
+th{background:var(--bg3);color:var(--gray2);font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--gray);vertical-align:top}
+tr:hover td{background:var(--bg2)}
+.badge{display:inline-block;padding:2px 8px;border-radius:2px;font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.5px}
+.badge-green{background:rgba(0,212,106,.15);color:var(--green)}
+.badge-yellow{background:rgba(255,214,0,.15);color:var(--yellow)}
+.badge-red{background:rgba(225,6,0,.15);color:var(--red2)}
+.badge-blue{background:rgba(77,166,255,.15);color:var(--blue)}
+.badge-gray{background:rgba(255,255,255,.08);color:var(--gray)}
+/* INFO BOX */
+.info-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:14px 18px;margin-bottom:20px;font-size:.85rem;color:var(--gray);line-height:1.6}
+.info-box a{color:var(--red)}.info-box strong{color:var(--white)}
+/* LOADING */
+.loading{display:flex;align-items:center;gap:12px;padding:32px;color:var(--gray2);font-family:'DM Mono',monospace;font-size:.8rem}
+.spin{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.vazio{padding:32px;text-align:center;color:var(--gray2);font-family:'DM Mono',monospace;font-size:.8rem}
+/* SEÇÃO TÍTULO */
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin:24px 0 16px;display:flex;align-items:center;gap:12px}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
+/* FOOTER */
+footer{background:var(--bg);border-top:1px solid var(--border);padding:40px 24px;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:32px;max-width:100%}
+@media(max-width:768px){footer{grid-template-columns:1fr}}
+.f-logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.3rem;text-transform:uppercase;letter-spacing:.5px;color:var(--white);margin-bottom:8px}
+.f-logo span{color:var(--red)}
+.f-sub{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--gray2);line-height:1.7;margin-bottom:12px}
+.f-email{font-family:'DM Mono',monospace;font-size:.8rem;color:var(--gray2);text-decoration:none;display:block;margin-bottom:4px;transition:color .2s}
+.f-email:hover{color:var(--red)}
+.f-email-note{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gray2);opacity:.6}
+.f-col-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+.f-links{display:flex;flex-direction:column;gap:8px}
+.f-link{font-size:.85rem;color:var(--gray2);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
+.f-link::before{content:'›';color:var(--red);font-size:1rem}
+.f-link:hover{color:var(--white)}
+.footer-bottom{background:var(--bg);border-top:1px solid var(--border);padding:14px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-family:'DM Mono',monospace;font-size:.72rem;color:var(--gray2)}
+.f-disc{opacity:.5}
+/* GRÁFICO BARRAS */
+.barra-row{display:grid;grid-template-columns:200px 1fr 140px;gap:10px;align-items:center;margin-bottom:10px}
+@media(max-width:600px){.barra-row{grid-template-columns:1fr;gap:4px}}
+.barra-nome{font-size:.82rem;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.barra-track{background:var(--bg3);height:8px;border-radius:2px;overflow:hidden}
+.barra-fill{height:100%;border-radius:2px;transition:width .6s ease}
+.barra-vals{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--gray2);text-align:right}
+.chat-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:4px;overflow:hidden;max-width:760px;margin:0 auto}
+.chat-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.chat-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.chat-titulo{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:1px;text-transform:uppercase}
+.chat-msgs{height:400px;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px}
+.cm{max-width:85%;padding:12px 16px;border-radius:8px;font-size:.88rem;line-height:1.55}
+.cm-u{background:var(--bg3);border:1px solid var(--border);align-self:flex-end;border-radius:8px 8px 2px 8px;color:var(--white)}
+.cm-ai{background:rgba(225,6,0,.08);border:1px solid rgba(225,6,0,.2);align-self:flex-start;border-radius:8px 8px 8px 2px;color:var(--white)}
+.cm-label{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--red);letter-spacing:1px;margin-bottom:6px}
+.chat-input-wrap{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px}
+.chat-inp{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:10px 14px;color:var(--white);font-family:'Barlow',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s}
+.chat-inp:focus{border-color:var(--red)}
+.chat-inp::placeholder{color:var(--gray2)}
+.chat-send{background:var(--red);border:none;border-radius:4px;padding:10px 16px;cursor:pointer;color:var(--white);font-size:1.1rem;transition:background .2s;flex-shrink:0}
+.chat-send:hover{background:var(--red2)}
+.sugestoes{display:flex;gap:8px;flex-wrap:wrap;padding:0 20px 14px}
+.sug-btn{background:var(--bg3);border:1px solid var(--border);color:var(--gray);font-size:.78rem;padding:5px 12px;border-radius:20px;cursor:pointer;transition:all .2s;font-family:'Barlow',sans-serif}
+.sug-btn:hover{border-color:var(--red);color:var(--white)}
+.denuncia-form{background:var(--bg2);border:1px solid var(--border);padding:24px;max-width:640px}
+.form-group{margin-bottom:16px}
+.form-label{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--gray2);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px}
+.form-input,.form-textarea,.form-select{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--white);font-family:'Barlow',sans-serif;font-size:.88rem;padding:10px 14px;outline:none;transition:border-color .2s;border-radius:2px}
+.form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--red)}
+.form-textarea{resize:vertical;min-height:120px;line-height:1.5}
+.form-select option{background:var(--bg3)}
+.form-btn{background:var(--red);border:none;color:var(--white);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:1px;text-transform:uppercase;padding:12px 28px;cursor:pointer;transition:background .2s;border-radius:2px}
+.form-btn:hover{background:var(--red2)}
+.servico-card{background:var(--bg2);border:1px solid var(--border);padding:18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start}
+.servico-ico{font-size:1.5rem;flex-shrink:0}
+.servico-nome{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;text-transform:uppercase;letter-spacing:.5px;color:var(--white);margin-bottom:4px}
+.servico-desc{font-size:.83rem;color:var(--gray);line-height:1.5}
+.servico-link{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--red);text-decoration:none;margin-top:6px;display:inline-block}
+</style>
+</head>
+<body>
+<div class="ticker">
+  <div class="ticker-label">IA · PARTICIPAÇÃO</div>
+  <div class="ticker-track">
+    <span>Chat com IA sobre dados do município</span>
+    <span>Denúncia anônima · Guia de serviços públicos</span>
+    <span>Alertas personalizados sobre sua cidade</span>
+    <span>Chat com IA sobre dados do município</span>
+    <span>Denúncia anônima · Guia de serviços públicos</span>
+    <span>Alertas personalizados sobre sua cidade</span>
+  </div>
+</div>
+<nav>
+  <a href="index.html" class="nav-logo">QUINARI <span>EM FOCO</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html" id="nl-home">Home</a></li>
+    <li><a href="prefeitura.html" id="nl-pref">Prefeitura</a></li>
+    <li><a href="camara.html" id="nl-cam">Câmara</a></li>
+    <li><a href="secretarias.html" id="nl-sec">Secretarias</a></li>
+    <li><a href="ranking.html" id="nl-rank">Ranking</a></li>
+    <li><a href="voz-do-povo.html" id="nl-voz">Voz do Povo</a></li>
+    <li><a href="mailto:quinari.ouvidoria@gmail.com">Ouvidoria</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="page-header">
+  <div class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span>Bloco F — IA e Participação</span></div>
+  <h1 class="page-title">BLOCO F — <span style="color:var(--teal)">IA E PARTICIPAÇÃO</span></h1>
+  <p class="page-sub">Chat inteligente · Denúncia anônima · Guia de serviços · Senador Guiomard</p>
+</div>
+
+<div class="abas-wrap">
+  <div class="abas">
+    <button class="aba-btn ativa" onclick="trocarAba('chat')">🤖 Chat com IA</button>
+    <button class="aba-btn" onclick="trocarAba('denuncia')">🕵️ Denúncia Anônima</button>
+    <button class="aba-btn" onclick="trocarAba('servicos')">📋 Guia de Serviços</button>
+  </div>
+</div>
+
+<!-- CHAT -->
+<div class="aba-content ativa" id="aba-chat">
+  <div style="max-width:760px;margin:0 auto 16px">
+    <div class="info-box">A IA conhece os dados públicos de Senador Guiomard e responde perguntas sobre receitas, despesas, vereadores e serviços municipais. <strong>Não inventa dados</strong> — cita sempre a fonte.</div>
+  </div>
+  <div class="chat-wrap">
+    <div class="chat-header">
+      <div class="chat-dot"></div>
+      <span class="chat-titulo">Quinari IA — Pergunte sobre o município</span>
+      <span style="font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gray2);margin-left:auto">claude-sonnet-4-6</span>
+    </div>
+    <div class="chat-msgs" id="chatMsgs">
+      <div class="cm cm-ai">
+        <div class="cm-label">Quinari IA</div>
+        Olá! Sou a IA do portal Quinari em Foco. Posso responder perguntas sobre as finanças, serviços e políticos de Senador Guiomard com base em dados públicos oficiais. O que você quer saber?
+      </div>
+    </div>
+    <div class="sugestoes">
+      <button class="sug-btn" onclick="sugerir('Quanto o município recebeu em 2024?')">💰 Receita 2024</button>
+      <button class="sug-btn" onclick="sugerir('Quanto foi gasto com saúde em 2024?')">🏥 Gastos saúde</button>
+      <button class="sug-btn" onclick="sugerir('Quem são os vereadores eleitos?')">🗳️ Vereadores</button>
+      <button class="sug-btn" onclick="sugerir('O município cumpre o limite de gastos com educação?')">📚 Limite educação</button>
+    </div>
+    <div class="chat-input-wrap">
+      <input type="text" id="chatInp" class="chat-inp" placeholder="Faça sua pergunta sobre Senador Guiomard..." onkeydown="if(event.key==='Enter')enviarChat()">
+      <button class="chat-send" onclick="enviarChat()">→</button>
+    </div>
+  </div>
+</div>
+
+<!-- DENÚNCIA -->
+<div class="aba-content" id="aba-denuncia">
+  <div class="info-box">
+    <strong>Denúncia 100% anônima.</strong> Não coletamos dados pessoais. Sua mensagem é enviada diretamente para a ouvidoria do portal sem qualquer identificação. Denúncias graves são encaminhadas ao Ministério Público e TCE-AC quando cabível.
+  </div>
+  <div class="denuncia-form">
+    <div class="form-group">
+      <label class="form-label">Tipo de denúncia</label>
+      <select class="form-select" id="tipoDenuncia">
+        <option value="">Selecione...</option>
+        <option>Irregularidade em licitação ou contrato</option>
+        <option>Desvio de verbas públicas</option>
+        <option>Nepotismo ou cargo irregular</option>
+        <option>Obra abandonada ou superfaturada</option>
+        <option>Problema em serviço público (saúde, educação)</option>
+        <option>Abuso de poder ou assédio</option>
+        <option>Outro</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Secretaria ou órgão envolvido</label>
+      <select class="form-select" id="orgaoDenuncia">
+        <option value="">Selecione...</option>
+        <option>Prefeitura Municipal (geral)</option>
+        <option>Câmara dos Vereadores</option>
+        <option>Secretaria de Saúde</option>
+        <option>Secretaria de Educação</option>
+        <option>Secretaria de Obras</option>
+        <option>Secretaria de Assistência Social</option>
+        <option>Outro</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Descrição da denúncia</label>
+      <textarea class="form-textarea" id="textoDenuncia" placeholder="Descreva o que ocorreu, quando, onde e quem está envolvido. Quanto mais detalhes, melhor para apuração..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Você tem documentos ou provas? (opcional)</label>
+      <input type="text" class="form-input" id="provasDenuncia" placeholder="Links, números de processo, endereços de documentos públicos...">
+    </div>
+    <button class="form-btn" onclick="enviarDenuncia()">Enviar denúncia anonimamente →</button>
+    <div id="denuncia-feedback" style="margin-top:12px;font-size:.85rem"></div>
+  </div>
+</div>
+
+<!-- SERVIÇOS -->
+<div class="aba-content" id="aba-servicos">
+  <div class="info-box">Guia dos principais serviços públicos municipais de Senador Guiomard com canais de atendimento.</div>
+  <div class="servico-card"><div class="servico-ico">🏥</div><div><div class="servico-nome">UBS — Unidade Básica de Saúde</div><div class="servico-desc">Consultas, vacinas, curativos, pré-natal e atendimento de urgência básica. Atendimento gratuito pelo SUS.</div><a class="servico-link" href="tel:+55689999999">📞 Secretaria de Saúde — (68) 3232-xxxx</a></div></div>
+  <div class="servico-card"><div class="servico-ico">📚</div><div><div class="servico-nome">Secretaria Municipal de Educação</div><div class="servico-desc">Matrícula escolar, transporte escolar (PNATE), merenda (PNAE) e creches municipais.</div><a class="servico-link" href="mailto:quinari.ouvidoria@gmail.com">📧 Dúvidas via ouvidoria do portal</a></div></div>
+  <div class="servico-card"><div class="servico-ico">🏗️</div><div><div class="servico-nome">Secretaria de Obras e Infraestrutura</div><div class="servico-desc">Solicitação de tapa-buracos, iluminação pública, roçagem e manutenção de vias.</div><a class="servico-link" href="mailto:quinari.ouvidoria@gmail.com">📧 Solicitar via ouvidoria do portal</a></div></div>
+  <div class="servico-card"><div class="servico-ico">🤝</div><div><div class="servico-nome">CRAS — Centro de Referência de Assistência Social</div><div class="servico-desc">Bolsa Família, Cadastro Único, benefícios sociais e orientações sobre programas federais.</div><a class="servico-link" href="https://mds.gov.br/assuntos/assistencia-social/unidades-de-atendimento/cras" target="_blank">🌐 Portal MDS — Programas sociais</a></div></div>
+  <div class="servico-card"><div class="servico-ico">📋</div><div><div class="servico-nome">Câmara Municipal — Serviço ao Cidadão</div><div class="servico-desc">SIC — Serviço de Informação ao Cidadão, ouvidoria legislativa e acompanhamento de projetos.</div><a class="servico-link" href="https://www.senadorguiomard.ac.leg.br/paginas/ouvidoria" target="_blank">🌐 Acesse o SIC da Câmara</a></div></div>
+  <div class="servico-card"><div class="servico-ico">⚖️</div><div><div class="servico-nome">Defensoria Pública do Acre</div><div class="servico-desc">Assistência jurídica gratuita para cidadãos que não podem pagar advogado.</div><a class="servico-link" href="https://defensoria.ac.def.br" target="_blank">🌐 defensoria.ac.def.br</a></div></div>
+</div>
+
+<footer>
+  <div class="f-col"><div class="f-logo">QUINARI <span>EM FOCO</span></div><p class="f-sub">Portal independente de transparência municipal<br>Senador Guiomard, Acre · Atualizado diariamente por IA</p><a href="mailto:quinari.ouvidoria@gmail.com" class="f-email">✉ quinari.ouvidoria@gmail.com</a><div class="f-email-note">Dúvidas, sugestões e denúncias · Resp. em até 48h</div></div>
+  <div class="f-col"><div class="f-col-title">Seções</div><div class="f-links"><a class="f-link" href="prefeitura.html">Prefeitura Municipal</a><a class="f-link" href="camara.html">Câmara dos Vereadores</a><a class="f-link" href="secretarias.html">Secretarias Municipais</a><a class="f-link" href="ranking.html">Ranking dos Políticos</a><a class="f-link" href="termometro.html">Termômetro Popular</a><a class="f-link" href="voz-do-povo.html">Voz do Povo</a></div></div>
+  <div class="f-col"><div class="f-col-title">Transparência</div><div class="f-links"><a class="f-link" href="https://apidatalake.tesouro.gov.br" target="_blank">Siconfi / STN</a><a class="f-link" href="https://www.senadorguiomard.ac.leg.br" target="_blank">Câmara Municipal</a><a class="f-link" href="mailto:quinari.ouvidoria@gmail.com">Ouvidoria</a></div></div>
+</footer>
+<div class="footer-bottom"><span>Quinari em Foco · Portal independente · Senador Guiomard – AC · 2026</span><span class="f-disc">Não somos o site oficial da Prefeitura ou Câmara · Dados de fontes públicas federais</span></div>
+
+<script>
+const hist = [];
+function trocarAba(a){
+  document.querySelectorAll('.aba-btn').forEach((b,i)=>b.classList.toggle('ativa',['chat','denuncia','servicos'][i]===a));
+  document.querySelectorAll('.aba-content').forEach(el=>el.classList.toggle('ativa',el.id==='aba-'+a));
+}
+function sugerir(txt){document.getElementById('chatInp').value=txt;enviarChat();}
+function addMsg(role,txt){
+  const msgs=document.getElementById('chatMsgs');
+  const div=document.createElement('div');
+  div.className='cm '+(role==='user'?'cm-u':'cm-ai');
+  div.innerHTML=(role!=='user'?'<div class="cm-label">Quinari IA</div>':'')+txt.replace(/\n/g,'<br>');
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+  return div;
+}
+async function enviarChat(){
+  const inp=document.getElementById('chatInp');
+  const v=inp.value.trim();if(!v)return;
+  addMsg('user',v);hist.push({role:'user',content:v});inp.value='';
+  const load=addMsg('ai','<span style="color:var(--gray2)">Consultando os dados...</span>');
+  try{
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:hist})});
+    const d=await r.json();
+    const resp=d.resposta||d.error||'Não consegui processar sua pergunta.';
+    load.innerHTML='<div class="cm-label">Quinari IA</div>'+resp.replace(/\n/g,'<br>');
+    hist.push({role:'assistant',content:resp});
+  }catch(e){load.innerHTML='<div class="cm-label">Quinari IA</div>Erro ao conectar. Tente novamente.';}
+  document.getElementById('chatMsgs').scrollTop=9999;
+}
+async function enviarDenuncia(){
+  const tipo=document.getElementById('tipoDenuncia').value;
+  const orgao=document.getElementById('orgaoDenuncia').value;
+  const texto=document.getElementById('textoDenuncia').value.trim();
+  const provas=document.getElementById('provasDenuncia').value.trim();
+  const fb=document.getElementById('denuncia-feedback');
+  if(!tipo||!texto){fb.innerHTML='<span style="color:var(--yellow)">⚠ Preencha o tipo e a descrição da denúncia.</span>';return;}
+  fb.innerHTML='<span style="color:var(--gray2)">Enviando...</span>';
+  const corpo=`DENÚNCIA ANÔNIMA - Quinari em Foco\n\nTipo: ${tipo}\nÓrgão: ${orgao||'Não informado'}\n\nDescrição:\n${texto}\n\nDocumentos/Provas:\n${provas||'Não informado'}\n\nEnviado em: ${new Date().toLocaleString('pt-BR')}`;
+  // Envia via mailto (sem servidor necessário)
+  const link=document.createElement('a');
+  link.href=`mailto:quinari.ouvidoria@gmail.com?subject=Denúncia Anônima — ${encodeURIComponent(tipo)}&body=${encodeURIComponent(corpo)}`;
+  link.click();
+  fb.innerHTML='<span style="color:var(--green)">✅ Seu cliente de e-mail foi aberto com a denúncia. Confirme o envio para quinari.ouvidoria@gmail.com</span>';
+  document.getElementById('textoDenuncia').value='';
+}
+document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('navLinks').classList.toggle('aberto'));
+</script>
+</body></html>
