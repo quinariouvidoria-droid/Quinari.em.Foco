@@ -35,6 +35,9 @@
     },
     "api/comercios.js": {
       "maxDuration": 10
+    },
+    "api/forum.js": {
+      "maxDuration": 15
     }
   }
 }

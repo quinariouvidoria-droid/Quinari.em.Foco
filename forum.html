@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fórum Municipal · Quinari em Foco</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --red:    #e10600;
+  --red2:   #ff1f1a;
+  --white:  #ffffff;
+  --off:    #f0f0f0;
+  --bg:     #15151e;
+  --bg1:    #1e1e2a;
+  --bg2:    #26262f;
+  --bg3:    #2f2f3a;
+  --border: #383842;
+  --muted:  #909099;
+  --blue:   #4da6ff;
+  --r:      4px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--off);font-family:'Barlow',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.a1{animation:fadeUp .5s .05s ease both}
+.a2{animation:fadeUp .5s .15s ease both}
+.a3{animation:fadeUp .5s .25s ease both}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:300;background:var(--bg);border-bottom:3px solid var(--red);height:60px;display:flex;align-items:center;padding:0 24px;gap:16px;}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;text-transform:uppercase;letter-spacing:.5px;color:var(--white);text-decoration:none;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.nav-bar{width:4px;height:20px;background:var(--red);border-radius:2px;animation:blink 2.5s infinite;}
+.nav-logo span{color:var(--red);}
+.nav-back{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:7px 14px;border:1px solid var(--border);border-radius:var(--r);transition:all .15s;display:flex;align-items:center;gap:6px;}
+.nav-back:hover{color:var(--white);border-color:var(--white);}
+.nav-right{margin-left:auto;}
+.nav-menu-btn{display:none;background:none;border:none;color:var(--white);font-size:22px;cursor:pointer;padding:4px;}
+.mobile-nav{display:none;position:fixed;top:60px;left:0;right:0;bottom:0;background:var(--bg);z-index:250;padding:24px;border-top:1px solid var(--border);flex-direction:column;gap:4px;overflow-y:auto;}
+.mobile-nav.open{display:flex;}
+.mobile-link{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;letter-spacing:1px;text-transform:uppercase;color:var(--off);text-decoration:none;padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;transition:background .15s;}
+.mobile-link:hover{background:var(--bg1);}
+.mobile-link.red{color:var(--red);}
+
+/* ── HERO ── */
+.hero{padding:40px 24px 28px;max-width:1100px;margin:0 auto;}
+.hero-label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:8px;}
+.hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(28px,5vw,42px);text-transform:uppercase;line-height:1.1;color:var(--white);}
+.hero-sub{font-size:15px;color:var(--muted);margin-top:8px;max-width:600px;}
+
+/* ── KPIs ── */
+.kpis{display:flex;gap:12px;padding:0 24px 24px;max-width:1100px;margin:0 auto;flex-wrap:wrap;}
+.kpi{background:var(--bg1);border:1px solid var(--border);border-radius:6px;padding:14px 20px;min-width:110px;}
+.kpi-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:28px;color:var(--white);line-height:1;}
+.kpi-lab{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-top:3px;}
+
+/* ── TOOLBAR ── */
+.toolbar{max-width:1100px;margin:0 auto;padding:0 24px 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.search-wrap{flex:1;min-width:200px;position:relative;}
+.search-input{width:100%;background:var(--bg1);border:1px solid var(--border);color:var(--off);padding:10px 12px 10px 36px;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:14px;transition:border .15s;}
+.search-input:focus{outline:none;border-color:var(--blue);}
+.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none;}
+.filter-scroll{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;}
+.filter-scroll::-webkit-scrollbar{height:3px;}
+.filter-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.filter-btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.6px;text-transform:uppercase;background:none;border:1px solid var(--border);color:var(--muted);padding:7px 12px;border-radius:20px;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;}
+.filter-btn.ativo{color:var(--white);border-color:var(--white);background:rgba(255,255,255,.05);}
+.btn-novo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:13px;letter-spacing:.8px;text-transform:uppercase;background:var(--blue);color:var(--bg);border:none;padding:9px 18px;border-radius:var(--r);cursor:pointer;transition:background .15s;white-space:nowrap;flex-shrink:0;}
+.btn-novo:hover{background:#6ab8ff;}
+
+/* ── LAYOUT ── */
+.forum-wrap{max-width:1100px;margin:0 auto;padding:0 24px 60px;display:grid;grid-template-columns:1fr 280px;gap:24px;}
+
+/* ── LISTA DE TÓPICOS ── */
+.topicos-lista{}
+.topico-item{background:var(--bg1);border:1px solid var(--border);border-radius:8px;padding:16px 18px;margin-bottom:10px;cursor:pointer;transition:border-color .15s;}
+.topico-item:hover{border-color:var(--blue);}
+.topico-item.fixado{border-left:3px solid var(--blue);}
+.ti-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:6px;}
+.ti-cat{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:20px;flex-shrink:0;margin-top:2px;}
+.ti-titulo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;color:var(--white);line-height:1.2;flex:1;}
+.ti-pin{color:var(--blue);font-size:13px;flex-shrink:0;}
+.ti-desc{font-size:13px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:8px;}
+.ti-footer{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.ti-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+.ti-badge{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:var(--bg2);border:1px solid var(--border);padding:2px 8px;border-radius:3px;display:flex;align-items:center;gap:4px;}
+.ti-badge.resp{color:var(--blue);}
+.ti-like-btn{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:4px;padding:2px 0;transition:color .15s;}
+.ti-like-btn:hover{color:var(--red);}
+
+/* ── SIDEBAR ── */
+.sidebar{}
+.side-card{background:var(--bg1);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px;}
+.side-head{padding:12px 16px;border-bottom:1px solid var(--border);}
+.side-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.8px;color:var(--white);}
+.side-body{padding:14px 16px;}
+.side-cat-item{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.side-cat-item:last-child{border-bottom:none;}
+.side-cat-name{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--off);display:flex;align-items:center;gap:6px;}
+.side-cat-dot{width:7px;height:7px;border-radius:50%;}
+.side-cat-count{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+.side-top-item{padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.side-top-item:last-child{border-bottom:none;}
+.side-top-titulo{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--off);line-height:1.3;}
+.side-top-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-top:2px;}
+.side-top-item:hover .side-top-titulo{color:var(--blue);}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg1);border:1px solid var(--border);border-radius:8px;width:100%;max-width:700px;margin:auto;}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg1);z-index:10;}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;text-transform:uppercase;letter-spacing:.8px;color:var(--white);}
+.modal-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:2px 6px;line-height:1;}
+.modal-close:hover{color:var(--white);}
+.modal-body{padding:20px;}
+
+/* ── DETALHE TÓPICO ── */
+.det-cat{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:4px 10px;border-radius:20px;display:inline-block;margin-bottom:10px;}
+.det-titulo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:24px;color:var(--white);line-height:1.2;margin-bottom:6px;}
+.det-meta{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:14px;}
+.det-desc{font-size:14px;color:var(--off);white-space:pre-wrap;margin-bottom:16px;padding:14px;background:var(--bg2);border-radius:var(--r);border-left:3px solid var(--blue);}
+.det-sep{border:none;border-top:1px solid var(--border);margin:20px 0;}
+.det-respostas-titulo{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:12px;}
+.resposta-item{display:flex;gap:12px;margin-bottom:14px;}
+.resp-avatar{width:36px;height:36px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--blue);flex-shrink:0;}
+.resp-body{flex:1;background:var(--bg2);border-radius:6px;padding:12px 14px;border:1px solid var(--border);}
+.resp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.resp-autor{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;color:var(--white);}
+.resp-data{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+.resp-texto{font-size:14px;color:var(--off);white-space:pre-wrap;}
+.resp-empty{text-align:center;padding:24px;color:var(--muted);font-size:14px;}
+
+/* ── FORM RESPOSTA ── */
+.resp-form{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:20px;}
+.resp-form-titulo{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:12px;}
+
+/* ── FORMULÁRIOS ── */
+.form-row{margin-bottom:14px;}
+.form-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px;}
+.form-input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--off);padding:10px 12px;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:14px;transition:border .15s;}
+.form-input:focus{outline:none;border-color:var(--blue);}
+.form-select{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--off);padding:10px 12px;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:14px;cursor:pointer;}
+.form-select:focus{outline:none;border-color:var(--blue);}
+.form-textarea{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--off);padding:10px 12px;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:14px;resize:vertical;min-height:90px;transition:border .15s;}
+.form-textarea:focus{outline:none;border-color:var(--blue);}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.btn-enviar{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;letter-spacing:1px;text-transform:uppercase;background:var(--blue);color:var(--bg);border:none;padding:11px 20px;border-radius:var(--r);cursor:pointer;transition:background .15s;}
+.btn-enviar:hover{background:#6ab8ff;}
+.btn-enviar:disabled{opacity:.5;cursor:not-allowed;}
+.btn-enviar-full{width:100%;padding:13px;}
+.msg-ok{font-family:'DM Mono',monospace;font-size:13px;color:#00c87a;background:rgba(0,200,122,.08);border:1px solid rgba(0,200,122,.25);padding:10px 14px;border-radius:var(--r);margin-top:12px;display:none;}
+.msg-ok.vis{display:block;}
+.msg-erro{font-family:'DM Mono',monospace;font-size:13px;color:var(--red);background:rgba(225,6,0,.08);border:1px solid rgba(225,6,0,.25);padding:10px 14px;border-radius:var(--r);margin-top:12px;display:none;}
+.msg-erro.vis{display:block;}
+
+/* ── EMPTY ── */
+.lista-empty{text-align:center;padding:60px 24px;color:var(--muted);}
+.lista-empty-icon{font-size:40px;margin-bottom:12px;}
+.lista-empty-txt{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+
+/* ── SPINNER ── */
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--off);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── FOOTER ── */
+footer{background:var(--bg1);border-top:1px solid var(--border);padding:32px 24px;text-align:center;}
+.f-logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;text-transform:uppercase;color:var(--white);margin-bottom:6px;}
+.f-logo span{color:var(--red);}
+.f-txt{font-size:13px;color:var(--muted);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .nav-menu-btn{display:flex;}
+  .forum-wrap{grid-template-columns:1fr;}
+  .sidebar{order:-1;}
+  .kpi{padding:10px 14px;}
+  .kpi-val{font-size:22px;}
+  .form-row-2{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="nav-bar"></span>
+    Quinari <span>em Foco</span>
+  </a>
+  <a href="index.html" class="nav-back">← Início</a>
+  <div class="nav-right">
+    <button class="nav-menu-btn" id="menu-btn" aria-label="Menu">☰</button>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobile-nav">
+  <a href="prefeitura.html" class="mobile-link">Prefeitura <span>›</span></a>
+  <a href="camara.html" class="mobile-link">Câmara <span>›</span></a>
+  <a href="secretarias.html" class="mobile-link">Secretarias <span>›</span></a>
+  <a href="ranking.html" class="mobile-link">Ranking <span>›</span></a>
+  <a href="calendario.html" class="mobile-link">Calendário <span>›</span></a>
+  <a href="vagas.html" class="mobile-link">Vagas <span>›</span></a>
+  <a href="comercios.html" class="mobile-link">Comércios <span>›</span></a>
+  <a href="forum.html" class="mobile-link">Fórum <span>›</span></a>
+  <a href="voz-do-povo.html" class="mobile-link red">🗣️ Voz do Povo <span>›</span></a>
+</div>
+
+<!-- HERO -->
+<div class="hero a1">
+  <p class="hero-label">Módulo 4 · Participação</p>
+  <h1>Fórum Municipal</h1>
+  <p class="hero-sub">Debate aberto com os moradores de Senador Guiomard — tire dúvidas, faça perguntas e discuta os assuntos da cidade.</p>
+</div>
+
+<!-- KPIs -->
+<div class="kpis a2" id="kpis">
+  <div class="kpi"><div class="kpi-val" id="kpi-top"><span class="spinner"></span></div><div class="kpi-lab">Tópicos</div></div>
+  <div class="kpi"><div class="kpi-val" id="kpi-res">—</div><div class="kpi-lab">Respostas</div></div>
+  <div class="kpi"><div class="kpi-val" id="kpi-cats">—</div><div class="kpi-lab">Categorias</div></div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar a2">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" id="search-input" type="text" placeholder="Buscar tópico...">
+  </div>
+  <div class="filter-scroll" id="filter-btns"></div>
+  <button class="btn-novo" id="btn-novo">+ Novo Tópico</button>
+</div>
+
+<!-- CONTEÚDO -->
+<div class="forum-wrap a3">
+  <div>
+    <div id="topicos-lista">
+      <div style="text-align:center;padding:40px;color:var(--muted)"><span class="spinner"></span> Carregando...</div>
+    </div>
+  </div>
+  <div class="sidebar">
+    <div class="side-card">
+      <div class="side-head"><span class="side-title">Categorias</span></div>
+      <div class="side-body" id="side-cats"></div>
+    </div>
+    <div class="side-card">
+      <div class="side-head"><span class="side-title">Mais Ativos</span></div>
+      <div class="side-body" id="side-top"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: DETALHE DO TÓPICO -->
+<div class="modal-overlay" id="modal-topico">
+  <div class="modal" id="modal-topico-inner"></div>
+</div>
+
+<!-- MODAL: NOVO TÓPICO -->
+<div class="modal-overlay" id="modal-novo">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title">Novo Tópico</span>
+      <button class="modal-close" id="novo-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label class="form-label" for="nt-titulo">Título do Tópico *</label>
+        <input class="form-input" id="nt-titulo" type="text" maxlength="300" placeholder="Ex: Quando o asfalto da Rua X vai ser consertado?">
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="nt-cat">Categoria *</label>
+        <select class="form-select" id="nt-cat">
+          <option value="">— Selecione —</option>
+          <option value="infraestrutura">Infraestrutura e Obras</option>
+          <option value="saude">Saúde</option>
+          <option value="educacao">Educação</option>
+          <option value="seguranca">Segurança Pública</option>
+          <option value="meio_ambiente">Meio Ambiente</option>
+          <option value="transporte">Transporte e Mobilidade</option>
+          <option value="cultura">Cultura e Lazer</option>
+          <option value="administracao">Administração Municipal</option>
+          <option value="denuncia">Denúncia</option>
+          <option value="geral">Geral</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="nt-desc">Descrição / Mensagem *</label>
+        <textarea class="form-textarea" id="nt-desc" maxlength="5000" style="min-height:120px" placeholder="Descreva sua questão, sugestão ou denúncia em detalhes..."></textarea>
+      </div>
+      <div class="form-row-2">
+        <div class="form-row" style="margin:0">
+          <label class="form-label" for="nt-autor">Seu Nome *</label>
+          <input class="form-input" id="nt-autor" type="text" maxlength="100" placeholder="Nome ou apelido">
+        </div>
+        <div class="form-row" style="margin:0">
+          <label class="form-label" for="nt-email">E-mail (opcional)</label>
+          <input class="form-input" id="nt-email" type="email" maxlength="200" placeholder="Não será publicado">
+        </div>
+      </div>
+      <button class="btn-enviar btn-enviar-full" id="btn-criar-topico">Publicar Tópico</button>
+      <div class="msg-ok" id="novo-ok">✓ Tópico publicado com sucesso!</div>
+      <div class="msg-erro" id="novo-erro"></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">Quinari <span>em Foco</span></div>
+  <p class="f-txt">Plataforma independente de transparência municipal · Senador Guiomard – AC</p>
+</footer>
+
+<script>
+// ─── CONFIG ────────────────────────────────────────────────────────────────
+const CATS = {
+  infraestrutura: { label: 'Infraestrutura', cor: '#e17055' },
+  saude:          { label: 'Saúde',          cor: '#00c87a' },
+  educacao:       { label: 'Educação',       cor: '#f5c518' },
+  seguranca:      { label: 'Segurança',      cor: '#e10600' },
+  meio_ambiente:  { label: 'Meio Ambiente',  cor: '#55efc4' },
+  transporte:     { label: 'Transporte',     cor: '#74b9ff' },
+  cultura:        { label: 'Cultura',        cor: '#a78bfa' },
+  administracao:  { label: 'Administração',  cor: '#4da6ff' },
+  denuncia:       { label: 'Denúncia',       cor: '#fd79a8' },
+  geral:          { label: 'Geral',          cor: '#909099' }
+};
+
+// ─── ESTADO ────────────────────────────────────────────────────────────────
+let todosTopicos = [];
+let filtroAtivo = 'todos';
+let busca = '';
+
+// ─── SUPABASE ──────────────────────────────────────────────────────────────
+const LS_KEY = 'qef_forum_topicos';
+
+function salvarLocal(t) {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(t)); } catch (_) {}
+}
+function carregarLocal() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch (_) { return []; }
+}
+
+async function carregarTopicos() {
+  try {
+    const r = await fetch('/api/forum');
+    if (r.ok) {
+      const d = await r.json();
+      if (Array.isArray(d.topicos)) {
+        todosTopicos = d.topicos;
+        salvarLocal(d.topicos);
+        return;
+      }
+    }
+  } catch (_) {}
+  todosTopicos = carregarLocal();
+}
+
+// ─── FILTRAR ───────────────────────────────────────────────────────────────
+function filtrados() {
+  return todosTopicos.filter(t => {
+    const catOk = filtroAtivo === 'todos' || t.cat === filtroAtivo;
+    const bOk = !busca ||
+      t.titulo.toLowerCase().includes(busca) ||
+      (t.descricao || '').toLowerCase().includes(busca) ||
+      t.autor.toLowerCase().includes(busca);
+    return catOk && bOk;
+  });
+}
+
+// ─── TEMPO RELATIVO ────────────────────────────────────────────────────────
+function tempoRelativo(dataStr) {
+  const diff = (Date.now() - new Date(dataStr)) / 1000;
+  if (diff < 60) return 'agora mesmo';
+  if (diff < 3600) return `há ${Math.floor(diff / 60)} min`;
+  if (diff < 86400) return `há ${Math.floor(diff / 3600)} h`;
+  if (diff < 604800) return `há ${Math.floor(diff / 86400)} dias`;
+  return new Date(dataStr).toLocaleDateString('pt-BR');
+}
+
+// ─── KPIs ──────────────────────────────────────────────────────────────────
+function renderKPIs() {
+  document.getElementById('kpi-top').textContent = todosTopicos.length;
+  document.getElementById('kpi-res').textContent = todosTopicos.reduce((s, t) => s + (t.total_respostas || 0), 0);
+  document.getElementById('kpi-cats').textContent = new Set(todosTopicos.map(t => t.cat)).size;
+}
+
+// ─── FILTROS / SIDEBAR ────────────────────────────────────────────────────
+function renderFiltros() {
+  const catsPresentes = new Set(todosTopicos.map(t => t.cat));
+  const cont = document.getElementById('filter-btns');
+  cont.innerHTML = '';
+  const todos = document.createElement('button');
+  todos.className = 'filter-btn' + (filtroAtivo === 'todos' ? ' ativo' : '');
+  todos.dataset.cat = 'todos';
+  todos.textContent = 'Todos';
+  cont.appendChild(todos);
+  for (const [key, cfg] of Object.entries(CATS)) {
+    if (!catsPresentes.has(key)) continue;
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (filtroAtivo === key ? ' ativo' : '');
+    btn.dataset.cat = key;
+    btn.textContent = cfg.label;
+    cont.appendChild(btn);
+  }
+}
+
+function renderSidebar() {
+  // Categorias com contagem
+  const sideCats = document.getElementById('side-cats');
+  const contagem = {};
+  todosTopicos.forEach(t => { contagem[t.cat] = (contagem[t.cat] || 0) + 1; });
+  if (!Object.keys(contagem).length) {
+    sideCats.innerHTML = '<p style="font-size:13px;color:var(--muted)">Nenhum tópico ainda.</p>';
+  } else {
+    sideCats.innerHTML = Object.entries(contagem)
+      .sort((a, b) => b[1] - a[1]).slice(0, 8)
+      .map(([key, n]) => {
+        const cfg = CATS[key] || CATS.geral;
+        return `<div class="side-cat-item" data-cat="${key}">
+          <span class="side-cat-name"><span class="side-cat-dot" style="background:${cfg.cor}"></span>${cfg.label}</span>
+          <span class="side-cat-count">${n}</span>
+        </div>`;
+      }).join('');
+  }
+
+  // Mais ativos (mais respostas)
+  const sideTop = document.getElementById('side-top');
+  const ativos = [...todosTopicos].sort((a, b) => (b.total_respostas || 0) - (a.total_respostas || 0)).slice(0, 5);
+  if (!ativos.length) {
+    sideTop.innerHTML = '<p style="font-size:13px;color:var(--muted)">Nenhum tópico ainda.</p>';
+  } else {
+    sideTop.innerHTML = ativos.map(t =>
+      `<div class="side-top-item" data-id="${t.id}">
+        <div class="side-top-titulo">${t.titulo}</div>
+        <div class="side-top-meta">${t.total_respostas || 0} resp · ${tempoRelativo(t.criado_em)}</div>
+      </div>`
+    ).join('');
+  }
+}
+
+// ─── RENDER LISTA ──────────────────────────────────────────────────────────
+function renderLista() {
+  const cont = document.getElementById('topicos-lista');
+  const lista = filtrados();
+  if (!lista.length) {
+    cont.innerHTML = `<div class="lista-empty">
+      <div class="lista-empty-icon">💬</div>
+      <div class="lista-empty-txt">Nenhum tópico encontrado</div>
+      <p style="margin-top:8px;font-size:14px;color:var(--muted)">Seja o primeiro a iniciar uma discussão!</p>
+    </div>`;
+    return;
+  }
+  cont.innerHTML = lista.map(t => {
+    const cfg = CATS[t.cat] || CATS.geral;
+    return `<div class="topico-item${t.fixado ? ' fixado' : ''}" data-id="${t.id}">
+      <div class="ti-head">
+        <span class="ti-cat" style="background:${cfg.cor}22;color:${cfg.cor}">${cfg.label}</span>
+        <span class="ti-titulo">${t.titulo}</span>
+        ${t.fixado ? '<span class="ti-pin">📌</span>' : ''}
+      </div>
+      ${t.descricao ? `<div class="ti-desc">${t.descricao}</div>` : ''}
+      <div class="ti-footer">
+        <span class="ti-meta">por <strong>${t.autor}</strong> · ${tempoRelativo(t.criado_em)}</span>
+        <span class="ti-badge resp">💬 ${t.total_respostas || 0}</span>
+        <button class="ti-like-btn" data-id="${t.id}" data-curtidas="${t.curtidas || 0}">❤ ${t.curtidas || 0}</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─── MODAL DETALHE ─────────────────────────────────────────────────────────
+async function abrirTopico(id) {
+  const inner = document.getElementById('modal-topico-inner');
+  inner.innerHTML = `<div style="padding:40px;text-align:center"><span class="spinner"></span></div>`;
+  document.getElementById('modal-topico').classList.add('open');
+
+  try {
+    const r = await fetch(`/api/forum?topico_id=${id}`);
+    if (!r.ok) throw new Error('Erro ao carregar');
+    const { topico: t, respostas } = await r.json();
+    if (!t) throw new Error('Tópico não encontrado');
+
+    const cfg = CATS[t.cat] || CATS.geral;
+    const respostasHtml = respostas && respostas.length
+      ? respostas.map(r => `
+        <div class="resposta-item">
+          <div class="resp-avatar">${r.autor.charAt(0).toUpperCase()}</div>
+          <div class="resp-body">
+            <div class="resp-header">
+              <span class="resp-autor">${r.autor}</span>
+              <span class="resp-data">${tempoRelativo(r.criado_em)}</span>
+            </div>
+            <div class="resp-texto">${r.texto}</div>
+          </div>
+        </div>`).join('')
+      : '<div class="resp-empty">Nenhuma resposta ainda. Seja o primeiro!</div>';
+
+    inner.innerHTML = `
+      <div class="modal-head">
+        <span class="modal-title" style="font-size:15px;max-width:80%">${t.titulo}</span>
+        <button class="modal-close" id="top-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <span class="det-cat" style="background:${cfg.cor}22;color:${cfg.cor}">${cfg.label}</span>
+        <div class="det-titulo">${t.titulo}</div>
+        <div class="det-meta">por <strong>${t.autor}</strong> · ${tempoRelativo(t.criado_em)} · ❤ ${t.curtidas || 0} curtidas</div>
+        ${t.descricao ? `<div class="det-desc">${t.descricao}</div>` : ''}
+        <div class="det-sep"></div>
+        <div class="det-respostas-titulo">${(respostas || []).length} Resposta(s)</div>
+        ${respostasHtml}
+        <div class="resp-form">
+          <div class="resp-form-titulo">Deixar uma Resposta</div>
+          <div class="form-row">
+            <label class="form-label" for="re-texto">Mensagem *</label>
+            <textarea class="form-textarea" id="re-texto" maxlength="5000" placeholder="Escreva sua resposta..."></textarea>
+          </div>
+          <div class="form-row-2">
+            <div class="form-row" style="margin:0">
+              <label class="form-label" for="re-autor">Seu Nome *</label>
+              <input class="form-input" id="re-autor" type="text" maxlength="100">
+            </div>
+            <div class="form-row" style="margin:0">
+              <label class="form-label" for="re-email">E-mail (opcional)</label>
+              <input class="form-input" id="re-email" type="email" maxlength="200">
+            </div>
+          </div>
+          <button class="btn-enviar" id="btn-resp" data-topico="${t.id}">Responder</button>
+          <div class="msg-ok" id="resp-ok">✓ Resposta enviada!</div>
+          <div class="msg-erro" id="resp-erro"></div>
+        </div>
+      </div>`;
+
+    document.getElementById('top-close').addEventListener('click', () => {
+      document.getElementById('modal-topico').classList.remove('open');
+    });
+
+    document.getElementById('btn-resp').addEventListener('click', async () => {
+      const texto = document.getElementById('re-texto').value.trim();
+      const autor = document.getElementById('re-autor').value.trim();
+      const email = document.getElementById('re-email').value.trim();
+      const ok    = document.getElementById('resp-ok');
+      const erro  = document.getElementById('resp-erro');
+      ok.classList.remove('vis'); erro.classList.remove('vis');
+
+      if (!texto || !autor) {
+        erro.textContent = 'Preencha Mensagem e Nome.';
+        erro.classList.add('vis'); return;
+      }
+      const btn = document.getElementById('btn-resp');
+      btn.disabled = true; btn.textContent = 'Enviando…';
+      try {
+        const resp = await fetch('/api/forum', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ acao: 'responder', topico_id: t.id, texto, autor, email })
+        });
+        if (!resp.ok) { const d = await resp.json().catch(()=>({})); throw new Error(d.erro || `Erro ${resp.status}`); }
+        ok.classList.add('vis');
+        document.getElementById('re-texto').value = '';
+        document.getElementById('re-autor').value = '';
+        document.getElementById('re-email').value = '';
+        // atualiza contagem local
+        const idx = todosTopicos.findIndex(x => x.id === t.id);
+        if (idx >= 0) todosTopicos[idx].total_respostas = (todosTopicos[idx].total_respostas || 0) + 1;
+        renderLista(); renderKPIs(); renderSidebar();
+      } catch (err) {
+        erro.textContent = 'Erro: ' + err.message; erro.classList.add('vis');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Responder';
+      }
+    });
+
+  } catch (err) {
+    inner.innerHTML = `<div style="padding:30px;text-align:center;color:var(--muted)">${err.message}</div>`;
+  }
+}
+
+// ─── CURTIR ────────────────────────────────────────────────────────────────
+async function curtir(id) {
+  try {
+    const r = await fetch('/api/forum', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ acao: 'curtir', topico_id: parseInt(id) })
+    });
+    if (r.ok) {
+      const d = await r.json();
+      const idx = todosTopicos.findIndex(t => String(t.id) === String(id));
+      if (idx >= 0) { todosTopicos[idx].curtidas = d.curtidas; renderLista(); }
+    }
+  } catch (_) {}
+}
+
+// ─── EVENTOS ───────────────────────────────────────────────────────────────
+document.getElementById('topicos-lista').addEventListener('click', e => {
+  const likeBtn = e.target.closest('.ti-like-btn');
+  if (likeBtn) { e.stopPropagation(); curtir(likeBtn.dataset.id); return; }
+  const item = e.target.closest('.topico-item');
+  if (item) abrirTopico(item.dataset.id);
+});
+
+document.getElementById('modal-topico').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal-topico')) {
+    document.getElementById('modal-topico').classList.remove('open');
+  }
+});
+
+document.getElementById('side-cats').addEventListener('click', e => {
+  const item = e.target.closest('[data-cat]');
+  if (!item) return;
+  filtroAtivo = item.dataset.cat;
+  renderFiltros(); renderLista();
+});
+
+document.getElementById('side-top').addEventListener('click', e => {
+  const item = e.target.closest('[data-id]');
+  if (item) abrirTopico(item.dataset.id);
+});
+
+document.getElementById('filter-btns').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  filtroAtivo = btn.dataset.cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('ativo', b.dataset.cat === filtroAtivo));
+  renderLista();
+});
+
+document.getElementById('search-input').addEventListener('input', e => {
+  busca = e.target.value.toLowerCase().trim();
+  renderLista();
+});
+
+document.getElementById('btn-novo').addEventListener('click', () => {
+  document.getElementById('modal-novo').classList.add('open');
+  document.getElementById('novo-ok').classList.remove('vis');
+  document.getElementById('novo-erro').classList.remove('vis');
+});
+document.getElementById('novo-close').addEventListener('click', () => {
+  document.getElementById('modal-novo').classList.remove('open');
+});
+document.getElementById('modal-novo').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal-novo')) {
+    document.getElementById('modal-novo').classList.remove('open');
+  }
+});
+
+document.getElementById('btn-criar-topico').addEventListener('click', async () => {
+  const titulo = document.getElementById('nt-titulo').value.trim();
+  const cat    = document.getElementById('nt-cat').value;
+  const desc   = document.getElementById('nt-desc').value.trim();
+  const autor  = document.getElementById('nt-autor').value.trim();
+  const email  = document.getElementById('nt-email').value.trim();
+  const ok     = document.getElementById('novo-ok');
+  const erro   = document.getElementById('novo-erro');
+  ok.classList.remove('vis'); erro.classList.remove('vis');
+
+  if (!titulo || !cat || !desc || !autor) {
+    erro.textContent = 'Preencha: Título, Categoria, Descrição e Nome.';
+    erro.classList.add('vis'); return;
+  }
+  const btn = document.getElementById('btn-criar-topico');
+  btn.disabled = true; btn.textContent = 'Publicando…';
+  try {
+    const r = await fetch('/api/forum', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ acao: 'criar', topico: { titulo, cat, descricao: desc, autor, email } })
+    });
+    if (!r.ok) { const d = await r.json().catch(()=>({})); throw new Error(d.erro || `Erro ${r.status}`); }
+    ok.classList.add('vis');
+    ['nt-titulo','nt-desc','nt-autor','nt-email'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('nt-cat').value = '';
+    await carregarTopicos();
+    renderKPIs(); renderFiltros(); renderSidebar(); renderLista();
+  } catch (err) {
+    erro.textContent = 'Erro: ' + err.message; erro.classList.add('vis');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Publicar Tópico';
+  }
+});
+
+document.getElementById('menu-btn').addEventListener('click', () => {
+  const nav = document.getElementById('mobile-nav');
+  const btn = document.getElementById('menu-btn');
+  const open = nav.classList.toggle('open');
+  btn.textContent = open ? '✕' : '☰';
+});
+
+// ─── INIT ──────────────────────────────────────────────────────────────────
+(async () => {
+  await carregarTopicos();
+  renderKPIs();
+  renderFiltros();
+  renderSidebar();
+  renderLista();
+})();
+</script>
+</body>
+</html>
