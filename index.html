@@ -1023,12 +1023,8 @@ async function sendChat(){
 <script>
 // Widget Previsão do Tempo
 
-// ══ WIDGET PREVISÃO DO TEMPO — Open-Meteo (sem API key) ══════════
-const _TEMPO_URL = 'https://api.open-meteo.com/v1/forecast?' +
-  'latitude=-10.0417&longitude=-67.7436' +
-  '&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,apparent_temperature,precipitation' +
-  '&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_probability_max' +
-  '&timezone=America%2FRio_Branco&forecast_days=5';
+// ══ WIDGET PREVISÃO DO TEMPO — via proxy /api/tempo ══════════
+const _TEMPO_URL = '/api/tempo';
 
 function _tempoInfo(code) {
   if (code === 0) return {desc:'Céu limpo', ico:'☀️', cor:'#ffd600'};

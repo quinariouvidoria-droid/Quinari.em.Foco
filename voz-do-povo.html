@@ -426,6 +426,37 @@ footer a{color:var(--red);text-decoration:none;}
 const KEY = 'qf_db2';
 function getDB(){try{return JSON.parse(localStorage.getItem(KEY))||seed();}catch{return seed();}}
 function saveDB(db){localStorage.setItem(KEY,JSON.stringify(db));}
+
+// ─── SUPABASE SYNC — ideias e assinaturas ───
+let supaIdeias = []; // ideias carregadas do banco (todos os dispositivos)
+async function carregarIdeiasSupabase(){
+  try {
+    const r = await fetch('/api/voz');
+    if(!r.ok) return;
+    const json = await r.json();
+    if(!json.ideias) return;
+    supaIdeias = json.ideias;
+    renderIdeias(); // re-renderizar com dados globais
+  } catch(_) {}
+}
+async function sincPublicarIdeia(ideia){
+  try {
+    await fetch('/api/voz', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ acao:'publicar', ideia })
+    });
+    await carregarIdeiasSupabase();
+  } catch(_) {}
+}
+async function sincAssinar(ideia_id, nome, email){
+  try {
+    await fetch('/api/voz', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ acao:'assinar', ideia_id, nome, email })
+    });
+    await carregarIdeiasSupabase();
+  } catch(_) {}
+}
 function seed(){
   const db={
     users:[],sessao:null,
@@ -552,7 +583,10 @@ function filtrarIdeia(f,el){fIdeia=f;document.querySelectorAll('#panel-ideias .f
 function renderIdeias(){
   const db=getDB();
   const s=db.sessao;
-  let ideas=[...db.ideias].sort((a,b)=>b.sigs.length-a.sigs.length);
+  // Mesclar: ideias do Supabase (globais) + locais únicas (não duplicar por id)
+  const supaIds = new Set(supaIdeias.map(i=>i.id));
+  const locaisUnicas = db.ideias.filter(i=>!supaIds.has(i.id));
+  let ideas=[...supaIdeias, ...locaisUnicas].sort((a,b)=>b.sigs.length-a.sigs.length);
   if(fIdeia!=='todos')ideas=ideas.filter(i=>i.cat===fIdeia);
   const lista=document.getElementById('ideias-lista');
   if(!ideas.length){lista.innerHTML='<div style="text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;">Nenhuma ideia encontrada.<br>Seja o primeiro a propor algo para o município!</div>';return;}
@@ -606,10 +640,21 @@ function iniciarAssinar(id){
 function confirmarAssinatura(){
   const s=sessao();if(!s||!assinarId)return;
   const nome=document.getElementById('assinar-nome').value.trim();if(!nome)return;
-  const db=getDB();const idea=db.ideias.find(i=>i.id===assinarId);if(!idea)return;
+  const db=getDB();
+  // Verificar na lista mesclada (local + supabase)
+  const supaIdeia = supaIdeias.find(i=>i.id===assinarId);
+  const localIdeia = db.ideias.find(i=>i.id===assinarId);
+  const idea = supaIdeia || localIdeia;
+  if(!idea){fecharModal('assinar');return;}
   if(idea.sigs.some(a=>a.email===s.email)){fecharModal('assinar');return;}
-  idea.sigs.push({nome,email:s.email,data:new Date().toLocaleDateString('pt-BR')});
-  saveDB(db);fecharModal('assinar');renderIdeias();assinarId=null;
+  // Atualizar local também se existir
+  if(localIdeia){
+    localIdeia.sigs.push({nome,email:s.email,data:new Date().toLocaleDateString('pt-BR')});
+    saveDB(db);
+  }
+  fecharModal('assinar');renderIdeias();
+  sincAssinar(assinarId, nome, s.email);
+  assinarId=null;
 }
 async function publicarIdeia(){
   const s=sessao();if(!s)return;
@@ -643,8 +688,11 @@ async function publicarIdeia(){
 
   const db=getDB();const hoje=new Date().toLocaleDateString('pt-BR');
   const textoFinal = resultado.texto_limpo || desc;
-  db.ideias.unshift({id:'i'+Date.now(),cat,titulo,desc:textoFinal,autor:s.nome,email:s.email,data:hoje,sigs:[{nome:s.nome,email:s.email,data:hoje}]});
+  const novaIdeia = {id:'i'+Date.now(),cat,titulo,desc:textoFinal,autor:s.nome,email:s.email,data:hoje,sigs:[{nome:s.nome,email:s.email,data:hoje}]};
+  db.ideias.unshift(novaIdeia);
   saveDB(db);
+  // Sincronizar com Supabase em background
+  sincPublicarIdeia(novaIdeia);
   const ok = document.getElementById('ideia-ok');
   ok.style.background = '';ok.style.borderColor = '';ok.style.color = '';
   ok.textContent = 'Sua ideia foi publicada! A comunidade já pode assinar.';
@@ -659,4 +707,15 @@ function cnt(el,id,max){document.getElementById(id).textContent=el.value.length;
 function toggleMenu(){
   const nav=document.getElementById('mobile-nav');
   const btn=document.getElementById('menu-btn');
-  const open=nav.classList.toggle('
+  const open=nav.classList.toggle('open');
+  btn.textContent = open ? '✕' : '☰';
+}
+
+// ─── INICIALIZAÇÃO ───
+atualizarNav();
+renderProj();
+renderIdeias();
+carregarIdeiasSupabase(); // carrega ideias globais do Supabase
+</script>
+</body>
+</html>

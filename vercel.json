@@ -17,6 +17,15 @@
     },
     "api/dados.js": {
       "maxDuration": 10
+    },
+    "api/tempo.js": {
+      "maxDuration": 10
+    },
+    "api/votos.js": {
+      "maxDuration": 10
+    },
+    "api/voz.js": {
+      "maxDuration": 15
     }
   }
 }

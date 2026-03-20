@@ -162,6 +162,18 @@ tr:hover td{background:var(--bg2)}
 .spin{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .vazio{padding:48px;text-align:center;color:var(--gray2);font-family:'DM Mono',monospace;font-size:.8rem}
+/* AO VIVO */
+.live-status{display:flex;align-items:center;gap:12px;background:var(--bg2);border:1px solid var(--border);padding:16px 20px;margin-bottom:20px;flex-wrap:wrap}
+.live-dot{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);flex-shrink:0;animation:blink 1.4s ease-in-out infinite}
+.live-dot.offline{background:var(--gray2);box-shadow:none;animation:none}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.live-status-txt{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:1px;text-transform:uppercase}
+.live-status-sub{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--gray2)}
+.live-embed-wrap{position:relative;width:100%;padding-bottom:56.25%;background:var(--bg3);border:1px solid var(--border);overflow:hidden;margin-bottom:16px}
+.live-embed-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+.live-btn-yt{display:inline-flex;align-items:center;gap:10px;background:#ff0000;color:var(--white);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:1px;text-transform:uppercase;padding:12px 28px;text-decoration:none;transition:opacity .2s}
+.live-btn-yt:hover{opacity:.85}
+.sessoes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:12px}
 
 /* INFO BOX */
 .info-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--blue);padding:16px 20px;margin-bottom:20px;font-size:.85rem;color:var(--gray);line-height:1.6}
@@ -262,6 +274,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:40px 24px
   <div class="abas">
     <button class="aba-btn ativa" onclick="trocarAba('vereadores')">Vereadores</button>
     <button class="aba-btn" onclick="trocarAba('frequencia')">Frequência</button>
+    <button class="aba-btn" onclick="trocarAba('aovivo')" id="btn-aovivo">🔴 Ao Vivo</button>
     <button class="aba-btn" onclick="trocarAba('publicacoes')">Publicações</button>
     <button class="aba-btn" onclick="trocarAba('licitacoes')">Licitações</button>
     <button class="aba-btn" onclick="trocarAba('contato')">Contato</button>
@@ -293,6 +306,67 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:40px 24px
   <div class="sec-title">Todos os vereadores — 9ª Legislatura</div>
   <div class="vereadores-grid" id="grid-vereadores">
     <div class="loading"><div class="spin"></div> Carregando vereadores...</div>
+  </div>
+</div>
+
+<!-- ABA: AO VIVO -->
+<div class="aba-content" id="aba-aovivo">
+  <div class="live-status" id="live-status-bar">
+    <div class="live-dot offline" id="live-dot"></div>
+    <div>
+      <div class="live-status-txt" id="live-status-txt">Verificando...</div>
+      <div class="live-status-sub" id="live-status-sub">Sessões toda terça-feira às 19h</div>
+    </div>
+  </div>
+
+  <div class="live-embed-wrap" id="live-embed-wrap">
+    <iframe
+      id="yt-iframe"
+      src="https://www.youtube.com/embed?listType=user_uploads&list=camarasenadorguiomard8100&index=1&autoplay=0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+      title="Câmara Municipal de Senador Guiomard — YouTube">
+    </iframe>
+  </div>
+
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">
+    <a href="https://www.youtube.com/@camarasenadorguiomard8100/live" target="_blank" class="live-btn-yt">
+      ▶ Abrir ao vivo no YouTube
+    </a>
+    <a href="https://www.youtube.com/@camarasenadorguiomard8100" target="_blank"
+       style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:1px;text-transform:uppercase;padding:12px 24px;text-decoration:none;background:var(--bg2);color:var(--blue);border:1px solid rgba(77,166,255,.3);display:inline-flex;align-items:center;gap:8px;transition:all .2s">
+      Ver canal completo →
+    </a>
+  </div>
+
+  <div class="sec-title">Calendário de sessões</div>
+  <div class="sessoes-grid">
+    <div class="kpi" style="border-left-color:var(--blue)">
+      <div class="kpi-label">Dia fixo</div>
+      <div class="kpi-valor azul">Terça</div>
+      <div class="kpi-sub">Sessões ordinárias semanais</div>
+    </div>
+    <div class="kpi" style="border-left-color:var(--blue)">
+      <div class="kpi-label">Horário</div>
+      <div class="kpi-valor azul">19h</div>
+      <div class="kpi-sub">Horário de Brasília</div>
+    </div>
+    <div class="kpi" style="border-left-color:var(--yellow)">
+      <div class="kpi-label">Sessões extraordinárias</div>
+      <div class="kpi-valor amarelo">Variável</div>
+      <div class="kpi-sub">Convocadas com antecedência</div>
+    </div>
+    <div class="kpi" style="border-left-color:var(--green)">
+      <div class="kpi-label">Transmissão</div>
+      <div class="kpi-valor verde">YouTube</div>
+      <div class="kpi-sub">Canal oficial ao vivo</div>
+    </div>
+  </div>
+
+  <div class="info-box" style="margin-top:20px">
+    <strong>Canal oficial:</strong> <a href="https://www.youtube.com/@camarasenadorguiomard8100" target="_blank">youtube.com/@camarasenadorguiomard8100</a><br>
+    As sessões são transmitidas ao vivo toda terça às 19h. Se o canal não aparecer acima, clique em "Abrir ao vivo no YouTube".
+    O portal detecta automaticamente se hoje é dia de sessão.
   </div>
 </div>
 
@@ -630,8 +704,75 @@ function renderLicitacoesCamara() {
   `).join('');
 }
 
+// ── Detecção sessão ao vivo ───────────────────────────────────────────────────
+function verificarSessaoAoVivo() {
+  const agora = new Date();
+  // Acre (AC) = UTC-5
+  const horaAC = new Date(agora.getTime() - 5 * 60 * 60 * 1000);
+  const diaSemana = horaAC.getUTCDay(); // 2 = terça
+  const hora = horaAC.getUTCHours();
+  const minutos = horaAC.getUTCMinutes();
+  const horaDecimal = hora + minutos / 60;
+
+  const dot = document.getElementById('live-dot');
+  const txt = document.getElementById('live-status-txt');
+  const sub = document.getElementById('live-status-sub');
+  const btnAoVivo = document.getElementById('btn-aovivo');
+  if (!dot || !txt) return;
+
+  // Sessão provável: terça das 18h às 23h (horário AC)
+  const provavel = diaSemana === 2 && horaDecimal >= 18 && horaDecimal < 23;
+  if (provavel) {
+    dot.classList.remove('offline');
+    txt.textContent = 'Possível sessão ao vivo agora!';
+    txt.style.color = 'var(--green)';
+    sub.textContent = 'Terça-feira — período de sessão ordinária (19h–22h)';
+    if (btnAoVivo) btnAoVivo.textContent = '🔴 Ao Vivo';
+  } else {
+    dot.classList.add('offline');
+    // Calcular próxima terça
+    const diasParaTerca = diaSemana < 2 ? 2 - diaSemana : diaSemana === 2 ? 7 : 9 - diaSemana;
+    const proxTerca = new Date(horaAC.getTime());
+    proxTerca.setUTCDate(horaAC.getUTCDate() + diasParaTerca);
+    const dataStr = proxTerca.toLocaleDateString('pt-BR', { weekday:'long', day:'2-digit', month:'2-digit', timeZone:'UTC' });
+    txt.textContent = 'Sem sessão no momento';
+    sub.textContent = 'Próxima sessão: ' + dataStr + ' às 19h';
+  }
+
+  // Atualizar iframe para live quando provável
+  const iframe = document.getElementById('yt-iframe');
+  if (iframe && provavel) {
+    iframe.src = 'https://www.youtube.com/embed?listType=user_uploads&list=camarasenadorguiomard8100&index=1&autoplay=0';
+  }
+}
+
 // ── Trocar aba ────────────────────────────────────────────────────────────────
 function trocarAba(aba) {
-  const abas = ['vereadores','frequencia','publicacoes','licitacoes','contato'];
+  const abas = ['vereadores','frequencia','aovivo','publicacoes','licitacoes','contato'];
   document.querySelectorAll('.aba-btn').forEach((b,i) => b.classList.toggle('ativa', abas[i] === aba));
-  document.querySelectorAll('.aba-content').forEach(el => el.classList.toggle('ativa', el.id === `ab
+  document.querySelectorAll('.aba-content').forEach(el => el.classList.toggle('ativa', el.id === `aba-${aba}`));
+  if (aba === 'aovivo') verificarSessaoAoVivo();
+}
+
+// ── Hambúrguer + link ativo ───────────────────────────────────────────────────
+document.getElementById('hamburger').addEventListener('click', function() {
+  document.getElementById('navLinks').classList.toggle('aberto');
+});
+(function() {
+  const p = location.pathname.split('/').pop() || 'index.html';
+  const map = {'index.html':'nl-home','prefeitura.html':'nl-pref','camara.html':'nl-cam',
+    'secretarias.html':'nl-sec','ranking.html':'nl-rank','voz-do-povo.html':'nl-voz'};
+  const id = map[p];
+  if (id) document.getElementById(id)?.classList.add('ativo');
+})();
+
+// ── Inicialização ─────────────────────────────────────────────────────────────
+renderKPIsVereadores();
+renderGrid();
+renderFrequencia();
+renderPublicacoes();
+renderLicitacoesCamara();
+verificarSessaoAoVivo();
+</script>
+</body>
+</html>
