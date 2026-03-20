@@ -148,76 +148,123 @@
   /* ── RODAPÉ ── */
   footer { border-top:1px solid var(--border); margin-top:48px; padding:24px; text-align:center; color:var(--gray2); font-size:.8rem; }
   footer a { color:var(--gray2); }
-/* NAV PADRÃO */
-.ticker{background:var(--red);overflow:hidden;height:32px;display:flex;align-items:center}
-.ticker-label{background:var(--bg);color:var(--red);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:2px;padding:0 16px;white-space:nowrap;height:100%;display:flex;align-items:center;flex-shrink:0}
-.ticker-track{display:flex;animation:ticker 40s linear infinite;white-space:nowrap}
-.ticker-track span{padding:0 32px;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.8rem;letter-spacing:1px;color:var(--white)}
-@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:3px solid var(--red);height:56px;display:flex;align-items:center;padding:0 24px;justify-content:space-between;gap:8px}
-.nav-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;letter-spacing:2px;text-transform:uppercase;color:var(--white);text-decoration:none;flex-shrink:0}
-.nav-logo span{color:var(--red)}
-.nav-links{display:flex;gap:0;list-style:none;flex-wrap:nowrap}
-.nav-links a{color:var(--gray);text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:0 10px;height:56px;display:flex;align-items:center;border-bottom:3px solid transparent;margin-bottom:-3px;transition:color .2s,border-color .2s;white-space:nowrap}
-.nav-links a:hover{color:var(--white)}
-.nav-links a.ativo{color:var(--white);border-bottom-color:var(--red)}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;flex-shrink:0}
-.hamburger span{width:24px;height:2px;background:var(--white);display:block}
-@media(max-width:900px){
-  .nav-links{display:none;position:absolute;top:56px;left:0;right:0;background:var(--bg);flex-direction:column;padding:16px 24px;gap:0;border-bottom:2px solid var(--border);z-index:99}
-  .nav-links.aberto{display:flex}
-  .nav-links a{height:44px;padding:0 8px;border-bottom:1px solid var(--border);border-right:none}
-  .nav-links a.ativo{border-left:3px solid var(--red);border-bottom:1px solid var(--border)}
-  .hamburger{display:flex}
-}
-/* FOOTER PADRÃO */
-footer{background:var(--bg);border-top:1px solid var(--border);padding:40px 24px;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:32px}
-@media(max-width:768px){footer{grid-template-columns:1fr}}
-.f-col{}
-.f-logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.3rem;text-transform:uppercase;letter-spacing:.5px;color:var(--white);margin-bottom:8px}
-.f-logo span{color:var(--red)}
-.f-sub{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--gray2);line-height:1.7;margin-bottom:12px}
-.f-email{font-family:'DM Mono',monospace;font-size:.8rem;color:var(--gray2);text-decoration:none;display:block;margin-bottom:4px;transition:color .2s}
-.f-email:hover{color:var(--red)}
-.f-email-note{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gray2);opacity:.6}
-.f-col-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:12px}
-.f-links{display:flex;flex-direction:column;gap:8px}
-.f-link{font-size:.85rem;color:var(--gray2);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
-.f-link::before{content:'›';color:var(--red);font-size:1rem}
-.f-link:hover{color:var(--white)}
-.footer-bottom{background:var(--bg);border-top:1px solid var(--border);padding:14px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-family:'DM Mono',monospace;font-size:.72rem;color:var(--gray2)}
-.f-disc{opacity:.5}
+
+/* PREFEITA CARD */
+.prefeita-card{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:24px;display:flex;gap:28px;align-items:flex-start;margin-bottom:24px;flex-wrap:wrap}
+.prefeita-foto-wrap{position:relative;flex-shrink:0}
+.prefeita-foto{width:140px;height:140px;border-radius:50%;object-fit:cover;object-position:top center;border:3px solid var(--red)}
+.prefeita-partido-badge{position:absolute;bottom:4px;right:4px;background:var(--red);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;padding:2px 8px;border-radius:2px;letter-spacing:1px}
+.prefeita-info{flex:1;min-width:260px}
+.prefeita-cargo-label{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.prefeita-nome{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:2rem;text-transform:uppercase;letter-spacing:1px;line-height:1;color:var(--white);margin-bottom:4px}
+.prefeita-nome-completo{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--gray2);margin-bottom:16px}
+.prefeita-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:16px}
+.pstat{background:var(--bg3);border:1px solid var(--border);padding:10px 14px}
+.pstat-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;color:var(--white);line-height:1}
+.pstat-label{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--gray2);margin-top:2px}
+.prefeita-aprov-titulo{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--gray2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.aprov-row{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.aprov-label{font-family:'DM Mono',monospace;font-size:.72rem;width:76px;flex-shrink:0}
+.aprov-track{flex:1;height:10px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.aprov-fill{height:100%;border-radius:2px;transition:width .8s ease}
+.aprov-pct{font-family:'DM Mono',monospace;font-size:.72rem;min-width:44px;text-align:right}
+.prefeita-aprov-fonte{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--gray2);opacity:.6;margin-top:6px;margin-bottom:14px}
+.prefeita-contato{display:flex;gap:8px;flex-wrap:wrap}
+.pcontato-btn{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--gray2);background:var(--bg3);border:1px solid var(--border);padding:5px 12px;text-decoration:none;transition:all .2s;white-space:nowrap}
+.pcontato-btn:hover{border-color:var(--red);color:var(--white)}
+
 </style>
 </head>
 <body>
+
+<!-- TICKER -->
 <div class="ticker">
   <div class="ticker-label">QUINARI EM FOCO</div>
-  <div class="ticker-track">
-    <span>Portal independente de transparência · Senador Guiomard — AC</span>
-    <span>Dados públicos atualizados diariamente via APIs federais</span>
-    <span>Sem vínculo com a Prefeitura, Câmara ou partidos políticos</span>
-    <span>Ouvidoria: quinari.ouvidoria@gmail.com</span>
-    <span>Portal independente de transparência · Senador Guiomard — AC</span>
-    <span>Dados públicos atualizados diariamente via APIs federais</span>
-    <span>Sem vínculo com a Prefeitura, Câmara ou partidos políticos</span>
-    <span>Ouvidoria: quinari.ouvidoria@gmail.com</span>
+  <div class="ticker-track" id="tickerTrack">
+    <span>Portal Independente de Transparência Municipal</span>
+    <span>Senador Guiomard — Acre</span>
+    <span>Dados atualizados diariamente via APIs públicas federais</span>
+    <span>Sem vínculo com a Prefeitura ou partidos políticos</span>
+    <span>Portal Independente de Transparência Municipal</span>
+    <span>Senador Guiomard — Acre</span>
+    <span>Dados atualizados diariamente via APIs públicas federais</span>
+    <span>Sem vínculo com a Prefeitura ou partidos políticos</span>
   </div>
 </div>
+
+<!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">QUINARI <span>EM FOCO</span></a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="index.html" id="nl-home">Home</a></li>
-    <li><a href="prefeitura.html" id="nl-pref">Prefeitura</a></li>
-    <li><a href="camara.html" id="nl-cam">Câmara</a></li>
-    <li><a href="secretarias.html" id="nl-sec">Secretarias</a></li>
-    <li><a href="ranking.html" id="nl-rank">Ranking</a></li>
-    <li><a href="voz-do-povo.html" id="nl-voz">Voz do Povo</a></li>
-    <li><a href="mailto:quinari.ouvidoria@gmail.com">Ouvidoria</a></li>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="prefeitura.html" class="ativo">Prefeitura</a></li>
+    <li><a href="voz-do-povo.html">Voz do Povo</a></li>
+    <li><a href="/cdn-cgi/l/email-protection#512024383f3023387f3e242738353e23383011363c30383d7f323e3c">Ouvidoria</a></li>
   </ul>
-  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
 </nav>
 
 <!-- HEADER -->
+<!-- CARD DA PREFEITA -->
+<div class="prefeita-card">
+  <div class="prefeita-foto-wrap">
+    <img class="prefeita-foto" src="https://static.wixstatic.com/media/0204e8_e93c9203a7154d399e777115a35ac00c~mv2.jpg/v1/fill/w_392,h_392,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg" alt="Prefeita Rosana Gomes" loading="lazy">
+    <div class="prefeita-partido-badge">PP</div>
+  </div>
+  <div class="prefeita-info">
+    <div class="prefeita-cargo-label">PREFEITA MUNICIPAL · 2025–2028</div>
+    <h2 class="prefeita-nome">Rosana Gomes</h2>
+    <div class="prefeita-nome-completo">Rosana Pereira da Silva</div>
+
+    <div class="prefeita-stats">
+      <div class="pstat">
+        <div class="pstat-val">9.592</div>
+        <div class="pstat-label">votos em 2024</div>
+      </div>
+      <div class="pstat">
+        <div class="pstat-val" style="color:var(--green)">62,4%</div>
+        <div class="pstat-label">dos votos válidos</div>
+      </div>
+      <div class="pstat">
+        <div class="pstat-val">2º mandato</div>
+        <div class="pstat-label">reeleita em 2024</div>
+      </div>
+      <div class="pstat">
+        <div class="pstat-val">R$ 25.000</div>
+        <div class="pstat-label">salário mensal</div>
+      </div>
+    </div>
+
+    <!-- Termômetro de aprovação -->
+    <div class="prefeita-aprov-titulo">Aprovação popular — pesquisa ago/2025 (342 pessoas)</div>
+    <div class="prefeita-aprov-barras">
+      <div class="aprov-row">
+        <div class="aprov-label" style="color:var(--green)">Aprova</div>
+        <div class="aprov-track"><div class="aprov-fill" style="width:43.8%;background:var(--green)"></div></div>
+        <div class="aprov-pct" style="color:var(--green)">43,8%</div>
+      </div>
+      <div class="aprov-row">
+        <div class="aprov-label" style="color:var(--red)">Desaprova</div>
+        <div class="aprov-track"><div class="aprov-fill" style="width:42.69%;background:var(--red)"></div></div>
+        <div class="aprov-pct" style="color:var(--red)">42,69%</div>
+      </div>
+      <div class="aprov-row">
+        <div class="aprov-label" style="color:var(--gray2)">Sem opinião</div>
+        <div class="aprov-track"><div class="aprov-fill" style="width:13.16%;background:var(--gray2)"></div></div>
+        <div class="aprov-pct" style="color:var(--gray2)">13,16%</div>
+      </div>
+    </div>
+    <div class="prefeita-aprov-fonte">Fonte: Jornal Correio Continental · Margem de erro: 3% · Confiança: 95%</div>
+
+    <div class="prefeita-contato">
+      <a href="mailto:gabinete@senadorguiomard.ac.gov.br" class="pcontato-btn">✉ gabinete@senadorguiomard.ac.gov.br</a>
+      <a href="tel:+556898122-0970" class="pcontato-btn">📞 (68) 98122-0970</a>
+      <a href="https://www.senadorguiomard.ac.gov.br/secretarias/prefeita" target="_blank" class="pcontato-btn">🌐 Perfil oficial</a>
+    </div>
+  </div>
+</div>
 <div class="page-header">
   <div class="breadcrumb">
     <a href="index.html">Home</a>
@@ -334,20 +381,10 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:40px 24px
 <footer>
   <p>Quinari em Foco · Portal independente · Senador Guiomard, Acre · 2026</p>
   <p style="margin-top:6px">Dados públicos via Siconfi/STN · Este portal não é oficial da Prefeitura ou Câmara Municipal</p>
-  <p style="margin-top:6px"><a href="/cdn-cgi/l/email-protection#5223273b3c33203b7c3d27243b363d203b3312353f333b3e7c313d3f"><span class="__cf_email__" data-cfemail="e8999d8186899a81c6879d9e818c879a8189a88f85898184c68b8785">[email&#160;protected]</span></a></p>
+  <p style="margin-top:6px"><a href="/cdn-cgi/l/email-protection#4d3c3824232c3f246322383b2429223f242c0d2a202c2421632e2220"><span class="__cf_email__" data-cfemail="68191d0106091a0146071d1e010c071a0109280f05090104460b0705">[email&#160;protected]</span></a></p>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js">
-// Nav hambúrguer + marca link ativo
-document.getElementById('hamburger').addEventListener('click',()=>
-  document.getElementById('navLinks').classList.toggle('aberto'));
-(function(){
-  const p=location.pathname.split('/').pop()||'index.html';
-  const map={'index.html':'nl-home','prefeitura.html':'nl-pref','camara.html':'nl-cam',
-    'secretarias.html':'nl-sec','ranking.html':'nl-rank','voz-do-povo.html':'nl-voz'};
-  const id=map[p]; if(id) document.getElementById(id)?.classList.add('ativo');
-})();
-</script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const API = '/api/dados';
 let anoAtual = 2024;
 let abaAtual = 'receitas';
