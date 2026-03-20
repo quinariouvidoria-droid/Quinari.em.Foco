@@ -12,10 +12,7 @@
     "api/chat.js": {
       "maxDuration": 30
     },
-    "api/moderar.js": {
-      "maxDuration": 15
-    },
-    "api/dados.js": {
+"api/dados.js": {
       "maxDuration": 10
     },
     "api/tempo.js": {

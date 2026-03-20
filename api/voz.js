@@ -30,6 +30,33 @@
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
+
+const SYSTEM_MODERAR = `Você é um moderador de conteúdo do portal Quinari em Foco, Senador Guiomard, Acre.
+Analise o texto e retorne APENAS um JSON (sem markdown):
+{"aprovado":true/false,"nivel":"ok"|"atencao"|"bloqueado","motivo":null/"motivo se bloqueado","texto_limpo":"texto com palavrões censurados ou o original"}
+BLOQUEAR: palavrões em excesso, discurso de ódio, ameaças, conteúdo sexual, spam.
+ATENÇÃO: linguagem agressiva sem ódio explícito.
+APROVAR: críticas políticas (são democracia), denúncias, sugestões, linguagem popular.
+NÃO censure crítica a gestores públicos.`;
+
+async function moderarTexto(texto, tipo) {
+  if (!ANTHROPIC_KEY) return { aprovado: true, nivel: 'ok', motivo: null, texto_limpo: null };
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6', max_tokens: 300, system: SYSTEM_MODERAR,
+        messages: [{ role: 'user', content: `Tipo: ${tipo||'geral'}\nTexto: "${texto}"` }]
+      })
+    });
+    if (!r.ok) return { aprovado: true, nivel: 'ok', motivo: null, texto_limpo: null };
+    const data = await r.json();
+    const txt = (data.content?.[0]?.text || '{}').replace(/```json|```/g, '').trim();
+    try { return JSON.parse(txt); } catch { return { aprovado: true, nivel: 'ok', motivo: null, texto_limpo: null }; }
+  } catch { return { aprovado: true, nivel: 'ok', motivo: null, texto_limpo: null }; }
+}
 const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6Z3p0dmlhanRjdGhxZ2VrdnJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2ODc2OTgsImV4cCI6MjA4OTI2MzY5OH0.RN3a0gfygXo9BsGZpwaVLIgbQv8AO0K6-dWF0SIazTw';
 
 const hGet = { 'apikey': ANON_KEY, 'Authorization': `Bearer ${ANON_KEY}`, 'Accept': 'application/json' };
@@ -82,6 +109,12 @@ export default async function handler(req, res) {
     let body = {};
     try { body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {}); } catch (_) {}
     const { acao } = body;
+
+    if (acao === 'moderar') {
+      const { texto, tipo } = body;
+      if (!texto) return res.status(400).json({ erro: 'Campo texto obrigatório' });
+      return res.status(200).json(await moderarTexto(texto, tipo));
+    }
 
     if (acao === 'publicar') {
       const { ideia } = body;

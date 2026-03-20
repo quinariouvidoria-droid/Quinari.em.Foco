@@ -615,10 +615,10 @@ function renderIdeias(){
 // ── MODERAÇÃO VIA API ──
 async function moderar(texto, tipo){
   try {
-    const res = await fetch('/api/moderar', {
+    const res = await fetch('/api/voz', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ texto, tipo })
+      body: JSON.stringify({ acao: 'moderar', texto, tipo })
     });
     const data = await res.json();
     return data;
