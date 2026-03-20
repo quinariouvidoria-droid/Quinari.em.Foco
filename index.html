@@ -665,6 +665,32 @@ footer {
   .hero-btns { flex-direction: column; }
   .btn-solid, .btn-outline { justify-content: center; }
 }
+
+
+  .tempo-detalhes{grid-template-columns:repeat(4,1fr)}
+  .tempo-previsao{grid-template-columns:repeat(5,1fr);padding:10px}
+}
+
+
+/* WIDGET TEMPO — TOPO */
+.tempo-topo{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;overflow:hidden}
+.tempo-topo-loading{display:flex;align-items:center;gap:8px;font-family:"DM Mono",monospace;font-size:.75rem;color:var(--gray2)}
+.tempo-spin{width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0}
+.tempo-atual-bloco{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.tempo-ico-grande{font-size:1.6rem;line-height:1}
+.tempo-temp-grande{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:1.6rem;color:var(--white);line-height:1}
+.tempo-desc-pequena{font-size:.78rem;color:var(--gray);margin-top:2px}
+.tempo-cidade{font-family:"DM Mono",monospace;font-size:.65rem;color:var(--gray2);text-transform:uppercase;letter-spacing:1px}
+.tempo-extra{display:flex;gap:16px;font-family:"DM Mono",monospace;font-size:.72rem;color:var(--gray2)}
+.tempo-extra span{display:flex;align-items:center;gap:4px}
+.tempo-dias-mini{display:flex;gap:8px;flex:1;justify-content:flex-end}
+.tdia-mini{display:flex;flex-direction:column;align-items:center;gap:1px;padding:4px 8px;background:var(--bg3);border:1px solid var(--border);min-width:44px}
+.tdia-mini-nome{font-family:"DM Mono",monospace;font-size:.6rem;color:var(--gray2);text-transform:uppercase}
+.tdia-mini-ico{font-size:.9rem;line-height:1}
+.tdia-mini-max{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:.85rem;color:var(--white)}
+.tdia-mini-min{font-family:"DM Mono",monospace;font-size:.65rem;color:var(--gray2)}
+@media(max-width:768px){.tempo-dias-mini{display:none}.tempo-extra{display:none}}
+
 </style>
 </head>
 <body>
@@ -680,8 +706,8 @@ footer {
     <a href="camara.html" class="nav-link">Câmara</a>
     <a href="secretarias.html" class="nav-link">Secretarias</a>
     <a href="ranking.html" class="nav-link">Ranking</a>
-    <a href="termometro.html" class="nav-link">Termômetro</a>
-    <a href="ia.html" class="nav-link">Denúncia</a>
+    <a href="#termo" class="nav-link">Termômetro</a>
+    <a href="#denuncia" class="nav-link">Denúncia</a>
     <a href="voz-do-povo.html" class="nav-voz">🗣️ Voz do Povo</a>
   </div>
   <div class="nav-right">
@@ -689,6 +715,10 @@ footer {
   </div>
   <button class="nav-menu-btn" onclick="toggleMenu()" id="menu-btn">☰</button>
 </nav>
+<!-- ═══ WIDGET TEMPO TOPO ═══ -->
+<div class="tempo-topo" id="tempo-widget">
+  <div class="tempo-topo-loading"><div class="tempo-spin"></div><span>Carregando...</span></div>
+</div>
 
 <!-- Mobile nav drawer -->
 <div class="mobile-nav" id="mobile-nav">
@@ -696,8 +726,8 @@ footer {
   <a href="camara.html" class="mobile-link" onclick="toggleMenu()">Câmara <span>›</span></a>
   <a href="secretarias.html" class="mobile-link" onclick="toggleMenu()">Secretarias <span>›</span></a>
   <a href="ranking.html" class="mobile-link" onclick="toggleMenu()">Ranking <span>›</span></a>
-  <a href="termometro.html" class="mobile-link" onclick="toggleMenu()">Termômetro <span>›</span></a>
-  <a href="ia.html" class="mobile-link" onclick="toggleMenu()">Denúncia <span>›</span></a>
+  <a href="#termo" class="mobile-link" onclick="toggleMenu()">Termômetro <span>›</span></a>
+  <a href="#denuncia" class="mobile-link" onclick="toggleMenu()">Denúncia <span>›</span></a>
   <a href="voz-do-povo.html" class="mobile-link red">🗣️ Voz do Povo <span>›</span></a>
 </div>
 
@@ -728,7 +758,7 @@ footer {
   <p class="hero-desc a3">Aqui o poder presta contas. Dados públicos do município, atualizados diariamente, em linguagem que qualquer pessoa entende.</p>
   <div class="hero-btns a4">
     <a href="#blocos" class="btn-solid">📊 Ver os dados</a>
-    <a href="ia.html" class="btn-outline">🕵️ Denúncia anônima</a>
+    <a href="#denuncia" class="btn-outline">🕵️ Denúncia anônima</a>
   </div>
   <div class="stats-row a4">
     <div class="stat"><div class="stat-n"><span class="r">11</span></div><div class="stat-l">Fontes monitoradas</div></div>
@@ -790,13 +820,13 @@ footer {
       <div class="bloco-foot"><span class="bloco-src">Câmara · Transparência · Notícias</span><span class="bloco-go" style="color:#f5c518">Ver →</span></div>
     </a>
 
-    <a class="bloco a2" href="termometro.html" style="--c:#a78bfa">
+    <a class="bloco a2" href="#" style="--c:#a78bfa" id="termo">
       <div class="bloco-top"><div class="bloco-badge" style="background:#a78bfa">E</div><div class="bloco-ico">🌡️</div></div>
       <div><div class="bloco-name">Termômetro Popular</div><div class="bloco-txt">Vote "Aprovo" ou "Desaprovo" a prefeita e cada vereador. Um voto por e-mail. Resultado em tempo real.</div></div>
       <div class="bloco-foot"><span class="bloco-src">Participação da população</span><span class="bloco-go" style="color:#a78bfa">Votar →</span></div>
     </a>
 
-    <a class="bloco a3" href="ia.html" style="--c:#22d3ee">
+    <a class="bloco a3" href="#" style="--c:#22d3ee" id="denuncia">
       <div class="bloco-top"><div class="bloco-badge" style="background:#22d3ee">F</div><div class="bloco-ico">🤖</div></div>
       <div><div class="bloco-name">IA e Participação</div><div class="bloco-txt">Denúncia anônima, chat com IA, guia de serviços, geração de documentos e alertas personalizados.</div></div>
       <div class="bloco-foot"><span class="bloco-src">Claude API · Plataforma própria</span><span class="bloco-go" style="color:#22d3ee">Acessar →</span></div>
@@ -888,32 +918,25 @@ footer {
 
 </div><!-- /wrap -->
 
-<!-- ═══ PARCEIROS ═══ -->
+
+
 <!-- ═══ PARCEIROS ═══ -->
 <section class="parceiros">
   <div class="parc-hdr">
     <div class="parc-title">Nossos Parceiros</div>
-    <div style="display:flex;align-items:center;gap:10px">
-      <button id="btn-admin" style="background:none;border:1px solid rgba(225,6,0,.5);color:rgba(225,6,0,.85);font-family:DM Mono,monospace;font-size:.72rem;cursor:pointer;padding:5px 14px;border-radius:3px;letter-spacing:1px">⚙ Admin</button>
-      <a href="parceiros.html" class="parc-link">Quero apoiar →</a>
-    </div>
+    <a href="/cdn-cgi/l/email-protection#1766627e7976657e397862617e7378657e7657707a767e7b3974787a" class="parc-link">Quero patrocinar →</a>
   </div>
-  <div class="parc-grid" id="parc-grid">
-    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
-    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
-    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
-    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
-    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
-    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
-    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
-    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
-    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
-    <a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>
+  <div class="parc-grid">
+    <a href="/cdn-cgi/l/email-protection#4736322e2926352e692832312e2328352e2607202a262e2b6924282a" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Vaga disponível<br>para empresa local</div></a>
+    <a href="/cdn-cgi/l/email-protection#f283879b9c93809bdc9d87849b969d809b93b2959f939b9edc919d9f" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Vaga disponível<br>para empresa local</div></a>
+    <a href="/cdn-cgi/l/email-protection#2f5e5a46414e5d4601405a59464b405d464e6f48424e4643014c4042" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Vaga disponível<br>para empresa local</div></a>
+    <a href="/cdn-cgi/l/email-protection#2e5f5b47404f5c4700415b58474a415c474f6e49434f4742004d4143" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Vaga disponível<br>para empresa local</div></a>
+    <a href="/cdn-cgi/l/email-protection#fb8a8e92959a8992d5948e8d929f9489929abb9c969a9297d5989496" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Vaga disponível<br>para empresa local</div></a>
+    <a href="/cdn-cgi/l/email-protection#e697938f8887948fc88993908f8289948f87a6818b878f8ac885898b" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Vaga disponível<br>para empresa local</div></a>
   </div>
   <p class="parc-note">
     O Quinari em Foco é um projeto independente e sem fins lucrativos. Patrocinadores apoiam os custos de manutenção do portal.<br>
-    O patrocínio <strong style="color:var(--off)">não influencia</strong> o conteúdo publicado.
-    Contato: <a href="parceiros.html">quinari.ouvidoria@gmail.com</a>
+    O patrocínio <strong style="color:var(--off)">não influencia</strong> o conteúdo publicado. Contato: <a href="/cdn-cgi/l/email-protection#94e5e1fdfaf5e6fdbafbe1e2fdf0fbe6fdf5d4f3f9f5fdf8baf7fbf9"><span class="__cf_email__" data-cfemail="29585c4047485b4007465c5f404d465b4048694e44484045074a4644">[email&#160;protected]</span></a>
   </p>
 </section>
 
@@ -978,12 +1001,15 @@ footer {
 document.getElementById('data-hoje').textContent =
   new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
 
-// Chat IA
+// ── CHAT COM IA ──
 const chatHistory = [];
+
 async function sendChat(){
   const inp = document.getElementById('chat-inp');
   const v = inp.value.trim();
   if(!v) return;
+
+  // Adiciona mensagem do usuário na tela
   const msgs = document.querySelector('.chat-msgs');
   const userDiv = document.createElement('div');
   userDiv.className = 'cm cm-u';
@@ -991,12 +1017,17 @@ async function sendChat(){
   msgs.appendChild(userDiv);
   inp.value = '';
   msgs.scrollTop = msgs.scrollHeight;
+
+  // Adiciona ao histórico
   chatHistory.push({ role: 'user', content: v });
+
+  // Placeholder de carregando
   const loadDiv = document.createElement('div');
   loadDiv.className = 'cm cm-ai';
   loadDiv.innerHTML = '<div class="cm-label">Quinari IA</div><span style="color:var(--muted)">Consultando os dados...</span>';
   msgs.appendChild(loadDiv);
   msgs.scrollTop = msgs.scrollHeight;
+
   try {
     const res = await fetch('/api/chat', {
       method: 'POST',
@@ -1004,46 +1035,101 @@ async function sendChat(){
       body: JSON.stringify({ messages: chatHistory })
     });
     const data = await res.json();
-    const resposta = data.resposta || data.error || 'Não consegui processar.';
+    const resposta = data.resposta || data.error || 'Não consegui processar sua pergunta.';
+
+    // Atualiza o placeholder com a resposta
     loadDiv.innerHTML = '<div class="cm-label">Quinari IA</div>' + resposta.replace(/\n/g, '<br>');
-    chatHistory.push({ role: 'assistant', content: resposta });
+        chatHistory.push({ role: 'assistant', content: resposta });
   } catch(err) {
     loadDiv.innerHTML = '<div class="cm-label">Quinari IA</div>Erro ao conectar. Tente novamente.';
   }
 }
 </script>
 
-<!-- BARRA ADMIN -->
-<div id="adm-bar" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#15151e;border-top:2px solid #e10600;padding:10px 24px;z-index:9999;align-items:center;gap:16px;flex-wrap:wrap">
-  <span style="font-family:'DM Mono',monospace;font-size:.75rem;color:#e10600">🔑 Modo administrador</span>
-  <button id="btn-gerenciar" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:1px;text-transform:uppercase;background:#e10600;color:#fff;border:none;padding:7px 18px;cursor:pointer">Gerenciar Patrocinadores</button>
-  <button id="btn-logout" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;text-transform:uppercase;background:transparent;color:#e10600;border:1px solid rgba(225,6,0,.4);padding:7px 14px;cursor:pointer">Sair</button>
-</div>
+<script>
+// Widget Previsão do Tempo
 
-<!-- MODAL LOGIN -->
-<div id="modal-login" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:10000;align-items:center;justify-content:center">
-  <div style="background:#1e1e2a;border:1px solid rgba(225,6,0,.35);width:100%;max-width:380px;padding:32px;margin:20px;position:relative">
-    <button id="btn-fechar-login" style="position:absolute;top:12px;right:14px;background:none;border:none;color:#6b6b80;font-size:1.4rem;cursor:pointer">×</button>
-    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;text-transform:uppercase;letter-spacing:2px;color:#e10600;margin-bottom:4px">🔑 Administração</div>
-    <div style="font-family:'DM Mono',monospace;font-size:.7rem;color:#6b6b80;margin-bottom:22px">Quinari em Foco · Acesso restrito</div>
-    <input id="adm-email" type="email" placeholder="E-mail" style="width:100%;background:#252533;border:1px solid #383842;color:#fff;font-size:.9rem;padding:10px 14px;margin-bottom:10px;outline:none;display:block">
-    <input id="adm-senha" type="password" placeholder="Senha" style="width:100%;background:#252533;border:1px solid #383842;color:#fff;font-size:.9rem;padding:10px 14px;margin-bottom:14px;outline:none;display:block">
-    <div id="adm-erro" style="color:#ff2020;font-size:.75rem;margin-bottom:12px;display:none"></div>
-    <button id="btn-entrar" style="width:100%;background:#e10600;border:none;color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:1px;text-transform:uppercase;padding:12px;cursor:pointer;display:block">Entrar →</button>
-    <button id="btn-cancelar" style="width:100%;margin-top:8px;background:transparent;border:1px solid #383842;color:#6b6b80;font-size:.75rem;padding:8px;cursor:pointer;display:block">Cancelar</button>
-  </div>
-</div>
+// ══ WIDGET PREVISÃO DO TEMPO — Open-Meteo (sem API key) ══════════
+const _TEMPO_URL = 'https://api.open-meteo.com/v1/forecast?' +
+  'latitude=-10.0417&longitude=-67.7436' +
+  '&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,apparent_temperature,precipitation' +
+  '&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_probability_max' +
+  '&timezone=America%2FRio_Branco&forecast_days=5';
 
-<!-- MODAL GERENCIAR -->
-<div id="modal-gerenciar" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:9500;overflow-y:auto">
-  <div style="background:#1e1e2a;border:1px solid rgba(255,255,255,.08);max-width:760px;margin:32px auto 100px;padding:32px;position:relative">
-    <button id="btn-fechar-ger" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#6b6b80;font-size:1.5rem;cursor:pointer">×</button>
-    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px">Patrocinadores</div>
-    <div style="font-family:'DM Mono',monospace;font-size:.7rem;color:#6b6b80;margin-bottom:24px">Edite nome, WhatsApp e URL da logo de cada vaga</div>
-    <div id="ger-lista">Carregando...</div>
-  </div>
-</div>
+function _tempoInfo(code) {
+  if (code === 0) return {desc:'Céu limpo', ico:'☀️', cor:'#ffd600'};
+  if (code <= 2)  return {desc:'Poucas nuvens', ico:'⛅', cor:'#a0a0b0'};
+  if (code === 3) return {desc:'Nublado', ico:'☁️', cor:'#a0a0b0'};
+  if (code <= 49) return {desc:'Neblina', ico:'🌫️', cor:'#a0a0b0'};
+  if (code <= 59) return {desc:'Garoa', ico:'🌦️', cor:'#4da6ff'};
+  if (code <= 69) return {desc:'Chuva', ico:'🌧️', cor:'#4da6ff'};
+  if (code <= 79) return {desc:'Granizo', ico:'🌨️', cor:'#a0a0b0'};
+  if (code <= 84) return {desc:'Chuva forte', ico:'🌧️', cor:'#4da6ff'};
+  if (code <= 99) return {desc:'Trovoada', ico:'⛈️', cor:'#a78bfa'};
+  return {desc:'—', ico:'🌡️', cor:'#a0a0b0'};
+}
 
-<script src="admin.js"></script>
+const _DIAS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+
+async function carregarTempo() {
+  const el = document.getElementById('tempo-widget');
+  if (!el) return;
+  try {
+    const resp = await fetch(_TEMPO_URL);
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const d = await resp.json();
+    const c = d.current;
+    const daily = d.daily;
+    const info = _tempoInfo(c.weather_code);
+    const agora = new Date();
+
+    const diasHTML = daily.time.map((dt, i) => {
+      const dia = new Date(dt + 'T12:00:00');
+      const inf = _tempoInfo(daily.weather_code[i]);
+      const nome = i === 0 ? 'Hoje' : i === 1 ? 'Amanhã' : _DIAS[dia.getDay()];
+      return `<div class="tdia-mini">
+        <div class="tdia-mini-nome">${nome}</div>
+        <div class="tdia-mini-ico" style="color:${inf.cor}">${inf.ico}</div>
+        <div class="tdia-mini-max">${Math.round(daily.temperature_2m_max[i])}°</div>
+        <div class="tdia-mini-min">${Math.round(daily.temperature_2m_min[i])}°</div>
+      </div>`;
+    }).join('');
+
+    el.innerHTML = `
+      <div class="tempo-atual-bloco">
+        <div class="tempo-ico-grande" style="color:${info.cor}">${info.ico}</div>
+        <div>
+          <div class="tempo-temp-grande">${Math.round(c.temperature_2m)}<span style="font-size:1rem;font-weight:400;color:var(--gray)">°C</span></div>
+          <div class="tempo-desc-pequena">${info.desc}</div>
+          <div class="tempo-cidade">Senador Guiomard · AC</div>
+        </div>
+      </div>
+      <div class="tempo-extra">
+        <span>💧 ${c.relative_humidity_2m}%</span>
+        <span>💨 ${Math.round(c.wind_speed_10m)} km/h</span>
+        <span>🌡️ ${Math.round(c.apparent_temperature)}°C sensação</span>
+        ${c.precipitation > 0 ? `<span>🌧️ ${c.precipitation}mm</span>` : ''}
+      </div>
+      <div class="tempo-dias-mini">${diasHTML}</div>
+    `;
+  } catch(err) {
+    console.error('Tempo erro:', err);
+    if (el) el.innerHTML = `
+      <div class="tempo-atual-bloco">
+        <div class="tempo-ico-grande">🌡️</div>
+        <div>
+          <div class="tempo-desc-pequena" style="color:var(--gray2)">Previsão indisponível</div>
+          <div class="tempo-cidade">Senador Guiomard · AC</div>
+        </div>
+      </div>`;
+  }
+}
+
+carregarTempo();
+setInterval(carregarTempo, 30 * 60 * 1000);
+// ══ FIM WIDGET TEMPO ═════════════════════════════════════════════
+
+
+</script>
 </body>
 </html>
