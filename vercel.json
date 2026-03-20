@@ -41,6 +41,9 @@
     },
     "api/frequencia.js": {
       "maxDuration": 15
+    },
+    "api/orcamento.js": {
+      "maxDuration": 30
     }
   }
 }

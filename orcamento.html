@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Orçamento Municipal — Quinari em Foco</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:    #15151e;
+  --card:  #1e1e2a;
+  --card2: #252535;
+  --red:   #e10600;
+  --red2:  #ff3b36;
+  --green: #00c87a;
+  --blue:  #4da6ff;
+  --yellow:#f5c518;
+  --white: #f0f0f0;
+  --gray:  #909099;
+  --gray2: #b0b0bb;
+  --border:#2a2a3a;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body {
+  background:var(--bg);
+  color:var(--white);
+  font-family:'Barlow',sans-serif;
+  min-height:100vh;
+}
+
+/* NAV */
+nav {
+  background:#0e0e17;
+  border-bottom:1px solid var(--border);
+  padding:0 24px;
+  display:flex;
+  align-items:center;
+  gap:24px;
+  height:52px;
+}
+.nav-logo {
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;
+  font-size:1.15rem;
+  color:var(--red);
+  text-decoration:none;
+  letter-spacing:.5px;
+}
+.nav-links { display:flex; gap:16px; flex:1; }
+.nav-links a {
+  color:var(--gray);
+  text-decoration:none;
+  font-size:.82rem;
+  font-weight:500;
+  transition:color .2s;
+}
+.nav-links a:hover, .nav-links a.ativo { color:var(--white); }
+
+/* HERO */
+.hero {
+  background:linear-gradient(135deg,#0e0e17 0%,#1a1a2a 100%);
+  border-bottom:1px solid var(--border);
+  padding:36px 24px 28px;
+  text-align:center;
+}
+.hero-badge {
+  display:inline-block;
+  background:rgba(0,200,122,.12);
+  color:var(--green);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.75rem;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  padding:4px 12px;
+  border-radius:20px;
+  margin-bottom:12px;
+}
+.hero h1 {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:2.4rem;
+  font-weight:800;
+  letter-spacing:.5px;
+  line-height:1.1;
+  margin-bottom:8px;
+}
+.hero p {
+  color:var(--gray2);
+  font-size:.92rem;
+  max-width:560px;
+  margin:0 auto;
+}
+
+/* CONTAINER */
+.container {
+  max-width:960px;
+  margin:0 auto;
+  padding:28px 20px 60px;
+}
+
+/* YEAR SELECTOR */
+.year-selector {
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:32px;
+}
+.year-btn {
+  background:var(--card);
+  color:var(--gray2);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:8px 18px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:1rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:all .2s;
+}
+.year-btn:hover { border-color:var(--gray); color:var(--white); }
+.year-btn.ativo {
+  background:rgba(255,255,255,.08);
+  border-color:var(--white);
+  color:var(--white);
+}
+.year-btn.parcial {
+  border-style:dashed;
+  border-color:var(--yellow);
+  color:var(--yellow);
+}
+.year-btn.parcial.ativo {
+  background:rgba(245,197,24,.1);
+}
+
+/* BADGE PARCIAL */
+.badge-parcial {
+  display:inline-block;
+  background:rgba(245,197,24,.15);
+  color:var(--yellow);
+  font-size:.72rem;
+  font-weight:600;
+  padding:3px 10px;
+  border-radius:20px;
+  margin-bottom:20px;
+  text-align:center;
+}
+
+/* KPIs */
+.kpis {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:12px;
+  margin-bottom:28px;
+}
+.kpi {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:16px 18px;
+  border-left:3px solid;
+}
+.kpi-label { color:var(--gray); font-size:.76rem; font-weight:500; margin-bottom:4px; }
+.kpi-valor {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:1.5rem;
+  font-weight:700;
+  line-height:1.1;
+}
+.kpi-sub { color:var(--gray); font-size:.72rem; margin-top:2px; }
+
+/* BARRAS PRINCIPAIS */
+.barras-section {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:28px 24px;
+  margin-bottom:20px;
+}
+.barra-item { margin-bottom:28px; }
+.barra-item:last-child { margin-bottom:0; }
+.barra-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.barra-titulo {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.barra-icon {
+  width:34px;
+  height:34px;
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.1rem;
+  flex-shrink:0;
+}
+.barra-nome {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:1.05rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+.barra-sub { color:var(--gray); font-size:.76rem; }
+.barra-valor {
+  font-family:'DM Mono',monospace;
+  font-size:1.35rem;
+  font-weight:400;
+  text-align:right;
+}
+.barra-track {
+  background:rgba(255,255,255,.06);
+  border-radius:6px;
+  height:28px;
+  overflow:hidden;
+  position:relative;
+}
+.barra-fill {
+  height:100%;
+  border-radius:6px;
+  transition:width 1s cubic-bezier(.4,0,.2,1);
+  display:flex;
+  align-items:center;
+  padding-left:12px;
+  font-family:'DM Mono',monospace;
+  font-size:.78rem;
+  color:rgba(255,255,255,.85);
+  white-space:nowrap;
+  overflow:hidden;
+}
+.barra-pct {
+  color:var(--gray);
+  font-size:.75rem;
+  margin-top:6px;
+  text-align:right;
+  font-family:'DM Mono',monospace;
+}
+
+/* COMPARATIVO */
+.secao-titulo {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:1rem;
+  font-weight:700;
+  color:var(--gray2);
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  margin-bottom:14px;
+}
+.historico-grid {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+}
+.hist-row {
+  display:grid;
+  grid-template-columns:70px 1fr 1fr 100px;
+  gap:0;
+  border-bottom:1px solid var(--border);
+  align-items:center;
+  padding:14px 18px;
+  cursor:pointer;
+  transition:background .15s;
+}
+.hist-row:last-child { border-bottom:none; }
+.hist-row:hover { background:rgba(255,255,255,.03); }
+.hist-row.ativo { background:rgba(255,255,255,.05); }
+.hist-header {
+  background:rgba(255,255,255,.03);
+  color:var(--gray);
+  font-size:.72rem;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  cursor:default;
+}
+.hist-header:hover { background:rgba(255,255,255,.03); }
+.hist-ano {
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:1rem;
+}
+.hist-bars { }
+.hist-bar-pair { display:flex; flex-direction:column; gap:3px; }
+.hist-bar {
+  height:8px;
+  border-radius:4px;
+  transition:width 1s ease;
+}
+.hist-saldo {
+  font-family:'DM Mono',monospace;
+  font-size:.82rem;
+  text-align:right;
+}
+.parcial-tag {
+  font-size:.65rem;
+  color:var(--yellow);
+  font-weight:600;
+  margin-left:4px;
+}
+
+/* FONTE */
+.fonte-box {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px 18px;
+  margin-top:20px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.fonte-box .icon { font-size:1.2rem; }
+.fonte-txt { font-size:.8rem; color:var(--gray2); line-height:1.5; }
+.fonte-txt a { color:var(--blue); text-decoration:none; }
+.fonte-txt a:hover { text-decoration:underline; }
+
+/* LOADING / ERROR */
+.loading-box {
+  text-align:center;
+  padding:60px 20px;
+  color:var(--gray);
+}
+.spinner {
+  width:36px; height:36px;
+  border:3px solid var(--border);
+  border-top-color:var(--green);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  margin:0 auto 16px;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* RESPONSIVE */
+@media(max-width:600px) {
+  .hero h1 { font-size:1.8rem; }
+  .hist-row { grid-template-columns:55px 1fr 1fr 80px; padding:10px 12px; }
+  .barra-valor { font-size:1.1rem; }
+  .kpi-valor { font-size:1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">⬡ QUINARI EM FOCO</a>
+  <div class="nav-links">
+    <a href="index.html">Início</a>
+    <a href="orcamento.html" class="ativo">Orçamento</a>
+    <a href="ranking.html">Ranking</a>
+    <a href="forum.html">Fórum</a>
+    <a href="comercios.html">Comércios</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Finanças Públicas</div>
+  <h1>Orçamento Municipal</h1>
+  <p>Receitas e despesas anuais da Prefeitura de Senador Guiomard. Dados oficiais via SICONFI / Tesouro Nacional.</p>
+</div>
+
+<div class="container">
+
+  <!-- LOADING -->
+  <div id="loading" class="loading-box">
+    <div class="spinner"></div>
+    <div>Carregando dados do SICONFI...</div>
+  </div>
+
+  <!-- CONTEÚDO (oculto até carregar) -->
+  <div id="conteudo" style="display:none">
+
+    <!-- SELETOR DE ANO -->
+    <div class="year-selector" id="year-selector"></div>
+
+    <!-- BADGE PARCIAL -->
+    <div id="badge-parcial" class="badge-parcial" style="display:none">
+      ⚠ Dados parciais — ano em andamento (até o bimestre indicado)
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpis">
+      <div class="kpi" style="border-left-color:var(--green)">
+        <div class="kpi-label">Receitas realizadas</div>
+        <div class="kpi-valor" id="kpi-receita" style="color:var(--green)">—</div>
+        <div class="kpi-sub" id="kpi-receita-sub">—</div>
+      </div>
+      <div class="kpi" style="border-left-color:var(--red)">
+        <div class="kpi-label">Despesas liquidadas</div>
+        <div class="kpi-valor" id="kpi-despesa" style="color:var(--red2)">—</div>
+        <div class="kpi-sub" id="kpi-despesa-sub">—</div>
+      </div>
+      <div class="kpi" style="border-left-color:var(--blue)">
+        <div class="kpi-label">Saldo do exercício</div>
+        <div class="kpi-valor" id="kpi-saldo" style="color:var(--blue)">—</div>
+        <div class="kpi-sub" id="kpi-saldo-sub">—</div>
+      </div>
+      <div class="kpi" style="border-left-color:var(--yellow)">
+        <div class="kpi-label">Execução orçamentária</div>
+        <div class="kpi-valor" id="kpi-exec" style="color:var(--yellow)">—</div>
+        <div class="kpi-sub">Receitas / orçado</div>
+      </div>
+    </div>
+
+    <!-- BARRAS PRINCIPAIS -->
+    <div class="barras-section" id="barras-section">
+      <!-- Receitas -->
+      <div class="barra-item">
+        <div class="barra-header">
+          <div class="barra-titulo">
+            <div class="barra-icon" style="background:rgba(0,200,122,.12)">💰</div>
+            <div>
+              <div class="barra-nome" style="color:var(--green)">Entrou — Receitas</div>
+              <div class="barra-sub">Total arrecadado no período</div>
+            </div>
+          </div>
+          <div class="barra-valor" id="val-receita" style="color:var(--green)">—</div>
+        </div>
+        <div class="barra-track">
+          <div class="barra-fill" id="bar-receita" style="background:var(--green);width:0%"></div>
+        </div>
+        <div class="barra-pct" id="pct-receita"></div>
+      </div>
+
+      <!-- Despesas -->
+      <div class="barra-item">
+        <div class="barra-header">
+          <div class="barra-titulo">
+            <div class="barra-icon" style="background:rgba(225,6,0,.12)">📤</div>
+            <div>
+              <div class="barra-nome" style="color:var(--red2)">Saiu — Despesas</div>
+              <div class="barra-sub">Total liquidado no período</div>
+            </div>
+          </div>
+          <div class="barra-valor" id="val-despesa" style="color:var(--red2)">—</div>
+        </div>
+        <div class="barra-track">
+          <div class="barra-fill" id="bar-despesa" style="background:var(--red);width:0%"></div>
+        </div>
+        <div class="barra-pct" id="pct-despesa"></div>
+      </div>
+
+      <!-- Orçado (linha de referência) -->
+      <div class="barra-item" id="barra-orcado-wrap">
+        <div class="barra-header">
+          <div class="barra-titulo">
+            <div class="barra-icon" style="background:rgba(77,166,255,.1)">📋</div>
+            <div>
+              <div class="barra-nome" style="color:var(--blue)">Orçado — Previsão</div>
+              <div class="barra-sub">Previsão atualizada da receita</div>
+            </div>
+          </div>
+          <div class="barra-valor" id="val-orcado" style="color:var(--blue)">—</div>
+        </div>
+        <div class="barra-track">
+          <div class="barra-fill" id="bar-orcado" style="background:var(--blue);opacity:.7;width:0%"></div>
+        </div>
+        <div class="barra-pct" id="pct-orcado"></div>
+      </div>
+    </div>
+
+    <!-- COMPARATIVO HISTÓRICO -->
+    <div class="secao-titulo">Comparativo Histórico</div>
+    <div class="historico-grid">
+      <div class="hist-row hist-header">
+        <div>Ano</div>
+        <div>Receitas / Despesas</div>
+        <div>Valores</div>
+        <div>Saldo</div>
+      </div>
+      <div id="hist-rows"></div>
+    </div>
+
+    <!-- FONTE -->
+    <div class="fonte-box">
+      <div class="icon">📊</div>
+      <div class="fonte-txt">
+        <strong style="color:var(--white)">Fonte: SICONFI — Tesouro Nacional</strong><br>
+        Dados do Relatório Resumido da Execução Orçamentária (RREO) publicados pela Prefeitura Municipal de Senador Guiomard ao Tesouro Nacional.
+        <a href="https://apidatalake.tesouro.gov.br/ords/siconfi/tt/rreo" target="_blank" rel="noopener">Acessar API pública →</a>
+      </div>
+    </div>
+
+  </div><!-- /conteudo -->
+
+  <!-- ERRO -->
+  <div id="erro-box" style="display:none; text-align:center; padding:60px 20px; color:var(--gray)">
+    <div style="font-size:2rem;margin-bottom:12px">⚠</div>
+    <div id="erro-msg">Não foi possível carregar os dados.</div>
+    <div style="font-size:.8rem;margin-top:8px">Verifique o console para detalhes.</div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ─── ESTADO ───────────────────────────────────────────────────────────────────
+let todosAnos = [];
+let anoSelecionado = null;
+
+// ─── FORMATAÇÃO ───────────────────────────────────────────────────────────────
+function fmtReal(v) {
+  if (!v && v !== 0) return '—';
+  const abs = Math.abs(v);
+  if (abs >= 1e9) return (v < 0 ? '-' : '') + 'R$ ' + (abs / 1e9).toFixed(2) + ' B';
+  if (abs >= 1e6) return (v < 0 ? '-' : '') + 'R$ ' + (abs / 1e6).toFixed(2) + ' M';
+  if (abs >= 1e3) return (v < 0 ? '-' : '') + 'R$ ' + (abs / 1e3).toFixed(1) + ' mil';
+  return (v < 0 ? '-' : '') + 'R$ ' + abs.toFixed(0);
+}
+
+function fmtRealCompleto(v) {
+  if (!v && v !== 0) return '—';
+  return (v < 0 ? '−' : '') + 'R$ ' + Math.abs(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+// ─── RENDERIZAR ANO ───────────────────────────────────────────────────────────
+function renderizarAno(dados) {
+  const rec  = dados.receitas_realizadas || 0;
+  const desp = dados.despesas_liquidadas || 0;
+  const orc  = dados.receitas_orcadas    || 0;
+  const saldo = rec - desp;
+  const percExec = orc > 0 ? Math.round((rec / orc) * 100) : 0;
+
+  const maxVal = Math.max(rec, desp, orc);
+
+  // Badge parcial
+  document.getElementById('badge-parcial').style.display = dados.parcial ? 'block' : 'none';
+
+  // KPIs
+  const bimLabel = dados.bimestre_receitas < 6 && dados.parcial
+    ? ` (bimestre ${dados.bimestre_receitas})`
+    : ' (ano completo)';
+
+  document.getElementById('kpi-receita').textContent     = fmtReal(rec);
+  document.getElementById('kpi-receita-sub').textContent = orc > 0 ? `Orçado: ${fmtReal(orc)}` : 'Dados SICONFI' + bimLabel;
+  document.getElementById('kpi-despesa').textContent     = fmtReal(desp);
+  document.getElementById('kpi-despesa-sub').textContent = dados.despesas_empenhadas > 0
+    ? `Empenhado: ${fmtReal(dados.despesas_empenhadas)}`
+    : 'Dados SICONFI' + bimLabel;
+  document.getElementById('kpi-saldo').textContent       = fmtReal(Math.abs(saldo));
+  document.getElementById('kpi-saldo').style.color       = saldo >= 0 ? 'var(--green)' : 'var(--red2)';
+  document.getElementById('kpi-saldo-sub').textContent   = saldo >= 0 ? 'Superávit' : 'Déficit';
+  document.getElementById('kpi-exec').textContent        = orc > 0 ? percExec + '%' : '—';
+
+  // Barras — depois de um tick para animar
+  setTimeout(() => {
+    const percRec  = maxVal > 0 ? (rec  / maxVal * 100) : 0;
+    const percDesp = maxVal > 0 ? (desp / maxVal * 100) : 0;
+    const percOrc  = maxVal > 0 ? (orc  / maxVal * 100) : 0;
+
+    document.getElementById('bar-receita').style.width  = percRec  + '%';
+    document.getElementById('bar-despesa').style.width  = percDesp + '%';
+    document.getElementById('bar-orcado').style.width   = percOrc  + '%';
+
+    document.getElementById('val-receita').textContent  = fmtRealCompleto(rec);
+    document.getElementById('val-despesa').textContent  = fmtRealCompleto(desp);
+    document.getElementById('val-orcado').textContent   = fmtRealCompleto(orc);
+
+    document.getElementById('pct-receita').textContent  = percRec.toFixed(1) + '% do maior valor do período';
+    document.getElementById('pct-despesa').textContent  = percDesp.toFixed(1) + '% do maior valor do período';
+    document.getElementById('pct-orcado').textContent   = orc > 0
+      ? (percExec + '% realizado em relação ao orçado')
+      : '';
+  }, 50);
+}
+
+// ─── HISTÓRICO ────────────────────────────────────────────────────────────────
+function renderizarHistorico() {
+  const cont = document.getElementById('hist-rows');
+  cont.innerHTML = '';
+
+  const maxRec  = Math.max(...todosAnos.map(a => a.receitas_realizadas));
+  const maxDesp = Math.max(...todosAnos.map(a => a.despesas_liquidadas));
+  const escala  = Math.max(maxRec, maxDesp);
+
+  [...todosAnos].reverse().forEach(d => {
+    const saldo = d.receitas_realizadas - d.despesas_liquidadas;
+    const percR = escala > 0 ? (d.receitas_realizadas / escala * 100) : 0;
+    const percD = escala > 0 ? (d.despesas_liquidadas / escala * 100) : 0;
+
+    const row = document.createElement('div');
+    row.className = 'hist-row' + (d.ano === anoSelecionado ? ' ativo' : '');
+    row.dataset.ano = d.ano;
+
+    row.innerHTML = `
+      <div class="hist-ano">
+        ${d.ano}${d.parcial ? '<span class="parcial-tag">parcial</span>' : ''}
+      </div>
+      <div class="hist-bar-pair">
+        <div class="hist-bar" style="width:${percR.toFixed(1)}%;background:var(--green)"></div>
+        <div class="hist-bar" style="width:${percD.toFixed(1)}%;background:var(--red)"></div>
+      </div>
+      <div style="font-size:.78rem;color:var(--gray2);font-family:'DM Mono',monospace">
+        <div style="color:var(--green)">${fmtReal(d.receitas_realizadas)}</div>
+        <div style="color:var(--red2)">${fmtReal(d.despesas_liquidadas)}</div>
+      </div>
+      <div class="hist-saldo" style="color:${saldo >= 0 ? 'var(--green)' : 'var(--red2)'}">
+        ${saldo >= 0 ? '+' : '−'}${fmtReal(Math.abs(saldo))}
+      </div>
+    `;
+
+    row.addEventListener('click', () => selecionarAno(d.ano));
+    cont.appendChild(row);
+  });
+}
+
+// ─── SELECIONAR ANO ───────────────────────────────────────────────────────────
+function selecionarAno(ano) {
+  anoSelecionado = ano;
+  const dados = todosAnos.find(a => a.ano === ano);
+  if (!dados) return;
+
+  // Botões
+  document.querySelectorAll('.year-btn').forEach(btn => {
+    btn.classList.toggle('ativo', parseInt(btn.dataset.ano) === ano);
+  });
+
+  // Histórico highlight
+  document.querySelectorAll('.hist-row').forEach(row => {
+    row.classList.toggle('ativo', parseInt(row.dataset.ano) === ano);
+  });
+
+  // Resetar barras para 0 antes de animar
+  document.getElementById('bar-receita').style.width = '0%';
+  document.getElementById('bar-despesa').style.width = '0%';
+  document.getElementById('bar-orcado').style.width  = '0%';
+
+  renderizarAno(dados);
+}
+
+// ─── CARREGAR DADOS ───────────────────────────────────────────────────────────
+async function carregar() {
+  try {
+    const r = await fetch('/api/orcamento');
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const d = await r.json();
+
+    if (!d.anos || d.anos.length === 0) throw new Error('Sem dados disponíveis');
+
+    todosAnos = d.anos;
+
+    // Seletor de anos
+    const selector = document.getElementById('year-selector');
+    selector.innerHTML = '';
+    todosAnos.forEach(a => {
+      const btn = document.createElement('button');
+      btn.className = 'year-btn' + (a.parcial ? ' parcial' : '');
+      btn.dataset.ano = a.ano;
+      btn.textContent = a.ano + (a.parcial ? ' *' : '');
+      btn.title = a.parcial ? `Dados até o ${a.bimestre_receitas}º bimestre` : 'Ano completo';
+      btn.addEventListener('click', () => selecionarAno(a.ano));
+      selector.appendChild(btn);
+    });
+
+    // Renderiza histórico
+    renderizarHistorico();
+
+    // Seleciona o ano mais recente
+    const anoMaisRecente = todosAnos[todosAnos.length - 1].ano;
+    selecionarAno(anoMaisRecente);
+
+    // Mostra conteúdo
+    document.getElementById('loading').style.display  = 'none';
+    document.getElementById('conteudo').style.display = 'block';
+
+  } catch (e) {
+    document.getElementById('loading').style.display   = 'none';
+    document.getElementById('erro-box').style.display  = 'block';
+    document.getElementById('erro-msg').textContent    = 'Erro ao carregar: ' + e.message;
+    console.error('orcamento:', e);
+  }
+}
+
+carregar();
+</script>
+</body>
+</html>
