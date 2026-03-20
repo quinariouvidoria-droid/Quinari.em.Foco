@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teste iframe Betha</title>
+<style>
+body{background:#15151e;color:#fff;font-family:sans-serif;padding:20px}
+h2{color:#e10600;margin-bottom:12px}
+.status{background:#1e1e2a;border:1px solid rgba(255,255,255,.1);padding:12px;margin-bottom:16px;font-family:monospace;font-size:.85rem}
+iframe{width:100%;height:500px;border:2px solid #e10600}
+</style>
+</head>
+<body>
+<h2>Teste iframe — Portal Betha · Senador Guiomard</h2>
+<div class="status" id="status">Carregando iframe...</div>
+<iframe
+  id="frame-betha"
+  src="https://transparencia.betha.cloud/#/-3WDV8oXxxktdmbTzDz0MQ==/"
+  title="Teste"
+  onload="document.getElementById('status').innerHTML='✅ iframe carregou com sucesso!';document.getElementById('status').style.color='#00d46a'"
+  onerror="document.getElementById('status').innerHTML='❌ iframe bloqueado';document.getElementById('status').style.color='#ff2020'">
+</iframe>
+<p style="margin-top:12px;font-size:.8rem;color:#6b6b80">
+  Se o portal aparecer dentro do quadro vermelho → iframe funciona ✅<br>
+  Se aparecer tela branca ou mensagem de erro → iframe bloqueado ❌
+</p>
+</body>
+</html>
