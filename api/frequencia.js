@@ -1,131 +1,223 @@
-// api/frequencia.js — Frequência Parlamentar via Google Sheets CSV
+// api/frequencia.js — Frequência Parlamentar via Google Sheets da Câmara
 //
-// Configure a variável de ambiente no Vercel:
-//   SHEETS_FREQ_URL = URL de exportação CSV da planilha
+// Lê automaticamente as planilhas públicas da Câmara Municipal de Senador Guiomard:
+//   2026: https://docs.google.com/spreadsheets/d/17yV6lYMlycmheq1CADwjdZAEmFX5WqbBGx72f6CgFdQ
+//   2025: https://docs.google.com/spreadsheets/d/1O4jCj924S_ZHxmW-YeMKB9tHffDAm8ciqAjwu8PG5dY
 //
-// Como obter a URL:
-//   1. Abra a planilha no Google Sheets
-//   2. Arquivo → Compartilhar → Publicar na web
-//   3. Escolha a aba de frequência → Formato: CSV → Publicar
-//   4. Copie o link gerado (começa com docs.google.com/spreadsheets/d/...)
-//   5. Cole em SHEETS_FREQ_URL nas variáveis de ambiente do Vercel
+// Formato real da planilha (colunas horizontais por vereador):
+//   Sessão | Mês | Data | Hora | Tipo de Sessão | Local | [Vereador 1] | [Vereador 2] | ...
+//   Cada célula de vereador contém "P" (presente) ou outro valor (falta)
 //
-// Formato esperado da planilha (qualquer ordem de colunas):
-//   Vereador | Sessões Previstas | Presenças | Faltas | Justificadas | % Presença
-//   (Os nomes das colunas são detectados automaticamente)
+// SHEETS_FREQ_URL (opcional): variável de ambiente para substituir por outra planilha
 
-const SHEETS_URL = process.env.SHEETS_FREQ_URL;
+const SHEETS_2026 = 'https://docs.google.com/spreadsheets/d/17yV6lYMlycmheq1CADwjdZAEmFX5WqbBGx72f6CgFdQ/gviz/tq?tqx=out:csv';
+const SHEETS_2025 = 'https://docs.google.com/spreadsheets/d/1O4jCj924S_ZHxmW-YeMKB9tHffDAm8ciqAjwu8PG5dY/gviz/tq?tqx=out:csv';
 
-// Apelidos para fazer o match com os nomes completos da planilha
-const APELIDOS = {
-  'tammy':         'Tammy Rodrigues de Paula Lima',
-  'sandrão':       'Sandro Cunha e Souza',
-  'sandro':        'Sandro Cunha e Souza',
-  'telma':         'Telma Regina Cunha de Queiroz Silva',
-  'telma queiroz': 'Telma Regina Cunha de Queiroz Silva',
-  'ivanete':       'Ivanete Figueiredo de Souza',
-  'leiri':         'Leyryana Conceição de Oliveira',
-  'leyryana':      'Leyryana Conceição de Oliveira',
-  'williene':      'Williene Magda Novais Jardim',
-  'rozildo':       'Rozildo de Souza Lima',
-  'rafael maia':   'João Rafael Tavares da Cruz Maia',
-  'joão rafael':   'João Rafael Tavares da Cruz Maia',
-  'paulinho':      'Paulo Cesar Miranda Gomes',
-  'paulo cesar':   'Paulo Cesar Miranda Gomes',
-  'eder paulino':  'Eder Paulino Silva Bandeira',
-  'lenon':         'Elvys Lenon Nascimento Araújo',
-  'elvys':         'Elvys Lenon Nascimento Araújo',
+// Nomes completos canônicos dos vereadores
+const NOMES_COMPLETOS = [
+  'Williene Magda Novais Jardim',
+  'Telma Regina Cunha de Queiroz Silva',
+  'Tammy Rodrigues de Paula Lima',
+  'Sandro Cunha e Souza',
+  'Ivanete Figueiredo de Souza',
+  'Leyryana Conceição de Oliveira',
+  'Rozildo de Souza Lima',
+  'João Rafael Tavares da Cruz Maia',
+  'Paulo Cesar Miranda Gomes',
+  'Eder Paulino Silva Bandeira',
+  'Elvys Lenon Nascimento Araújo',
+];
+
+// Fragmentos que identificam cada vereador no cabeçalho da planilha
+const FRAGMENTOS = {
+  'williene':   'Williene Magda Novais Jardim',
+  'telma':      'Telma Regina Cunha de Queiroz Silva',
+  'tammy':      'Tammy Rodrigues de Paula Lima',
+  'sandro':     'Sandro Cunha e Souza',
+  'sandrão':    'Sandro Cunha e Souza',
+  'ivanete':    'Ivanete Figueiredo de Souza',
+  'leyryana':   'Leyryana Conceição de Oliveira',
+  'leiri':      'Leyryana Conceição de Oliveira',
+  'rozildo':    'Rozildo de Souza Lima',
+  'rafael':     'João Rafael Tavares da Cruz Maia',
+  'joão rafael':'João Rafael Tavares da Cruz Maia',
+  'paulinho':   'Paulo Cesar Miranda Gomes',
+  'paulo cesar':'Paulo Cesar Miranda Gomes',
+  'eder':       'Eder Paulino Silva Bandeira',
+  'lenon':      'Elvys Lenon Nascimento Araújo',
+  'elvys':      'Elvys Lenon Nascimento Araújo',
 };
 
-function normalizarNome(nome) {
-  return (nome || '').toLowerCase()
+function normalizar(s) {
+  return (s || '').toLowerCase()
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z\s]/g, '').trim();
+    .replace(/[^a-z\s]/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
-function matchVereador(nomeColuna) {
-  const norm = normalizarNome(nomeColuna);
-  // tenta match direto por apelido
-  for (const [apelido, nomeCompleto] of Object.entries(APELIDOS)) {
-    if (norm.includes(normalizarNome(apelido))) return nomeCompleto;
+function identificarVereador(colunaHeader) {
+  const norm = normalizar(colunaHeader);
+  // Tenta cada fragmento conhecido
+  for (const [frag, nomeCompleto] of Object.entries(FRAGMENTOS)) {
+    if (norm.includes(normalizar(frag))) return nomeCompleto;
   }
-  // tenta match por sobrenome
-  const partes = norm.split(' ').filter(p => p.length > 3);
-  for (const [apelido, nomeCompleto] of Object.entries(APELIDOS)) {
-    const partesApelido = normalizarNome(apelido).split(' ');
-    if (partesApelido.some(p => partes.includes(p))) return nomeCompleto;
-  }
-  return nomeColuna; // retorna o original se não encontrar
+  return null;
 }
 
-function parseCSV(texto) {
-  const linhas = texto.trim().split('\n').map(l => l.split(',').map(c => c.trim().replace(/^"|"$/g, '')));
-  if (linhas.length < 2) return [];
+// Parser CSV correto — respeita campos entre aspas (inclusive vírgulas internas)
+function parsearLinhaCSV(linha) {
+  const campos = [];
+  let campo = '';
+  let aspas = false;
+  for (let i = 0; i < linha.length; i++) {
+    const c = linha[i];
+    if (c === '"') {
+      if (aspas && linha[i + 1] === '"') { campo += '"'; i++; }
+      else aspas = !aspas;
+    } else if (c === ',' && !aspas) {
+      campos.push(campo.trim());
+      campo = '';
+    } else {
+      campo += c;
+    }
+  }
+  campos.push(campo.trim());
+  return campos;
+}
 
-  const cabecalho = linhas[0].map(c => normalizarNome(c));
+function parsearCSV(texto) {
+  return texto.trim().split('\n').map(parsearLinhaCSV);
+}
 
-  // Detectar índices das colunas relevantes
-  const iNome      = cabecalho.findIndex(c => c.includes('vereador') || c.includes('parlamentar') || c.includes('nome'));
-  const iPrevistas = cabecalho.findIndex(c => c.includes('prevista') || c.includes('total') || c.includes('sessoes'));
-  const iPresenca  = cabecalho.findIndex(c => c.includes('presenca') || c.includes('presencas') || c.includes('presente'));
-  const iFaltas    = cabecalho.findIndex(c => c.includes('falta') || c.includes('ausente'));
-  const iJust      = cabecalho.findIndex(c => c.includes('justif'));
-  const iPerc      = cabecalho.findIndex(c => c.includes('%') || c.includes('percent') || c.includes('taxa'));
+// Lê planilha horizontal: colunas = vereadores, linhas = sessões
+function processarPlanilha(texto, ano) {
+  const linhas = parsearCSV(texto);
+  if (linhas.length < 2) return null;
 
-  if (iNome === -1) return [];
+  const cabecalho = linhas[0];
 
-  return linhas.slice(1)
-    .filter(l => l.length > 1 && l[iNome])
-    .map(l => {
-      const sessoesPrevistas = iPrevistas >= 0 ? parseInt(l[iPrevistas]) || 0 : 0;
-      const presencas        = iPresenca  >= 0 ? parseInt(l[iPresenca])  || 0 : 0;
-      const faltas           = iFaltas    >= 0 ? parseInt(l[iFaltas])    || 0 : 0;
-      const justificadas     = iJust      >= 0 ? parseInt(l[iJust])      || 0 : 0;
-
-      let percentual = 0;
-      if (iPerc >= 0 && l[iPerc]) {
-        percentual = parseFloat(l[iPerc].replace('%','').replace(',','.')) || 0;
-      } else if (sessoesPrevistas > 0) {
-        percentual = Math.round((presencas / sessoesPrevistas) * 100);
-      } else if (presencas + faltas > 0) {
-        percentual = Math.round((presencas / (presencas + faltas)) * 100);
+  // Mapear quais colunas correspondem a vereadores conhecidos
+  const colsVereador = []; // [{idx, nome}]
+  for (let i = 0; i < cabecalho.length; i++) {
+    const nome = identificarVereador(cabecalho[i]);
+    if (nome) {
+      // Evitar duplicatas (mesmo vereador pode aparecer em col diferente — pega a primeira)
+      if (!colsVereador.find(c => c.nome === nome)) {
+        colsVereador.push({ idx: i, nome, coluna: cabecalho[i] });
       }
+    }
+  }
 
-      return {
-        nome:           l[iNome],
-        nomeMatch:      matchVereador(l[iNome]),
-        sessoesPrevistas,
-        presencas,
-        faltas,
-        justificadas,
-        percentual:     Math.min(100, Math.max(0, percentual)),
-        _raw:           l
-      };
-    });
+  if (colsVereador.length === 0) return null;
+
+  // Inicializar contadores
+  const contagem = {};
+  for (const cv of colsVereador) {
+    contagem[cv.nome] = { presencas: 0, faltas: 0 };
+  }
+
+  let totalSessoes = 0;
+  const sessoes = [];
+
+  for (const linha of linhas.slice(1)) {
+    // Linha válida: tem valor na primeira coluna (número/nome da sessão) e uma data
+    const primCol = (linha[0] || '').trim();
+    const dataCol = (linha[2] || '').trim();
+    if (!primCol || !dataCol) continue;
+
+    totalSessoes++;
+    const tipo  = (linha[4] || '').trim();
+    const data  = dataCol;
+    const sessaoInfo = { sessao: primCol, data, tipo, presentes: [] };
+
+    for (const cv of colsVereador) {
+      const val = (linha[cv.idx] || '').trim().toUpperCase();
+      if (val === 'P') {
+        contagem[cv.nome].presencas++;
+        sessaoInfo.presentes.push(cv.nome);
+      } else {
+        // Conta como falta apenas se a célula não está em branco
+        // (células vazias = sessão ainda não realizada)
+        if (val !== '') contagem[cv.nome].faltas++;
+      }
+    }
+    sessoes.push(sessaoInfo);
+  }
+
+  const dados = colsVereador.map(cv => {
+    const c = contagem[cv.nome];
+    const realizadas = c.presencas + c.faltas;
+    const percentual = realizadas > 0
+      ? Math.round((c.presencas / realizadas) * 100)
+      : 0;
+    return {
+      nome:            cv.nome,
+      nomeMatch:       cv.nome,
+      sessoesPrevistas: totalSessoes,
+      sessoesRealizadas: realizadas,
+      presencas:       c.presencas,
+      faltas:          c.faltas,
+      justificadas:    0,
+      percentual:      Math.min(100, Math.max(0, percentual)),
+    };
+  });
+
+  return { dados, totalSessoes, sessoesComDados: sessoes.length, ano };
+}
+
+async function buscarPlanilha(url) {
+  const r = await fetch(url, { signal: AbortSignal.timeout(10000) });
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  const texto = await r.text();
+  if (!texto || texto.length < 20) throw new Error('Planilha vazia');
+  return texto;
 }
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 'public, s-maxage=3600'); // cache 1h
 
-  if (!SHEETS_URL) {
+  const anoAtual = new Date().getFullYear();
+
+  // Prioridade: env var → planilha do ano atual → planilha do ano anterior
+  const urlOverride = process.env.SHEETS_FREQ_URL;
+
+  const tentativas = urlOverride
+    ? [{ url: urlOverride, ano: anoAtual }]
+    : [
+        { url: SHEETS_2026, ano: 2026 },
+        { url: SHEETS_2025, ano: 2025 },
+      ];
+
+  let resultado = null;
+  let erros = [];
+
+  for (const { url, ano } of tentativas) {
+    try {
+      const texto = await buscarPlanilha(url);
+      resultado = processarPlanilha(texto, ano);
+      if (resultado && resultado.dados.length > 0) break;
+    } catch (e) {
+      erros.push(`${ano}: ${e.message}`);
+    }
+  }
+
+  if (!resultado || resultado.dados.length === 0) {
     return res.status(200).json({
-      configurado: false,
-      aviso: 'Variável SHEETS_FREQ_URL não configurada. Adicione nas variáveis de ambiente do Vercel.',
-      dados: []
+      configurado: true,
+      fonte: 'Google Sheets da Câmara Municipal',
+      aviso: 'Não foi possível carregar dados de frequência. ' + erros.join('; '),
+      dados: [],
+      total: 0,
     });
   }
 
-  try {
-    const r = await fetch(SHEETS_URL, { signal: AbortSignal.timeout(10000) });
-    if (!r.ok) return res.status(500).json({ erro: `Google Sheets retornou ${r.status}` });
-
-    const csv = await r.text();
-    if (!csv || csv.length < 10) return res.status(500).json({ erro: 'Planilha vazia ou inacessível' });
-
-    const dados = parseCSV(csv);
-    return res.status(200).json({ configurado: true, dados, total: dados.length });
-  } catch (e) {
-    return res.status(500).json({ erro: e.message });
-  }
+  return res.status(200).json({
+    configurado: true,
+    fonte: 'Google Sheets da Câmara Municipal',
+    ano: resultado.ano,
+    totalSessoes: resultado.totalSessoes,
+    sessoesRealizadas: resultado.sessoesComDados,
+    dados: resultado.dados,
+    total: resultado.dados.length,
+  });
 }
