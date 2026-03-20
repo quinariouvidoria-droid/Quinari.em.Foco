@@ -5,7 +5,6 @@
 <title>Bloco D — Ranking dos Políticos | Quinari em Foco</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ══ CSS PADRÃO QUINARI EM FOCO ══ */
 :root{
   --bg:#15151e;--bg2:#1e1e2a;--bg3:#252533;--bg4:#2e2e3e;
   --red:#e10600;--red2:#ff2020;
@@ -17,13 +16,11 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--white);font-family:'Barlow',sans-serif;min-height:100vh;overflow-x:hidden}
-/* TICKER */
 .ticker{background:var(--red);overflow:hidden;height:32px;display:flex;align-items:center}
 .ticker-label{background:var(--bg);color:var(--red);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.75rem;letter-spacing:2px;padding:0 16px;white-space:nowrap;height:100%;display:flex;align-items:center;flex-shrink:0}
 .ticker-track{display:flex;animation:ticker 40s linear infinite;white-space:nowrap}
 .ticker-track span{padding:0 32px;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.8rem;letter-spacing:1px;color:var(--white)}
 @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-/* NAV */
 nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:3px solid var(--red);height:56px;display:flex;align-items:center;padding:0 24px;justify-content:space-between;gap:8px}
 .nav-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;letter-spacing:2px;text-transform:uppercase;color:var(--white);text-decoration:none;flex-shrink:0}
 .nav-logo span{color:var(--red)}
@@ -36,25 +33,16 @@ nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:3px sol
 @media(max-width:900px){
   .nav-links{display:none;position:absolute;top:56px;left:0;right:0;background:var(--bg);flex-direction:column;padding:16px 24px;gap:0;border-bottom:2px solid var(--border);z-index:99}
   .nav-links.aberto{display:flex}
-  .nav-links a{height:44px;padding:0 8px;border-bottom:1px solid var(--border);border-right:none}
+  .nav-links a{height:44px;padding:0 8px;border-bottom:1px solid var(--border)}
   .nav-links a.ativo{border-left:3px solid var(--red);border-bottom:1px solid var(--border)}
   .hamburger{display:flex}
 }
-/* PAGE HEADER */
 .page-header{padding:32px 24px 0;max-width:1200px;margin:0 auto}
 .breadcrumb{display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--gray2);font-family:'DM Mono',monospace;margin-bottom:16px}
 .breadcrumb a{color:var(--gray2);text-decoration:none}.breadcrumb a:hover{color:var(--white)}
 .breadcrumb .sep{color:var(--red)}
 .page-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(2rem,5vw,3.5rem);text-transform:uppercase;letter-spacing:2px;line-height:1}
 .page-sub{color:var(--gray);font-size:.9rem;margin-top:8px}
-/* ANO BAR */
-.ano-bar{max-width:1200px;margin:20px auto 0;padding:0 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.ano-label{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--gray2);text-transform:uppercase;letter-spacing:1px}
-.ano-btns{display:flex;gap:6px;flex-wrap:wrap}
-.ano-btn{background:var(--bg3);border:1px solid var(--border);color:var(--gray);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:1px;padding:6px 14px;cursor:pointer;transition:all .2s;border-radius:2px}
-.ano-btn:hover{border-color:var(--gray2);color:var(--white)}
-.ano-btn.ativo{background:var(--red);border-color:var(--red);color:var(--white)}
-/* ABAS */
 .abas-wrap{max-width:1200px;margin:24px auto 0;padding:0 24px}
 .abas{display:flex;gap:0;border-bottom:2px solid var(--border);overflow-x:auto;scrollbar-width:none}
 .abas::-webkit-scrollbar{display:none}
@@ -63,19 +51,15 @@ nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:3px sol
 .aba-btn.ativa{color:var(--white);border-bottom-color:var(--red)}
 .aba-content{display:none;max-width:1200px;margin:0 auto;padding:24px}
 .aba-content.ativa{display:block}
-/* KPIs */
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:24px}
 .kpi{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:16px 20px}
 .kpi-label{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gray2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
 .kpi-valor{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.6rem;color:var(--white);line-height:1}
 .kpi-sub{font-size:.75rem;color:var(--gray2);margin-top:4px}
-/* TABELA */
 .tabela-wrap{overflow-x:auto;margin-top:16px}
-.tabela-busca{background:var(--bg3);border:1px solid var(--border);color:var(--white);font-family:'Barlow',sans-serif;font-size:.85rem;padding:8px 14px;width:100%;max-width:360px;margin-bottom:12px;outline:none}
-.tabela-busca:focus{border-color:var(--red)}
 table{width:100%;border-collapse:collapse;font-size:.83rem}
 th{background:var(--bg3);color:var(--gray2);font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
-td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--gray);vertical-align:top}
+td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--gray);vertical-align:middle}
 tr:hover td{background:var(--bg2)}
 .badge{display:inline-block;padding:2px 8px;border-radius:2px;font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.5px}
 .badge-green{background:rgba(0,212,106,.15);color:var(--green)}
@@ -83,90 +67,84 @@ tr:hover td{background:var(--bg2)}
 .badge-red{background:rgba(225,6,0,.15);color:var(--red2)}
 .badge-blue{background:rgba(77,166,255,.15);color:var(--blue)}
 .badge-gray{background:rgba(255,255,255,.08);color:var(--gray)}
-/* INFO BOX */
+.badge-orange{background:rgba(251,146,60,.15);color:var(--orange)}
 .info-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:14px 18px;margin-bottom:20px;font-size:.85rem;color:var(--gray);line-height:1.6}
 .info-box a{color:var(--red)}.info-box strong{color:var(--white)}
-/* LOADING */
+.info-box.ok{border-left-color:var(--green)}
+.info-box.warn{border-left-color:var(--yellow)}
 .loading{display:flex;align-items:center;gap:12px;padding:32px;color:var(--gray2);font-family:'DM Mono',monospace;font-size:.8rem}
 .spin{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.vazio{padding:32px;text-align:center;color:var(--gray2);font-family:'DM Mono',monospace;font-size:.8rem}
-/* SEÇÃO TÍTULO */
 .sec-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin:24px 0 16px;display:flex;align-items:center;gap:12px}
 .sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
+/* RANK CARDS */
+.rank-card{background:var(--bg2);border:1px solid var(--border);padding:16px 20px;display:flex;align-items:center;gap:16px;margin-bottom:10px;transition:background .2s}
+.rank-card:hover{background:var(--bg3)}
+.rank-pos{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:2rem;color:var(--gray2);min-width:48px;text-align:center;line-height:1}
+.rank-pos.ouro{color:var(--yellow)}
+.rank-pos.prata{color:#c0c0c0}
+.rank-pos.bronze{color:#cd7f32}
+.rank-foto{width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:top center;border:2px solid var(--border);flex-shrink:0}
+.rank-info{flex:1;min-width:0}
+.rank-nome{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.05rem;text-transform:uppercase;color:var(--white)}
+.rank-cargo{font-size:.75rem;color:var(--gray2);margin-top:2px}
+.rank-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.rank-score{text-align:right;flex-shrink:0;min-width:80px}
+.rank-pts{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;line-height:1}
+.rank-pts-label{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gray2);text-transform:uppercase;letter-spacing:1px}
+/* BARRA FREQUÊNCIA */
+.freq-bar-wrap{margin-top:6px;display:flex;align-items:center;gap:8px}
+.freq-bar-track{flex:1;background:var(--bg4);height:5px;border-radius:2px;overflow:hidden}
+.freq-bar-fill{height:100%;border-radius:2px;transition:width .8s ease}
+.freq-label{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--gray2);white-space:nowrap}
+/* CRITÉRIOS */
+.criterio-card{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:16px 20px;margin-bottom:10px}
+.criterio-nome{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;text-transform:uppercase;color:var(--white);margin-bottom:4px}
+.criterio-desc{font-size:.83rem;color:var(--gray);line-height:1.5}
+.criterio-peso{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--red);margin-top:6px}
+/* TABELA FREQUÊNCIA */
+.freq-perc{font-family:'DM Mono',monospace;font-weight:500}
+.freq-perc.alta{color:var(--green)}
+.freq-perc.media{color:var(--yellow)}
+.freq-perc.baixa{color:var(--red2)}
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}
 /* FOOTER */
-footer{background:var(--bg);border-top:1px solid var(--border);padding:40px 24px;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:32px;max-width:100%}
+footer{background:var(--bg);border-top:1px solid var(--border);padding:40px 24px;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:32px}
 @media(max-width:768px){footer{grid-template-columns:1fr}}
 .f-logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.3rem;text-transform:uppercase;letter-spacing:.5px;color:var(--white);margin-bottom:8px}
 .f-logo span{color:var(--red)}
 .f-sub{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--gray2);line-height:1.7;margin-bottom:12px}
-.f-email{font-family:'DM Mono',monospace;font-size:.8rem;color:var(--gray2);text-decoration:none;display:block;margin-bottom:4px;transition:color .2s}
-.f-email:hover{color:var(--red)}
-.f-email-note{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gray2);opacity:.6}
 .f-col-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:12px}
 .f-links{display:flex;flex-direction:column;gap:8px}
 .f-link{font-size:.85rem;color:var(--gray2);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
 .f-link::before{content:'›';color:var(--red);font-size:1rem}
 .f-link:hover{color:var(--white)}
 .footer-bottom{background:var(--bg);border-top:1px solid var(--border);padding:14px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-family:'DM Mono',monospace;font-size:.72rem;color:var(--gray2)}
-.f-disc{opacity:.5}
-/* GRÁFICO BARRAS */
-.barra-row{display:grid;grid-template-columns:200px 1fr 140px;gap:10px;align-items:center;margin-bottom:10px}
-@media(max-width:600px){.barra-row{grid-template-columns:1fr;gap:4px}}
-.barra-nome{font-size:.82rem;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.barra-track{background:var(--bg3);height:8px;border-radius:2px;overflow:hidden}
-.barra-fill{height:100%;border-radius:2px;transition:width .6s ease}
-.barra-vals{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--gray2);text-align:right}
-.rank-card{background:var(--bg2);border:1px solid var(--border);padding:20px;display:flex;align-items:center;gap:16px;margin-bottom:10px;transition:background .2s}
-.rank-card:hover{background:var(--bg3)}
-.rank-pos{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:2rem;color:var(--gray2);min-width:48px;text-align:center}
-.rank-pos.ouro{color:var(--yellow)}
-.rank-pos.prata{color:#c0c0c0}
-.rank-pos.bronze{color:#cd7f32}
-.rank-foto{width:56px;height:56px;border-radius:50%;object-fit:cover;object-position:top center;border:2px solid var(--border);flex-shrink:0}
-.rank-info{flex:1}
-.rank-nome{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;text-transform:uppercase;color:var(--white)}
-.rank-cargo{font-size:.78rem;color:var(--gray2);margin-top:2px}
-.rank-score{text-align:right;flex-shrink:0}
-.rank-pts{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;line-height:1}
-.rank-pts-label{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--gray2);text-transform:uppercase;letter-spacing:1px}
-.rank-bars{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
-.rank-bar-item{display:flex;flex-direction:column;align-items:center;gap:2px}
-.rank-bar-mini{width:32px;height:4px;border-radius:2px;background:var(--bg4)}
-.rank-bar-fill{height:100%;border-radius:2px;transition:width .6s}
-.rank-bar-label{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--gray2)}
-.criterio-card{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:16px 20px;margin-bottom:10px}
-.criterio-nome{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;text-transform:uppercase;color:var(--white);margin-bottom:4px}
-.criterio-desc{font-size:.83rem;color:var(--gray);line-height:1.5}
-.criterio-peso{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--red)}
-.em-breve{background:var(--bg2);border:2px dashed var(--border);border-radius:4px;padding:48px;text-align:center}
-.em-breve-ico{font-size:3rem;margin-bottom:16px}
-.em-breve-titulo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.5rem;text-transform:uppercase;color:var(--white);margin-bottom:8px}
-.em-breve-desc{color:var(--gray);font-size:.9rem;max-width:480px;margin:0 auto;line-height:1.6}
 </style>
 </head>
 <body>
+
 <div class="ticker">
   <div class="ticker-label">RANKING</div>
   <div class="ticker-track">
     <span>Pontuação automática baseada em dados públicos verificáveis</span>
-    <span>Critérios: frequência, projetos de lei, votos, transparência</span>
-    <span>Dados: Câmara Municipal · TSE · Portal da Transparência</span>
+    <span>Frequência integrada via planilha oficial da Câmara Municipal</span>
+    <span>Critérios: frequência (30%), projetos, votos, transparência</span>
     <span>Pontuação automática baseada em dados públicos verificáveis</span>
-    <span>Critérios: frequência, projetos de lei, votos, transparência</span>
-    <span>Dados: Câmara Municipal · TSE · Portal da Transparência</span>
+    <span>Frequência integrada via planilha oficial da Câmara Municipal</span>
+    <span>Critérios: frequência (30%), projetos, votos, transparência</span>
   </div>
 </div>
+
 <nav>
   <a href="index.html" class="nav-logo">QUINARI <span>EM FOCO</span></a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="index.html" id="nl-home">Home</a></li>
-    <li><a href="prefeitura.html" id="nl-pref">Prefeitura</a></li>
-    <li><a href="camara.html" id="nl-cam">Câmara</a></li>
-    <li><a href="secretarias.html" id="nl-sec">Secretarias</a></li>
-    <li><a href="ranking.html" id="nl-rank">Ranking</a></li>
-    <li><a href="voz-do-povo.html" id="nl-voz">Voz do Povo</a></li>
-    <li><a href="/cdn-cgi/l/email-protection#97e6e2fef9f6e5feb9f8e2e1fef3f8e5fef6d7f0faf6fefbb9f4f8fa">Ouvidoria</a></li>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="prefeitura.html">Prefeitura</a></li>
+    <li><a href="camara.html">Câmara</a></li>
+    <li><a href="secretarias.html">Secretarias</a></li>
+    <li><a href="ranking.html" class="ativo">Ranking</a></li>
+    <li><a href="voz-do-povo.html">Voz do Povo</a></li>
   </ul>
   <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
 </nav>
@@ -174,118 +152,376 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:40px 24px
 <div class="page-header">
   <div class="breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span>Bloco D — Ranking dos Políticos</span></div>
   <h1 class="page-title">BLOCO D — <span style="color:var(--yellow)">RANKING</span></h1>
-  <p class="page-sub">Pontuação automática calculada com base em dados públicos verificáveis · Câmara de Senador Guiomard</p>
+  <p class="page-sub">Pontuação calculada com dados públicos · Câmara Municipal de Senador Guiomard · 9ª Legislatura 2025–2028</p>
 </div>
 
 <div class="abas-wrap">
   <div class="abas">
-    <button class="aba-btn ativa" onclick="trocarAba('ranking')">🏆 Ranking Geral</button>
-    <button class="aba-btn" onclick="trocarAba('criterios')">📋 Critérios</button>
-    <button class="aba-btn" onclick="trocarAba('metodologia')">🔬 Metodologia</button>
+    <button class="aba-btn ativa" id="btn-ranking">🏆 Ranking Geral</button>
+    <button class="aba-btn" id="btn-frequencia">📊 Frequência</button>
+    <button class="aba-btn" id="btn-criterios">📋 Critérios</button>
+    <button class="aba-btn" id="btn-metodologia">🔬 Metodologia</button>
   </div>
 </div>
 
+<!-- ABA: RANKING -->
 <div class="aba-content ativa" id="aba-ranking">
-  <div class="info-box">
-    <strong>Como funciona:</strong> a pontuação é calculada automaticamente com base em dados públicos da Câmara Municipal.
-    Quanto mais o vereador participa, vota, propõe projetos e está presente, maior a pontuação.
-    Os dados de frequência detalhada serão integrados assim que disponíveis via planilha oficial da Câmara.
-  </div>
+  <div id="status-freq-box"></div>
 
   <div class="kpis">
-    <div class="kpi" style="border-left-color:var(--yellow)"><div class="kpi-label">Vereadores avaliados</div><div class="kpi-valor" style="color:var(--yellow)">11</div><div class="kpi-sub">9ª Legislatura 2025–2028</div></div>
-    <div class="kpi" style="border-left-color:var(--green)"><div class="kpi-label">Critérios automáticos</div><div class="kpi-valor" style="color:var(--green)">5</div><div class="kpi-sub">Frequência, PLs, votos...</div></div>
-    <div class="kpi" style="border-left-color:var(--blue)"><div class="kpi-label">Fonte principal</div><div class="kpi-valor" style="font-size:1rem;color:var(--blue)">Câmara Municipal</div><div class="kpi-sub">senadorguiomard.ac.leg.br</div></div>
-    <div class="kpi" style="border-left-color:var(--red)"><div class="kpi-label">Atualização</div><div class="kpi-valor" style="font-size:1rem">Mensal</div><div class="kpi-sub">Após publicação das atas</div></div>
+    <div class="kpi" style="border-left-color:var(--yellow)">
+      <div class="kpi-label">Vereadores avaliados</div>
+      <div class="kpi-valor" style="color:var(--yellow)">11</div>
+      <div class="kpi-sub">9ª Legislatura 2025–2028</div>
+    </div>
+    <div class="kpi" style="border-left-color:var(--green)">
+      <div class="kpi-label">Presença média</div>
+      <div class="kpi-valor" style="color:var(--green)" id="kpi-freq-media">—</div>
+      <div class="kpi-sub" id="kpi-freq-sub">Aguardando dados</div>
+    </div>
+    <div class="kpi" style="border-left-color:var(--blue)">
+      <div class="kpi-label">Dados de frequência</div>
+      <div class="kpi-valor" style="font-size:1rem;color:var(--blue)" id="kpi-freq-status">Carregando</div>
+      <div class="kpi-sub">Planilha da Câmara</div>
+    </div>
+    <div class="kpi" style="border-left-color:var(--red)">
+      <div class="kpi-label">Atualização</div>
+      <div class="kpi-valor" style="font-size:1rem">Mensal</div>
+      <div class="kpi-sub">Após publicação das atas</div>
+    </div>
   </div>
 
-  <div class="sec-title">Ranking provisório — dados parciais disponíveis</div>
-  
-  <!-- PODER EXECUTIVO -->
   <div class="sec-title">Poder Executivo</div>
-  <div class="rank-card" style="border-left-color:var(--red)">
-    <div class="rank-pos ouro" style="font-size:1rem;color:var(--red)">EXEC</div>
+  <div class="rank-card" style="border-left:3px solid var(--red)">
+    <div class="rank-pos" style="font-size:.85rem;color:var(--red)">EXEC</div>
     <img class="rank-foto" src="https://static.wixstatic.com/media/0204e8_e93c9203a7154d399e777115a35ac00c~mv2.jpg/v1/fill/w_392,h_392,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg" alt="Rosana Gomes" onerror="this.style.display='none'">
     <div class="rank-info">
       <div class="rank-nome">Rosana Gomes</div>
-      <div class="rank-cargo" style="color:var(--red)">PP · Prefeita Municipal · 2025–2028</div>
-      <div style="font-size:.75rem;color:var(--gray2);margin-top:4px">Rosana Pereira da Silva · Reeleita com 62,4% dos votos</div>
-      <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
-        <span class="badge badge-green">9.592 votos</span>
+      <div class="rank-cargo" style="color:var(--red)">PP · Prefeita Municipal · Reeleita 2025–2028</div>
+      <div class="rank-badges">
+        <span class="badge badge-green">9.592 votos · 62,4%</span>
         <span class="badge badge-yellow">Aprovação 43,8%</span>
         <span class="badge badge-red">Desaprovação 42,69%</span>
         <span class="badge badge-gray">Salário R$ 25.000/mês</span>
       </div>
     </div>
     <div class="rank-score">
-      <div style="font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gray2);text-align:center">Poder<br>Executivo</div>
+      <div style="font-family:'DM Mono',monospace;font-size:.68rem;color:var(--gray2);text-align:center">Poder<br>Executivo</div>
     </div>
   </div>
 
   <div class="sec-title">Poder Legislativo — Câmara Municipal</div>
-  <div id="lista-ranking"><div class="loading"><div class="spin"></div>Carregando vereadores...</div></div>
+  <div id="lista-ranking"><div class="loading"><div class="spin"></div>Calculando pontuação...</div></div>
 </div>
 
+<!-- ABA: FREQUÊNCIA -->
+<div class="aba-content" id="aba-frequencia">
+  <div id="freq-status-box"></div>
+  <div id="freq-conteudo"><div class="loading"><div class="spin"></div>Carregando dados de frequência...</div></div>
+</div>
+
+<!-- ABA: CRITÉRIOS -->
 <div class="aba-content" id="aba-criterios">
   <div class="sec-title">Critérios de pontuação</div>
-  <div class="criterio-card"><div class="criterio-nome">✅ Frequência nas sessões</div><div class="criterio-desc">Percentual de presença nas sessões ordinárias, extraordinárias e especiais. Falta sem justificativa = 0 pontos. Presença = 10 pontos por sessão.</div><div class="criterio-peso">Peso: 30% da pontuação total</div></div>
-  <div class="criterio-card"><div class="criterio-nome">📄 Projetos de lei apresentados</div><div class="criterio-desc">Número de PLs, requerimentos, indicações e moções protocolados. Projetos aprovados valem mais pontos que apenas apresentados.</div><div class="criterio-peso">Peso: 25% da pontuação total</div></div>
-  <div class="criterio-card"><div class="criterio-nome">🗳️ Participação em votações</div><div class="criterio-desc">Percentual de votações em que o vereador participou. Abstenções não contam como presença em votação.</div><div class="criterio-peso">Peso: 20% da pontuação total</div></div>
-  <div class="criterio-card"><div class="criterio-nome">💬 Uso da tribuna</div><div class="criterio-desc">Número de pronunciamentos, apartes e discursos registrados em ata. Indica engajamento ativo com a comunidade.</div><div class="criterio-peso">Peso: 15% da pontuação total</div></div>
-  <div class="criterio-card"><div class="criterio-nome">🔍 Transparência patrimonial</div><div class="criterio-desc">Declaração de bens atualizada junto ao TSE, sem pendências. Fonte: TSE — Dados Abertos Eleitorais.</div><div class="criterio-peso">Peso: 10% da pontuação total</div></div>
+  <div class="criterio-card">
+    <div class="criterio-nome">✅ Frequência nas sessões</div>
+    <div class="criterio-desc">Percentual de presença nas sessões ordinárias, extraordinárias e especiais. Extraído da planilha oficial da Câmara Municipal. Falta sem justificativa penaliza a pontuação.</div>
+    <div class="criterio-peso">Peso: 30% da pontuação total</div>
+  </div>
+  <div class="criterio-card">
+    <div class="criterio-nome">📄 Projetos de lei apresentados</div>
+    <div class="criterio-desc">Número de PLs, requerimentos, indicações e moções protocolados. Projetos aprovados valem mais pontos que apenas apresentados.</div>
+    <div class="criterio-peso">Peso: 25% da pontuação total</div>
+  </div>
+  <div class="criterio-card">
+    <div class="criterio-nome">🗳️ Participação em votações</div>
+    <div class="criterio-desc">Percentual de votações em que o vereador participou. Abstenções não contam como presença em votação.</div>
+    <div class="criterio-peso">Peso: 20% da pontuação total</div>
+  </div>
+  <div class="criterio-card">
+    <div class="criterio-nome">💬 Uso da tribuna</div>
+    <div class="criterio-desc">Número de pronunciamentos, apartes e discursos registrados em ata. Indica engajamento ativo com a comunidade.</div>
+    <div class="criterio-peso">Peso: 15% da pontuação total</div>
+  </div>
+  <div class="criterio-card">
+    <div class="criterio-nome">🔍 Transparência patrimonial</div>
+    <div class="criterio-desc">Declaração de bens atualizada junto ao TSE, sem pendências. Fonte: TSE — Dados Abertos Eleitorais.</div>
+    <div class="criterio-peso">Peso: 10% da pontuação total</div>
+  </div>
 </div>
 
+<!-- ABA: METODOLOGIA -->
 <div class="aba-content" id="aba-metodologia">
   <div class="info-box"><strong>Importante:</strong> este ranking é produzido por um portal <strong>independente e sem fins lucrativos</strong>. Os critérios são objetivos e baseados exclusivamente em dados públicos. Nenhum vereador paga para aparecer ou melhorar sua posição.</div>
   <div class="sec-title">Como os dados são coletados</div>
   <div style="color:var(--gray);font-size:.9rem;line-height:1.8;max-width:700px">
-    <p style="margin-bottom:12px"><strong style="color:var(--white)">Frequência:</strong> extraída da Lista de Frequência Parlamentar publicada pela Câmara em planilhas abertas (Google Sheets com dados CSV). Disponível em: senadorguiomard.ac.leg.br/paginas/lista-de-frequencia-parlamentar</p>
+    <p style="margin-bottom:12px"><strong style="color:var(--white)">Frequência:</strong> extraída automaticamente da planilha oficial da Câmara Municipal (Google Sheets). A integração lê o CSV publicado e calcula o percentual de presença de cada vereador em tempo real.</p>
     <p style="margin-bottom:12px"><strong style="color:var(--white)">Projetos e votações:</strong> extraídos das atas de sessão publicadas no portal da Câmara. Processo de extração automática em desenvolvimento — atualmente requer leitura manual das atas em PDF.</p>
     <p style="margin-bottom:12px"><strong style="color:var(--white)">Patrimônio:</strong> declarações de bens apresentadas ao TSE nas eleições de 2024. Fonte: dadosabertos.tse.jus.br</p>
-    <p><strong style="color:var(--white)">Atualização:</strong> o ranking é atualizado mensalmente, após a publicação oficial das atas de sessão pela Câmara Municipal.</p>
+    <p style="margin-bottom:12px"><strong style="color:var(--white)">Ranking provisório:</strong> enquanto os dados de projetos e votações não estão totalmente integrados, o ranking usa frequência (30%) + votos recebidos nas eleições como proxy de desempenho (70%).</p>
+    <p><strong style="color:var(--white)">Atualização:</strong> frequência atualizada automaticamente quando a planilha da Câmara é atualizada. Demais critérios: mensal, após publicação das atas.</p>
+  </div>
+
+  <div class="sec-title" style="margin-top:32px">Como configurar a planilha</div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--blue);padding:16px 20px;font-size:.85rem;color:var(--gray);line-height:1.8">
+    <p style="margin-bottom:8px"><strong style="color:var(--white)">Para integrar uma nova planilha do Google Sheets:</strong></p>
+    <ol style="padding-left:18px;display:flex;flex-direction:column;gap:6px">
+      <li>Abra a planilha no Google Sheets</li>
+      <li>Clique em <strong style="color:var(--white)">Arquivo → Compartilhar → Publicar na web</strong></li>
+      <li>Selecione a aba com os dados de frequência e o formato <strong style="color:var(--white)">CSV</strong></li>
+      <li>Clique em <strong style="color:var(--white)">Publicar</strong> e copie o link gerado</li>
+      <li>No painel do Vercel, vá em <strong style="color:var(--white)">Settings → Environment Variables</strong></li>
+      <li>Adicione a variável <code style="color:var(--blue)">SHEETS_FREQ_URL</code> com o link copiado</li>
+      <li>Faça um novo deploy (ou aguarde o próximo automático)</li>
+    </ol>
   </div>
 </div>
 
 <footer>
-  <div class="f-col"><div class="f-logo">QUINARI <span>EM FOCO</span></div><p class="f-sub">Portal independente de transparência municipal<br>Senador Guiomard, Acre · Atualizado diariamente por IA</p><a href="/cdn-cgi/l/email-protection#ef9e9a86818e9d86c1809a99868b809d868eaf88828e8683c18c8082" class="f-email">✉ <span class="__cf_email__" data-cfemail="5223273b3c33203b7c3d27243b363d203b3312353f333b3e7c313d3f">[email&#160;protected]</span></a><div class="f-email-note">Dúvidas, sugestões e denúncias · Resp. em até 48h</div></div>
-  <div class="f-col"><div class="f-col-title">Seções</div><div class="f-links"><a class="f-link" href="prefeitura.html">Prefeitura Municipal</a><a class="f-link" href="camara.html">Câmara dos Vereadores</a><a class="f-link" href="secretarias.html">Secretarias Municipais</a><a class="f-link" href="ranking.html">Ranking dos Políticos</a><a class="f-link" href="termometro.html">Termômetro Popular</a><a class="f-link" href="voz-do-povo.html">Voz do Povo</a></div></div>
-  <div class="f-col"><div class="f-col-title">Transparência</div><div class="f-links"><a class="f-link" href="https://apidatalake.tesouro.gov.br" target="_blank">Siconfi / STN</a><a class="f-link" href="https://www.senadorguiomard.ac.leg.br" target="_blank">Câmara Municipal</a><a class="f-link" href="https://portaldatransparencia.gov.br" target="_blank">Portal da Transparência</a><a class="f-link" href="/cdn-cgi/l/email-protection#4f3e3a26212e3d2661203a39262b203d262e0f28222e2623612c2022">Ouvidoria</a></div></div>
+  <div><div class="f-logo">QUINARI <span>EM FOCO</span></div><p class="f-sub">Portal independente de transparência municipal<br>Senador Guiomard, Acre · Dados atualizados automaticamente</p></div>
+  <div><div class="f-col-title">Seções</div><div class="f-links"><a class="f-link" href="prefeitura.html">Prefeitura Municipal</a><a class="f-link" href="camara.html">Câmara dos Vereadores</a><a class="f-link" href="secretarias.html">Secretarias Municipais</a><a class="f-link" href="ranking.html">Ranking dos Políticos</a><a class="f-link" href="termometro.html">Termômetro Popular</a><a class="f-link" href="voz-do-povo.html">Voz do Povo</a></div></div>
+  <div><div class="f-col-title">Transparência</div><div class="f-links"><a class="f-link" href="https://apidatalake.tesouro.gov.br" target="_blank">Siconfi / STN</a><a class="f-link" href="https://www.senadorguiomard.ac.leg.br" target="_blank">Câmara Municipal</a><a class="f-link" href="https://portaldatransparencia.gov.br" target="_blank">Portal da Transparência</a></div></div>
 </footer>
-<div class="footer-bottom"><span>Quinari em Foco · Portal independente · Senador Guiomard – AC · 2026</span><span class="f-disc">Não somos o site oficial da Prefeitura ou Câmara · Dados de fontes públicas federais</span></div>
+<div class="footer-bottom"><span>Quinari em Foco · Portal independente · Senador Guiomard – AC · 2026</span><span style="opacity:.5">Não somos o site oficial da Prefeitura ou Câmara · Dados de fontes públicas</span></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
+// ─── DADOS DOS VEREADORES ──────────────────────────────────────────────────
 const VEREADORES = [
-  {nome:'Tammy Rodrigues de Paula Lima',apelido:'Tammy',partido:'PP',votos:1041,cargo:'Vice-Presidente',foto:'https://static.wixstatic.com/media/0204e8_b21e72c0a28144b7a55c7ab898c248e3~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
-  {nome:'Sandro Cunha e Souza',apelido:'Sandrão',partido:'PP',votos:733,cargo:'Vereador',foto:'https://static.wixstatic.com/media/0204e8_4381340e750b49ab9dfaf77b3eabf1e5~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
-  {nome:'Telma Regina Cunha de Queiroz Silva',apelido:'Telma Queiroz',partido:'PP',votos:632,cargo:'Vereadora',foto:'https://static.wixstatic.com/media/0204e8_dfd25c96531948eea2c0039db6170095~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
-  {nome:'Ivanete Figueiredo de Souza',apelido:'Ivanete',partido:'PSD',votos:629,cargo:'Vereadora',foto:'https://static.wixstatic.com/media/0204e8_13b0c7229f66445b84b559f3e52ddd43~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
-  {nome:'Leyryana Conceição de Oliveira',apelido:'Leiri do Mixico',partido:'Republicanos',votos:529,cargo:'Vereadora',foto:'https://static.wixstatic.com/media/0204e8_9a6aca19a7544251b6e18a741ce98654~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
-  {nome:'Williene Magda Novais Jardim',apelido:'Williene',partido:'PL',votos:479,cargo:'Vereadora',foto:'https://static.wixstatic.com/media/0204e8_e845a469f85c4f8abdf644475e40f15a~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
-  {nome:'Rozildo de Souza Lima',apelido:'Rozildo',partido:'Solidariedade',votos:475,cargo:'Vereador',foto:'https://static.wixstatic.com/media/0204e8_184ef41cadee475e8cc08dd6d4b9c4a7~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
-  {nome:'João Rafael Tavares da Cruz Maia',apelido:'Rafael Maia',partido:'União Brasil',votos:420,cargo:'2º Secretário',foto:'https://static.wixstatic.com/media/0204e8_74da3a9cdc964f78bedb43ee3f063ac5~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
-  {nome:'Paulo Cesar Miranda Gomes',apelido:'Paulinho',partido:'União Brasil',votos:404,cargo:'1º Secretário',foto:'https://static.wixstatic.com/media/0204e8_f484b55a003148ac89118f71f49a1c30~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
-  {nome:'Eder Paulino Silva Bandeira',apelido:'Eder Paulino',partido:'Republicanos',votos:335,cargo:'Vereador',foto:'https://static.wixstatic.com/media/0204e8_0dfe3aed6d0c4f5d921b150dd9584d6f~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
-  {nome:'Elvys Lenon Nascimento Araújo',apelido:'Lenon',partido:'PP',votos:467,cargo:'Presidente',foto:'https://static.wixstatic.com/media/0204e8_4712722bb0aa48b8bce493a83acf883f~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Elvys Lenon Nascimento Araújo',     apelido:'Lenon',         partido:'PP',           votos:467, cargo:'Presidente',    foto:'https://static.wixstatic.com/media/0204e8_4712722bb0aa48b8bce493a83acf883f~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Tammy Rodrigues de Paula Lima',     apelido:'Tammy',         partido:'PP',           votos:1041,cargo:'Vice-Presidente',foto:'https://static.wixstatic.com/media/0204e8_b21e72c0a28144b7a55c7ab898c248e3~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Paulo Cesar Miranda Gomes',         apelido:'Paulinho',      partido:'União Brasil',  votos:404, cargo:'1º Secretário', foto:'https://static.wixstatic.com/media/0204e8_f484b55a003148ac89118f71f49a1c30~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'João Rafael Tavares da Cruz Maia',  apelido:'Rafael Maia',   partido:'União Brasil',  votos:420, cargo:'2º Secretário', foto:'https://static.wixstatic.com/media/0204e8_74da3a9cdc964f78bedb43ee3f063ac5~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Sandro Cunha e Souza',              apelido:'Sandrão',       partido:'PP',           votos:733, cargo:'Vereador',       foto:'https://static.wixstatic.com/media/0204e8_4381340e750b49ab9dfaf77b3eabf1e5~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Telma Regina Cunha de Queiroz Silva',apelido:'Telma Queiroz',partido:'PP',           votos:632, cargo:'Vereadora',      foto:'https://static.wixstatic.com/media/0204e8_dfd25c96531948eea2c0039db6170095~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Ivanete Figueiredo de Souza',       apelido:'Ivanete',       partido:'PSD',          votos:629, cargo:'Vereadora',      foto:'https://static.wixstatic.com/media/0204e8_13b0c7229f66445b84b559f3e52ddd43~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Leyryana Conceição de Oliveira',    apelido:'Leiri do Mixico',partido:'Republicanos', votos:529, cargo:'Vereadora',      foto:'https://static.wixstatic.com/media/0204e8_9a6aca19a7544251b6e18a741ce98654~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Williene Magda Novais Jardim',      apelido:'Williene',      partido:'PL',           votos:479, cargo:'Vereadora',      foto:'https://static.wixstatic.com/media/0204e8_e845a469f85c4f8abdf644475e40f15a~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Rozildo de Souza Lima',             apelido:'Rozildo',       partido:'Solidariedade', votos:475, cargo:'Vereador',       foto:'https://static.wixstatic.com/media/0204e8_184ef41cadee475e8cc08dd6d4b9c4a7~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
+  {nome:'Eder Paulino Silva Bandeira',       apelido:'Eder Paulino',  partido:'Republicanos', votos:335, cargo:'Vereador',       foto:'https://static.wixstatic.com/media/0204e8_0dfe3aed6d0c4f5d921b150dd9584d6f~mv2.jpg/v1/fill/w_279,h_285,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.jpg'},
 ];
-const cores = {PP:'#4da6ff',PL:'#ff6b6b',PSD:'#ffd600','União Brasil':'#22d3ee',Solidariedade:'#00d46a',Republicanos:'#a78bfa'};
-const posClasses = ['ouro','prata','bronze'];
-function trocarAba(a){
-  document.querySelectorAll('.aba-btn').forEach((b,i)=>b.classList.toggle('ativa',['ranking','criterios','metodologia'][i]===a));
-  document.querySelectorAll('.aba-content').forEach(el=>el.classList.toggle('ativa',el.id==='aba-'+a));
+
+const CORES_PARTIDO = {PP:'#4da6ff',PL:'#ff6b6b',PSD:'#ffd600','União Brasil':'#22d3ee',Solidariedade:'#00d46a',Republicanos:'#a78bfa'};
+const POS_CLASSES   = ['ouro','prata','bronze'];
+
+// ─── DADOS DE FREQUÊNCIA (carregados da API) ───────────────────────────────
+let dadosFreq = []; // array de { nomeMatch, percentual, presencas, faltas, sessoesPrevistas }
+let freqConfigurado = false;
+
+function normNome(n) {
+  return (n||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z\s]/g,'').trim();
 }
-// Ranking provisório baseado em votos (proxy até ter dados de frequência)
-const rankOrdenado = [...VEREADORES].sort((a,b)=>b.votos-a.votos);
-document.getElementById('lista-ranking').innerHTML = rankOrdenado.map((v,i)=>{
-  const pClass = posClasses[i] || '';
-  const cor = cores[v.partido]||'#6b6b80';
-  const ptsProvisorio = Math.round(50 + (v.votos/1041)*50);
-  return `<div class="rank-card">
-    <div class="rank-pos ${pClass}">${i+1}</div>
-    <img class="rank-foto" src="${v.foto}" alt="${v.apelido}" onerror="this.style.display='none'">
-    <div class="rank-info">
-      <div class="rank-nome">${v.apelido}</div>
-      <div class="rank-cargo" style="color:${cor}">${v.partido} · ${v.cargo}</div>
-      <div style="font-size:.75rem;color:var(--gray2);margin-top:4px">${v.nome}</div>
+
+function freqPorVereador(nomeCompleto) {
+  const norm = normNome(nomeCompleto);
+  // match por nomeMatch (já processado no backend)
+  let hit = dadosFreq.find(d => normNome(d.nomeMatch) === norm);
+  if (!hit) {
+    // fallback: qualquer palavra em comum
+    const partes = norm.split(' ').filter(p => p.length > 3);
+    hit = dadosFreq.find(d => partes.some(p => normNome(d.nomeMatch).includes(p)));
+  }
+  return hit || null;
+}
+
+// ─── CALCULAR PONTUAÇÃO ───────────────────────────────────────────────────
+function calcularPontos(v) {
+  const fq = freqPorVereador(v.nome);
+  const percFreq = fq ? fq.percentual : null;
+
+  // Frequência: 0-30 pontos
+  const ptFreq = percFreq !== null ? Math.round((percFreq / 100) * 30) : null;
+
+  // Proxy votos eleitorais: 0-70 pontos (provisório até ter dados completos)
+  // Escala: vereador com mais votos (1041) = 70 pts
+  const ptVotos = Math.round((v.votos / 1041) * 70);
+
+  // Se tiver frequência, combina; senão usa só votos como provisório
+  const total = ptFreq !== null
+    ? ptFreq + Math.round((v.votos / 1041) * 70)
+    : ptVotos;
+
+  return { total: Math.min(100, total), ptFreq, ptVotos, percFreq };
+}
+
+// ─── RENDER RANKING ───────────────────────────────────────────────────────
+function renderRanking() {
+  const comPontos = VEREADORES.map(v => ({ ...v, ...calcularPontos(v) }))
+    .sort((a, b) => b.total - a.total);
+
+  const maxVotos = Math.max(...VEREADORES.map(v => v.votos));
+
+  document.getElementById('lista-ranking').innerHTML = comPontos.map((v, i) => {
+    const pClass = POS_CLASSES[i] || '';
+    const cor = CORES_PARTIDO[v.partido] || '#6b6b80';
+    const corPts = i === 0 ? 'var(--yellow)' : i === 1 ? '#c0c0c0' : i === 2 ? '#cd7f32' : 'var(--white)';
+
+    const barraFreq = v.percFreq !== null
+      ? `<div class="freq-bar-wrap">
+          <span style="font-family:'DM Mono',monospace;font-size:.65rem;color:var(--gray2)">Freq.</span>
+          <div class="freq-bar-track"><div class="freq-bar-fill" style="width:${v.percFreq}%;background:${v.percFreq>=75?'var(--green)':v.percFreq>=50?'var(--yellow)':'var(--red2)'}"></div></div>
+          <span class="freq-label">${v.percFreq}%</span>
+        </div>`
+      : `<div style="font-family:'DM Mono',monospace;font-size:.65rem;color:var(--gray2);margin-top:4px">Freq. não disponível</div>`;
+
+    return `<div class="rank-card">
+      <div class="rank-pos ${pClass}">${i + 1}</div>
+      <img class="rank-foto" src="${v.foto}" alt="${v.apelido}" onerror="this.style.display='none'">
+      <div class="rank-info">
+        <div class="rank-nome">${v.apelido}</div>
+        <div class="rank-cargo" style="color:${cor}">${v.partido} · ${v.cargo}</div>
+        <div style="font-size:.72rem;color:var(--gray2);margin-top:2px">${v.nome}</div>
+        ${barraFreq}
+      </div>
+      <div class="rank-score">
+        <div class="rank-pts" style="color:${corPts}">${v.total}</div>
+        <div class="rank-pts-label">pontos</div>
+        <div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gray2);margin-top:4px">${v.votos} votos</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─── RENDER ABA FREQUÊNCIA ────────────────────────────────────────────────
+function renderFrequencia() {
+  const statusBox = document.getElementById('freq-status-box');
+  const cont = document.getElementById('freq-conteudo');
+
+  if (!freqConfigurado) {
+    statusBox.innerHTML = `<div class="info-box warn">
+      <strong>Planilha não configurada.</strong> Para integrar os dados de frequência da Câmara,
+      acesse a aba <strong>Metodologia</strong> e siga o passo a passo para configurar a variável
+      <code>SHEETS_FREQ_URL</code> no Vercel.
+    </div>`;
+    cont.innerHTML = `<div style="text-align:center;padding:48px;color:var(--gray2);font-family:'DM Mono',monospace;font-size:.85rem">
+      <div style="font-size:2.5rem;margin-bottom:12px">📊</div>
+      Aguardando configuração da planilha do Google Sheets
+    </div>`;
+    return;
+  }
+
+  if (!dadosFreq.length) {
+    cont.innerHTML = `<div style="text-align:center;padding:48px;color:var(--gray2)">Nenhum dado de frequência encontrado na planilha.</div>`;
+    return;
+  }
+
+  statusBox.innerHTML = `<div class="info-box ok">
+    <strong>✓ Dados de frequência integrados.</strong> ${dadosFreq.length} vereador(es) encontrados na planilha oficial da Câmara.
+  </div>`;
+
+  const ordenado = [...dadosFreq].sort((a, b) => b.percentual - a.percentual);
+
+  cont.innerHTML = `
+    <div class="kpis" style="margin-bottom:20px">
+      <div class="kpi" style="border-left-color:var(--green)">
+        <div class="kpi-label">Maior presença</div>
+        <div class="kpi-valor" style="color:var(--green)">${ordenado[0]?.percentual || 0}%</div>
+        <div class="kpi-sub">${ordenado[0]?.nomeMatch || '—'}</div>
+      </div>
+      <div class="kpi" style="border-left-color:var(--yellow)">
+        <div class="kpi-label">Média geral</div>
+        <div class="kpi-valor" style="color:var(--yellow)">${Math.round(dadosFreq.reduce((s,d)=>s+d.percentual,0)/dadosFreq.length)}%</div>
+        <div class="kpi-sub">Todos os vereadores</div>
+      </div>
+      <div class="kpi" style="border-left-color:var(--red)">
+        <div class="kpi-label">Menor presença</div>
+        <div class="kpi-valor" style="color:var(--red2)">${ordenado[ordenado.length-1]?.percentual || 0}%</div>
+        <div class="kpi-sub">${ordenado[ordenado.length-1]?.nomeMatch || '—'}</div>
+      </div>
     </div>
-    <div class="rank-score">
-      <div class="rank-pts" style="color:${i===0?'var(--yellow)':i===1?'#c0c0c0':i===2
+    <div class="tabela-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Vereador(a)</th>
+            <th>Presenças</th>
+            <th>Faltas</th>
+            <th>Justificadas</th>
+            <th>Total Sessões</th>
+            <th>% Presença</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${ordenado.map((d, i) => {
+            const perc = d.percentual;
+            const cls  = perc >= 75 ? 'alta' : perc >= 50 ? 'media' : 'baixa';
+            const cor  = perc >= 75 ? 'var(--green)' : perc >= 50 ? 'var(--yellow)' : 'var(--red2)';
+            const badge = perc >= 75
+              ? '<span class="badge badge-green">Boa frequência</span>'
+              : perc >= 50
+              ? '<span class="badge badge-yellow">Frequência regular</span>'
+              : '<span class="badge badge-red">Baixa frequência</span>';
+            return `<tr>
+              <td style="color:var(--gray2);font-family:'DM Mono',monospace">${i+1}</td>
+              <td style="color:var(--white);font-weight:600">${d.nomeMatch}</td>
+              <td style="color:var(--green)">${d.presencas || '—'}</td>
+              <td style="color:var(--red2)">${d.faltas || '—'}</td>
+              <td style="color:var(--gray)">${d.justificadas || '—'}</td>
+              <td style="color:var(--gray)">${d.sessoesPrevistas || '—'}</td>
+              <td><span class="freq-perc ${cls}">${perc}%</span></td>
+              <td>${badge}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+// ─── CARREGAR FREQUÊNCIA ──────────────────────────────────────────────────
+async function carregarFrequencia() {
+  try {
+    const r = await fetch('/api/frequencia');
+    if (!r.ok) throw new Error(`Erro ${r.status}`);
+    const d = await r.json();
+    freqConfigurado = d.configurado;
+    dadosFreq = d.dados || [];
+
+    // Atualizar KPIs do ranking
+    if (freqConfigurado && dadosFreq.length) {
+      const media = Math.round(dadosFreq.reduce((s, x) => s + x.percentual, 0) / dadosFreq.length);
+      document.getElementById('kpi-freq-media').textContent = media + '%';
+      document.getElementById('kpi-freq-sub').textContent = `${dadosFreq.length} vereadores`;
+      document.getElementById('kpi-freq-status').textContent = 'Integrado ✓';
+      document.getElementById('kpi-freq-status').style.color = 'var(--green)';
+      document.getElementById('status-freq-box').innerHTML = '';
+    } else {
+      document.getElementById('kpi-freq-media').textContent = '—';
+      document.getElementById('kpi-freq-sub').textContent = 'Planilha não configurada';
+      document.getElementById('kpi-freq-status').textContent = 'Pendente';
+      document.getElementById('kpi-freq-status').style.color = 'var(--yellow)';
+      document.getElementById('status-freq-box').innerHTML = `<div class="info-box warn">
+        <strong>Dados de frequência não disponíveis.</strong> O ranking está usando votos eleitorais como pontuação provisória.
+        Para ativar a integração com a planilha da Câmara, consulte a aba <strong>Metodologia</strong>.
+      </div>`;
+    }
+  } catch (_) {
+    document.getElementById('kpi-freq-status').textContent = 'Erro';
+    document.getElementById('kpi-freq-status').style.color = 'var(--red2)';
+  }
+
+  renderRanking();
+  renderFrequencia();
+}
+
+// ─── ABAS ─────────────────────────────────────────────────────────────────
+const ABAS_IDS = ['ranking','frequencia','criterios','metodologia'];
+ABAS_IDS.forEach(id => {
+  document.getElementById('btn-' + id).addEventListener('click', () => {
+    ABAS_IDS.forEach(a => {
+      document.getElementById('btn-' + a).classList.toggle('ativa', a === id);
+      document.getElementById('aba-' + a).classList.toggle('ativa', a === id);
+    });
+  });
+});
+
+// ─── HAMBURGER ────────────────────────────────────────────────────────────
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('aberto');
+});
+
+// ─── INIT ─────────────────────────────────────────────────────────────────
+carregarFrequencia();
+</script>
+</body>
+</html>

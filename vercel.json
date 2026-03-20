@@ -38,6 +38,9 @@
     },
     "api/forum.js": {
       "maxDuration": 15
+    },
+    "api/frequencia.js": {
+      "maxDuration": 15
     }
   }
 }
