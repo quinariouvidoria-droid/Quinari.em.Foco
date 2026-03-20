@@ -5,7 +5,7 @@ const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
 const PERMITIDAS   = ['receitas','despesas','licitacoes','fornecedores',
   'diario_oficial','orcamento_bimestral','indicadores','vereadores','configuracoes','log_coleta'];
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 'public, s-maxage=300');
 

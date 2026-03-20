@@ -10,7 +10,7 @@ ATENÇÃO: linguagem agressiva sem ódio explícito.
 APROVAR: críticas políticas (são democracia), denúncias, sugestões, linguagem popular.
 NÃO censure crítica a gestores públicos.`;
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).end();
