@@ -680,8 +680,8 @@ footer {
     <a href="camara.html" class="nav-link">Câmara</a>
     <a href="secretarias.html" class="nav-link">Secretarias</a>
     <a href="ranking.html" class="nav-link">Ranking</a>
-    <a href="#termo" class="nav-link">Termômetro</a>
-    <a href="#denuncia" class="nav-link">Denúncia</a>
+    <a href="termometro.html" class="nav-link">Termômetro</a>
+    <a href="ia.html" class="nav-link">Denúncia</a>
     <a href="voz-do-povo.html" class="nav-voz">🗣️ Voz do Povo</a>
   </div>
   <div class="nav-right">
@@ -696,8 +696,8 @@ footer {
   <a href="camara.html" class="mobile-link" onclick="toggleMenu()">Câmara <span>›</span></a>
   <a href="secretarias.html" class="mobile-link" onclick="toggleMenu()">Secretarias <span>›</span></a>
   <a href="ranking.html" class="mobile-link" onclick="toggleMenu()">Ranking <span>›</span></a>
-  <a href="#termo" class="mobile-link" onclick="toggleMenu()">Termômetro <span>›</span></a>
-  <a href="#denuncia" class="mobile-link" onclick="toggleMenu()">Denúncia <span>›</span></a>
+  <a href="termometro.html" class="mobile-link" onclick="toggleMenu()">Termômetro <span>›</span></a>
+  <a href="ia.html" class="mobile-link" onclick="toggleMenu()">Denúncia <span>›</span></a>
   <a href="voz-do-povo.html" class="mobile-link red">🗣️ Voz do Povo <span>›</span></a>
 </div>
 
@@ -728,7 +728,7 @@ footer {
   <p class="hero-desc a3">Aqui o poder presta contas. Dados públicos do município, atualizados diariamente, em linguagem que qualquer pessoa entende.</p>
   <div class="hero-btns a4">
     <a href="#blocos" class="btn-solid">📊 Ver os dados</a>
-    <a href="#denuncia" class="btn-outline">🕵️ Denúncia anônima</a>
+    <a href="ia.html" class="btn-outline">🕵️ Denúncia anônima</a>
   </div>
   <div class="stats-row a4">
     <div class="stat"><div class="stat-n"><span class="r">11</span></div><div class="stat-l">Fontes monitoradas</div></div>
@@ -790,13 +790,13 @@ footer {
       <div class="bloco-foot"><span class="bloco-src">Câmara · Transparência · Notícias</span><span class="bloco-go" style="color:#f5c518">Ver →</span></div>
     </a>
 
-    <a class="bloco a2" href="#" style="--c:#a78bfa" id="termo">
+    <a class="bloco a2" href="termometro.html" style="--c:#a78bfa">
       <div class="bloco-top"><div class="bloco-badge" style="background:#a78bfa">E</div><div class="bloco-ico">🌡️</div></div>
       <div><div class="bloco-name">Termômetro Popular</div><div class="bloco-txt">Vote "Aprovo" ou "Desaprovo" a prefeita e cada vereador. Um voto por e-mail. Resultado em tempo real.</div></div>
       <div class="bloco-foot"><span class="bloco-src">Participação da população</span><span class="bloco-go" style="color:#a78bfa">Votar →</span></div>
     </a>
 
-    <a class="bloco a3" href="#" style="--c:#22d3ee" id="denuncia">
+    <a class="bloco a3" href="ia.html" style="--c:#22d3ee">
       <div class="bloco-top"><div class="bloco-badge" style="background:#22d3ee">F</div><div class="bloco-ico">🤖</div></div>
       <div><div class="bloco-name">IA e Participação</div><div class="bloco-txt">Denúncia anônima, chat com IA, guia de serviços, geração de documentos e alertas personalizados.</div></div>
       <div class="bloco-foot"><span class="bloco-src">Claude API · Plataforma própria</span><span class="bloco-go" style="color:#22d3ee">Acessar →</span></div>
@@ -894,7 +894,7 @@ footer {
   <div class="parc-hdr">
     <div class="parc-title">Nossos Parceiros</div>
     <div style="display:flex;align-items:center;gap:10px">
-      <button onclick="abrirLoginAdmin()" style="background:none;border:1px solid rgba(225,6,0,.5);color:rgba(225,6,0,.85);font-family:DM Mono,monospace;font-size:.72rem;cursor:pointer;padding:5px 14px;border-radius:3px;letter-spacing:1px">⚙ Admin</button>
+      <button id="btn-admin" style="background:none;border:1px solid rgba(225,6,0,.5);color:rgba(225,6,0,.85);font-family:DM Mono,monospace;font-size:.72rem;cursor:pointer;padding:5px 14px;border-radius:3px;letter-spacing:1px">⚙ Admin</button>
       <a href="parceiros.html" class="parc-link">Quero apoiar →</a>
     </div>
   </div>
@@ -913,7 +913,7 @@ footer {
   <p class="parc-note">
     O Quinari em Foco é um projeto independente e sem fins lucrativos. Patrocinadores apoiam os custos de manutenção do portal.<br>
     O patrocínio <strong style="color:var(--off)">não influencia</strong> o conteúdo publicado.
-    Contato: <a href="parceiros.html"><span class="__cf_email__" data-cfemail="69181c0007081b0047061c1f000d061b0008290e04080005470a0604">[email&#160;protected]</span></a>
+    Contato: <a href="parceiros.html">quinari.ouvidoria@gmail.com</a>
   </p>
 </section>
 
@@ -973,20 +973,17 @@ footer {
   <span class="f-disc">Não somos o site oficial da Prefeitura ou Câmara · Dados de fontes públicas federais</span>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Data
 document.getElementById('data-hoje').textContent =
   new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
 
-// ── CHAT COM IA ──
+// Chat IA
 const chatHistory = [];
-
 async function sendChat(){
   const inp = document.getElementById('chat-inp');
   const v = inp.value.trim();
   if(!v) return;
-
-  // Adiciona mensagem do usuário na tela
   const msgs = document.querySelector('.chat-msgs');
   const userDiv = document.createElement('div');
   userDiv.className = 'cm cm-u';
@@ -994,17 +991,12 @@ async function sendChat(){
   msgs.appendChild(userDiv);
   inp.value = '';
   msgs.scrollTop = msgs.scrollHeight;
-
-  // Adiciona ao histórico
   chatHistory.push({ role: 'user', content: v });
-
-  // Placeholder de carregando
   const loadDiv = document.createElement('div');
   loadDiv.className = 'cm cm-ai';
   loadDiv.innerHTML = '<div class="cm-label">Quinari IA</div><span style="color:var(--muted)">Consultando os dados...</span>';
   msgs.appendChild(loadDiv);
   msgs.scrollTop = msgs.scrollHeight;
-
   try {
     const res = await fetch('/api/chat', {
       method: 'POST',
@@ -1012,9 +1004,7 @@ async function sendChat(){
       body: JSON.stringify({ messages: chatHistory })
     });
     const data = await res.json();
-    const resposta = data.resposta || data.error || 'Não consegui processar sua pergunta.';
-
-    // Atualiza o placeholder com a resposta
+    const resposta = data.resposta || data.error || 'Não consegui processar.';
     loadDiv.innerHTML = '<div class="cm-label">Quinari IA</div>' + resposta.replace(/\n/g, '<br>');
     chatHistory.push({ role: 'assistant', content: resposta });
   } catch(err) {
@@ -1023,139 +1013,37 @@ async function sendChat(){
 }
 </script>
 
-<!-- BARRA ADMIN (aparece após login) -->
+<!-- BARRA ADMIN -->
 <div id="adm-bar" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#15151e;border-top:2px solid #e10600;padding:10px 24px;z-index:9999;align-items:center;gap:16px;flex-wrap:wrap">
   <span style="font-family:'DM Mono',monospace;font-size:.75rem;color:#e10600">🔑 Modo administrador</span>
-  <button onclick="abrirGerenciar()" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:1px;text-transform:uppercase;background:#e10600;color:#fff;border:none;padding:7px 18px;cursor:pointer">Gerenciar Patrocinadores</button>
-  <button onclick="admLogout()" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;text-transform:uppercase;background:transparent;color:#e10600;border:1px solid rgba(225,6,0,.4);padding:7px 14px;cursor:pointer">Sair</button>
+  <button id="btn-gerenciar" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:1px;text-transform:uppercase;background:#e10600;color:#fff;border:none;padding:7px 18px;cursor:pointer">Gerenciar Patrocinadores</button>
+  <button id="btn-logout" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;text-transform:uppercase;background:transparent;color:#e10600;border:1px solid rgba(225,6,0,.4);padding:7px 14px;cursor:pointer">Sair</button>
 </div>
 
 <!-- MODAL LOGIN -->
-<div id="modal-adm-login" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:10000;align-items:center;justify-content:center">
+<div id="modal-login" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:10000;align-items:center;justify-content:center">
   <div style="background:#1e1e2a;border:1px solid rgba(225,6,0,.35);width:100%;max-width:380px;padding:32px;margin:20px;position:relative">
-    <button onclick="fecharLoginAdmin()" style="position:absolute;top:12px;right:14px;background:none;border:none;color:#6b6b80;font-size:1.4rem;cursor:pointer">×</button>
+    <button id="btn-fechar-login" style="position:absolute;top:12px;right:14px;background:none;border:none;color:#6b6b80;font-size:1.4rem;cursor:pointer">×</button>
     <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;text-transform:uppercase;letter-spacing:2px;color:#e10600;margin-bottom:4px">🔑 Administração</div>
     <div style="font-family:'DM Mono',monospace;font-size:.7rem;color:#6b6b80;margin-bottom:22px">Quinari em Foco · Acesso restrito</div>
-    <input id="adm-email" type="email" placeholder="E-mail" style="width:100%;background:#252533;border:1px solid #383842;color:#fff;font-family:'Barlow',sans-serif;font-size:.9rem;padding:10px 14px;margin-bottom:10px;outline:none;display:block">
-    <input id="adm-senha" type="password" placeholder="Senha" style="width:100%;background:#252533;border:1px solid #383842;color:#fff;font-family:'Barlow',sans-serif;font-size:.9rem;padding:10px 14px;margin-bottom:14px;outline:none;display:block" onkeydown="if(event.key==='Enter')admFazerLogin()">
-    <div id="adm-login-erro" style="color:#ff2020;font-family:'DM Mono',monospace;font-size:.75rem;margin-bottom:12px;display:none"></div>
-    <button onclick="admFazerLogin()" style="width:100%;background:#e10600;border:none;color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:1px;text-transform:uppercase;padding:12px;cursor:pointer;display:block">Entrar →</button>
-    <button onclick="fecharLoginAdmin()" style="width:100%;margin-top:8px;background:transparent;border:1px solid #383842;color:#6b6b80;font-family:'DM Mono',monospace;font-size:.75rem;padding:8px;cursor:pointer;display:block">Cancelar</button>
+    <input id="adm-email" type="email" placeholder="E-mail" style="width:100%;background:#252533;border:1px solid #383842;color:#fff;font-size:.9rem;padding:10px 14px;margin-bottom:10px;outline:none;display:block">
+    <input id="adm-senha" type="password" placeholder="Senha" style="width:100%;background:#252533;border:1px solid #383842;color:#fff;font-size:.9rem;padding:10px 14px;margin-bottom:14px;outline:none;display:block">
+    <div id="adm-erro" style="color:#ff2020;font-size:.75rem;margin-bottom:12px;display:none"></div>
+    <button id="btn-entrar" style="width:100%;background:#e10600;border:none;color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:1px;text-transform:uppercase;padding:12px;cursor:pointer;display:block">Entrar →</button>
+    <button id="btn-cancelar" style="width:100%;margin-top:8px;background:transparent;border:1px solid #383842;color:#6b6b80;font-size:.75rem;padding:8px;cursor:pointer;display:block">Cancelar</button>
   </div>
 </div>
 
-<!-- MODAL GERENCIAR PATROCINADORES -->
+<!-- MODAL GERENCIAR -->
 <div id="modal-gerenciar" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:9500;overflow-y:auto">
   <div style="background:#1e1e2a;border:1px solid rgba(255,255,255,.08);max-width:760px;margin:32px auto 100px;padding:32px;position:relative">
-    <button onclick="fecharGerenciar()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#6b6b80;font-size:1.5rem;cursor:pointer">×</button>
+    <button id="btn-fechar-ger" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#6b6b80;font-size:1.5rem;cursor:pointer">×</button>
     <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px">Patrocinadores</div>
     <div style="font-family:'DM Mono',monospace;font-size:.7rem;color:#6b6b80;margin-bottom:24px">Edite nome, WhatsApp e URL da logo de cada vaga</div>
     <div id="ger-lista">Carregando...</div>
   </div>
 </div>
 
-<script>
-const _S='https://lzgztviajtcthqgekvrr.supabase.co';
-const _A='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6Z3p0dmlhanRjdGhxZ2VrdnJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2ODc2OTgsImV4cCI6MjA4OTI2MzY5OH0.RN3a0gfygXo9BsGZpwaVLIgbQv8AO0K6-dWF0SIazTw';
-let _T=sessionStorage.getItem('qf_adm')||null;
-
-function abrirLoginAdmin(){
-  document.getElementById('modal-adm-login').style.display='flex';
-}
-function fecharLoginAdmin(){
-  document.getElementById('modal-adm-login').style.display='none';
-  document.getElementById('adm-login-erro').style.display='none';
-}
-function fecharGerenciar(){
-  document.getElementById('modal-gerenciar').style.display='none';
-  document.body.style.overflow='';
-}
-async function admFazerLogin(){
-  var email=document.getElementById('adm-email').value.trim();
-  var senha=document.getElementById('adm-senha').value;
-  var erro=document.getElementById('adm-login-erro');
-  erro.style.display='none';
-  if(!email||!senha){erro.textContent='Preencha e-mail e senha.';erro.style.display='block';return;}
-  try{
-    var r=await fetch(_S+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'Content-Type':'application/json','apikey':_A},body:JSON.stringify({email:email,password:senha})});
-    var d=await r.json();
-    if(!d.access_token){erro.textContent=d.error_description||'E-mail ou senha incorretos.';erro.style.display='block';return;}
-    var chk=await fetch(_S+'/rest/v1/admins?email=eq.'+encodeURIComponent(email)+'&select=email',{headers:{'apikey':_A,'Authorization':'Bearer '+d.access_token}});
-    var admins=await chk.json();
-    if(!Array.isArray(admins)||admins.length===0){erro.textContent='Acesso negado.';erro.style.display='block';return;}
-    _T=d.access_token;sessionStorage.setItem('qf_adm',_T);
-    fecharLoginAdmin();
-    document.getElementById('adm-bar').style.display='flex';
-  }catch(e){erro.textContent='Erro de conexão.';erro.style.display='block';}
-}
-function admLogout(){
-  _T=null;sessionStorage.removeItem('qf_adm');
-  document.getElementById('adm-bar').style.display='none';
-}
-async function abrirGerenciar(){
-  document.getElementById('modal-gerenciar').style.display='block';
-  document.body.style.overflow='hidden';
-  var lista=document.getElementById('ger-lista');
-  lista.innerHTML='<div style="color:#6b6b80;font-family:monospace;padding:16px">Carregando...</div>';
-  try{
-    var r=await fetch(_S+'/rest/v1/patrocinadores?order=posicao.asc',{headers:{'apikey':_A,'Authorization':'Bearer '+_T}});
-    var data=await r.json();
-    if(!Array.isArray(data)){lista.innerHTML='<div style="color:#ff2020;font-family:monospace;padding:16px">Execute schema_patrocinadores_v2.sql no Supabase primeiro.</div>';return;}
-    lista.innerHTML=data.map(function(p){
-      return '<div style="background:#252533;border:1px solid #383842;padding:18px;margin-bottom:10px">'
-        +'<div style="display:flex;gap:10px;align-items:center;margin-bottom:14px">'
-        +'<span style="font-family:monospace;font-size:.65rem;color:#6b6b80;text-transform:uppercase">Vaga '+p.posicao+'</span>'
-        +'<span style="font-family:sans-serif;font-weight:700;font-size:.9rem;color:'+(p.ativo&&p.logo_url?'#00d46a':'#6b6b80')+'">'+(p.ativo&&p.logo_url?'● ATIVO':'○ VAZIA')+'</span>'
-        +'</div>'
-        +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">'
-        +'<div><div style="font-family:monospace;font-size:.62rem;color:#6b6b80;text-transform:uppercase;margin-bottom:4px">Nome</div>'
-        +'<input id="gn'+p.id+'" value="'+(p.nome||'')+'" placeholder="Ex: Padaria do João" style="width:100%;background:#15151e;border:1px solid #383842;color:#fff;font-size:.85rem;padding:8px 12px;outline:none"></div>'
-        +'<div><div style="font-family:monospace;font-size:.62rem;color:#6b6b80;text-transform:uppercase;margin-bottom:4px">WhatsApp (só números)</div>'
-        +'<input id="gw'+p.id+'" value="'+(p.whatsapp||'')+'" placeholder="68999999999" style="width:100%;background:#15151e;border:1px solid #383842;color:#fff;font-size:.85rem;padding:8px 12px;outline:none"></div>'
-        +'</div>'
-        +'<div style="margin-bottom:12px"><div style="font-family:monospace;font-size:.62rem;color:#6b6b80;text-transform:uppercase;margin-bottom:4px">URL da logo</div>'
-        +'<input id="gl'+p.id+'" value="'+(p.logo_url||'')+'" placeholder="https://..." style="width:100%;background:#15151e;border:1px solid #383842;color:#fff;font-size:.85rem;padding:8px 12px;outline:none"></div>'
-        +'<div style="display:flex;gap:8px;align-items:center">'
-        +'<button onclick="gerSalvar('+p.id+')" style="font-family:sans-serif;font-weight:700;font-size:.82rem;text-transform:uppercase;background:#e10600;color:#fff;border:none;padding:8px 20px;cursor:pointer">Salvar</button>'
-        +(p.ativo&&p.logo_url?'<button onclick="gerLimpar('+p.id+')" style="font-family:sans-serif;font-weight:700;font-size:.82rem;text-transform:uppercase;background:transparent;color:#6b6b80;border:1px solid #383842;padding:8px 16px;cursor:pointer">Limpar</button>':'')
-        +'<span id="gok'+p.id+'" style="font-family:monospace;font-size:.75rem;color:#00d46a;display:none">✓ Salvo!</span>'
-        +'</div></div>';
-    }).join('');
-  }catch(e){lista.innerHTML='<div style="color:#ff2020;font-family:monospace;padding:16px">'+e.message+'</div>';}
-}
-async function gerSalvar(id){
-  var nome=document.getElementById('gn'+id).value.trim();
-  var wa=document.getElementById('gw'+id).value.replace(/\D/g,'');
-  var logo=document.getElementById('gl'+id).value.trim();
-  var r=await fetch(_S+'/rest/v1/patrocinadores?id=eq.'+id,{
-    method:'PATCH',
-    headers:{'Content-Type':'application/json','apikey':_A,'Authorization':'Bearer '+_T,'Prefer':'return=minimal'},
-    body:JSON.stringify({nome:nome,whatsapp:wa||null,logo_url:logo||null,ativo:!!(nome&&logo),atualizado_em:new Date().toISOString()})
-  });
-  var ok=document.getElementById('gok'+id);
-  ok.textContent=r.ok?'✓ Salvo!':'✗ Erro';
-  ok.style.color=r.ok?'#00d46a':'#ff2020';
-  ok.style.display='inline';
-  setTimeout(function(){ok.style.display='none';},2500);
-  if(r.ok)carregarParceiros();
-}
-async function gerLimpar(id){
-  if(!confirm('Remover patrocinador?'))return;
-  await fetch(_S+'/rest/v1/patrocinadores?id=eq.'+id,{
-    method:'PATCH',
-    headers:{'Content-Type':'application/json','apikey':_A,'Authorization':'Bearer '+_T,'Prefer':'return=minimal'},
-    body:JSON.stringify({ativo:false,nome:'Vaga disponível',logo_url:null,whatsapp:null})
-  });
-  abrirGerenciar();
-}
-async function carregarParceiros(){
-  try{
-    var r=await fetch(_S+'/rest/v1/patrocinadores?order=posicao.asc',{headers:{'apikey':_A}});
-    var data=await r.json();
-    if(!Array.isArray(data)||data.length===0)return;
-    var grid=document.getElementById('parc-grid');
-    if(!grid)return;
-    grid.innerHTML=data.map(function(p){
-      if(!p.ativo||!p.logo_url)return '<a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>';
-      var wa=p.whatsapp?'https://wa.me/55'+p.whatsapp+'?text=Ol%C3%A1!%20Vi%20no%20Quinari%20em%20Foco.':'parceiros.html';
-      return '<a href="'+wa+'" target="_blank" class="parc-vaga" style="border-color:rgba(255,255,255,.2)"><img src="'+p.logo_url+'" alt="'+p.nome+'" style="max-width:110px;max-height:55px;object-fit:contain"><div cl
+<script src="admin.js"></script>
+</body>
+</html>
