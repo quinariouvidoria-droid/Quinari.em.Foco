@@ -913,7 +913,7 @@ footer {
   <p class="parc-note">
     O Quinari em Foco é um projeto independente e sem fins lucrativos. Patrocinadores apoiam os custos de manutenção do portal.<br>
     O patrocínio <strong style="color:var(--off)">não influencia</strong> o conteúdo publicado.
-    Contato: <a href="parceiros.html">quinari.ouvidoria@gmail.com</a>
+    Contato: <a href="parceiros.html"><span class="__cf_email__" data-cfemail="69181c0007081b0047061c1f000d061b0008290e04080005470a0604">[email&#160;protected]</span></a>
   </p>
 </section>
 
@@ -973,7 +973,7 @@ footer {
   <span class="f-disc">Não somos o site oficial da Prefeitura ou Câmara · Dados de fontes públicas federais</span>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Data
 document.getElementById('data-hoje').textContent =
   new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
@@ -1056,7 +1056,7 @@ async function sendChat(){
 
 <script>
 const _S='https://lzgztviajtcthqgekvrr.supabase.co';
-const _A='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6Z3p0dmlhanRjdGhxZ2VrdnJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzMTgxNDMsImV4cCI6MjA1Nzg5NDE0M30.Lm5C7J8zR2xK9pQ1nV6wY4tE0bF3aI7uX8dG2hS5jM0';
+const _A='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6Z3p0dmlhanRjdGhxZ2VrdnJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2ODc2OTgsImV4cCI6MjA4OTI2MzY5OH0.RN3a0gfygXo9BsGZpwaVLIgbQv8AO0K6-dWF0SIazTw';
 let _T=sessionStorage.getItem('qf_adm')||null;
 
 function abrirLoginAdmin(){
@@ -1158,12 +1158,4 @@ async function carregarParceiros(){
     grid.innerHTML=data.map(function(p){
       if(!p.ativo||!p.logo_url)return '<a href="parceiros.html" class="parc-vaga"><div class="parc-vaga-ico">＋</div><div class="parc-vaga-txt">Anuncie aqui<br>sua empresa</div></a>';
       var wa=p.whatsapp?'https://wa.me/55'+p.whatsapp+'?text=Ol%C3%A1!%20Vi%20no%20Quinari%20em%20Foco.':'parceiros.html';
-      return '<a href="'+wa+'" target="_blank" class="parc-vaga" style="border-color:rgba(255,255,255,.2)"><img src="'+p.logo_url+'" alt="'+p.nome+'" style="max-width:110px;max-height:55px;object-fit:contain"><div class="parc-vaga-txt" style="color:#f0f0f0">'+p.nome+'</div></a>';
-    }).join('');
-  }catch(e){}
-}
-if(_T){document.getElementById('adm-bar').style.display='flex';}
-carregarParceiros();
-</script>
-</body>
-</html>
+      return '<a href="'+wa+'" target="_blank" class="parc-vaga" style="border-color:rgba(255,255,255,.2)"><img src="'+p.logo_url+'" alt="'+p.nome+'" style="max-width:110px;max-height:55px;object-fit:contain"><div cl
