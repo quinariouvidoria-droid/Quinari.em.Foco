@@ -32,6 +32,9 @@
     },
     "api/vagas.js": {
       "maxDuration": 10
+    },
+    "api/comercios.js": {
+      "maxDuration": 10
     }
   }
 }

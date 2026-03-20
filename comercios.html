@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quinari Comércios · Quinari em Foco</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --red:    #e10600;
+  --red2:   #ff1f1a;
+  --white:  #ffffff;
+  --off:    #f0f0f0;
+  --bg:     #15151e;
+  --bg1:    #1e1e2a;
+  --bg2:    #26262f;
+  --bg3:    #2f2f3a;
+  --border: #383842;
+  --muted:  #909099;
+  --gold:   #f5c518;
+  --r:      4px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--off);font-family:'Barlow',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.a1{animation:fadeUp .5s .05s ease both}
+.a2{animation:fadeUp .5s .15s ease both}
+.a3{animation:fadeUp .5s .25s ease both}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:300;background:var(--bg);border-bottom:3px solid var(--red);height:60px;display:flex;align-items:center;padding:0 24px;gap:16px;}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;text-transform:uppercase;letter-spacing:.5px;color:var(--white);text-decoration:none;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.nav-bar{width:4px;height:20px;background:var(--red);border-radius:2px;animation:blink 2.5s infinite;}
+.nav-logo span{color:var(--red);}
+.nav-back{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:7px 14px;border:1px solid var(--border);border-radius:var(--r);transition:all .15s;display:flex;align-items:center;gap:6px;}
+.nav-back:hover{color:var(--white);border-color:var(--white);}
+.nav-right{margin-left:auto;}
+.nav-menu-btn{display:none;background:none;border:none;color:var(--white);font-size:22px;cursor:pointer;padding:4px;}
+.mobile-nav{display:none;position:fixed;top:60px;left:0;right:0;bottom:0;background:var(--bg);z-index:250;padding:24px;border-top:1px solid var(--border);flex-direction:column;gap:4px;overflow-y:auto;}
+.mobile-nav.open{display:flex;}
+.mobile-link{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;letter-spacing:1px;text-transform:uppercase;color:var(--off);text-decoration:none;padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;transition:background .15s;}
+.mobile-link:hover{background:var(--bg1);}
+.mobile-link.red{color:var(--red);}
+
+/* ── HERO ── */
+.hero{padding:40px 24px 28px;max-width:1100px;margin:0 auto;}
+.hero-label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(28px,5vw,42px);text-transform:uppercase;line-height:1.1;color:var(--white);}
+.hero-sub{font-size:15px;color:var(--muted);margin-top:8px;max-width:600px;}
+
+/* ── KPIs ── */
+.kpis{display:flex;gap:12px;padding:0 24px 24px;max-width:1100px;margin:0 auto;flex-wrap:wrap;}
+.kpi{background:var(--bg1);border:1px solid var(--border);border-radius:6px;padding:14px 20px;min-width:110px;}
+.kpi-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:28px;color:var(--white);line-height:1;}
+.kpi-lab{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-top:3px;}
+
+/* ── TOOLBAR ── */
+.toolbar{max-width:1100px;margin:0 auto;padding:0 24px 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.search-wrap{flex:1;min-width:200px;position:relative;}
+.search-input{width:100%;background:var(--bg1);border:1px solid var(--border);color:var(--off);padding:10px 12px 10px 36px;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:14px;transition:border .15s;}
+.search-input:focus{outline:none;border-color:var(--gold);}
+.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none;}
+.filter-scroll{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;flex:1;min-width:0;}
+.filter-scroll::-webkit-scrollbar{height:3px;}
+.filter-scroll::-webkit-scrollbar-track{background:transparent;}
+.filter-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.filter-btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.6px;text-transform:uppercase;background:none;border:1px solid var(--border);color:var(--muted);padding:7px 12px;border-radius:20px;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;}
+.filter-btn.ativo{color:var(--white);border-color:var(--white);background:rgba(255,255,255,.05);}
+.btn-cadastrar{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:13px;letter-spacing:.8px;text-transform:uppercase;background:var(--gold);color:var(--bg);border:none;padding:9px 18px;border-radius:var(--r);cursor:pointer;transition:background .15s;white-space:nowrap;flex-shrink:0;}
+.btn-cadastrar:hover{background:#ffd700;}
+
+/* ── GRID ── */
+.grid-wrap{max-width:1100px;margin:0 auto;padding:0 24px 60px;}
+.comercios-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+
+/* ── CARD ── */
+.com-card{background:var(--bg1);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:border-color .15s,transform .1s;display:flex;flex-direction:column;}
+.com-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+.com-foto{width:100%;height:140px;object-fit:cover;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:40px;color:var(--border);user-select:none;}
+.com-foto img{width:100%;height:100%;object-fit:cover;display:block;}
+.com-body{padding:14px 16px;flex:1;display:flex;flex-direction:column;}
+.com-cat{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:20px;display:inline-block;margin-bottom:8px;align-self:flex-start;}
+.com-nome{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;color:var(--white);line-height:1.2;margin-bottom:4px;}
+.com-desc{font-size:13px;color:var(--muted);flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.com-footer{padding:10px 16px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.com-stars{display:flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);}
+.com-info{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* ── EMPTY ── */
+.grid-empty{grid-column:1/-1;text-align:center;padding:60px 24px;color:var(--muted);}
+.grid-empty-icon{font-size:40px;margin-bottom:12px;}
+.grid-empty-txt{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;align-items:center;justify-content:center;padding:16px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg1);border:1px solid var(--border);border-radius:8px;width:100%;max-width:540px;max-height:92vh;overflow-y:auto;}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--border);}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;text-transform:uppercase;letter-spacing:.8px;color:var(--white);}
+.modal-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:2px 6px;line-height:1;}
+.modal-close:hover{color:var(--white);}
+.modal-body{padding:20px;}
+
+/* ── DETALHE ── */
+.det-foto{width:100%;height:180px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:50px;border-bottom:1px solid var(--border);overflow:hidden;}
+.det-foto img{width:100%;height:100%;object-fit:cover;}
+.det-cat{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:4px 10px;border-radius:20px;display:inline-block;margin-bottom:10px;}
+.det-nome{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:26px;color:var(--white);line-height:1.2;margin-bottom:8px;}
+.det-stars{display:flex;align-items:center;gap:6px;margin-bottom:14px;}
+.det-stars-val{font-family:'DM Mono',monospace;font-size:13px;color:var(--gold);}
+.det-stars-count{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+.det-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;font-size:14px;color:var(--off);}
+.det-row-icon{font-size:14px;margin-top:1px;flex-shrink:0;}
+.det-sep{border:none;border-top:1px solid var(--border);margin:16px 0;}
+.det-desc{font-size:14px;color:var(--off);white-space:pre-wrap;margin-bottom:16px;}
+.det-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.det-btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.6px;text-transform:uppercase;padding:9px 16px;border-radius:var(--r);border:1px solid var(--border);color:var(--off);background:none;cursor:pointer;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.det-btn:hover{border-color:var(--white);color:var(--white);}
+.det-btn.primary{background:var(--gold);color:var(--bg);border-color:var(--gold);}
+.det-btn.primary:hover{background:#ffd700;border-color:#ffd700;}
+
+/* ── STAR PICKER ── */
+.star-picker{display:flex;gap:6px;margin:10px 0;}
+.star-btn{background:none;border:none;font-size:24px;cursor:pointer;color:var(--border);transition:color .1s;}
+.star-btn.on{color:var(--gold);}
+.star-btn:hover{color:var(--gold);}
+
+/* ── FORMULÁRIOS ── */
+.form-row{margin-bottom:14px;}
+.form-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px;}
+.form-input{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--off);padding:10px 12px;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:14px;transition:border .15s;}
+.form-input:focus{outline:none;border-color:var(--gold);}
+.form-select{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--off);padding:10px 12px;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:14px;cursor:pointer;}
+.form-select:focus{outline:none;border-color:var(--gold);}
+.form-textarea{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--off);padding:10px 12px;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:14px;resize:vertical;min-height:80px;transition:border .15s;}
+.form-textarea:focus{outline:none;border-color:var(--gold);}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-hint{font-size:12px;color:var(--muted);margin-top:4px;}
+.btn-enviar{width:100%;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:16px;letter-spacing:1px;text-transform:uppercase;background:var(--gold);color:var(--bg);border:none;padding:13px;border-radius:var(--r);cursor:pointer;margin-top:8px;transition:background .15s;}
+.btn-enviar:hover{background:#ffd700;}
+.btn-enviar:disabled{opacity:.5;cursor:not-allowed;}
+.msg-ok{font-family:'DM Mono',monospace;font-size:13px;color:#00c87a;background:rgba(0,200,122,.08);border:1px solid rgba(0,200,122,.25);padding:10px 14px;border-radius:var(--r);margin-top:12px;display:none;}
+.msg-ok.vis{display:block;}
+.msg-erro{font-family:'DM Mono',monospace;font-size:13px;color:var(--red);background:rgba(225,6,0,.08);border:1px solid rgba(225,6,0,.25);padding:10px 14px;border-radius:var(--r);margin-top:12px;display:none;}
+.msg-erro.vis{display:block;}
+
+/* ── SPINNER ── */
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--off);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── FOOTER ── */
+footer{background:var(--bg1);border-top:1px solid var(--border);padding:32px 24px;text-align:center;}
+.f-logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;text-transform:uppercase;color:var(--white);margin-bottom:6px;}
+.f-logo span{color:var(--red);}
+.f-txt{font-size:13px;color:var(--muted);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .nav-menu-btn{display:flex;}
+  .comercios-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));}
+  .form-row-2{grid-template-columns:1fr;}
+  .kpi{padding:10px 14px;}
+  .kpi-val{font-size:22px;}
+}
+@media(max-width:480px){
+  .comercios-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="nav-bar"></span>
+    Quinari <span>em Foco</span>
+  </a>
+  <a href="index.html" class="nav-back">← Início</a>
+  <div class="nav-right">
+    <button class="nav-menu-btn" id="menu-btn" aria-label="Menu">☰</button>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobile-nav">
+  <a href="prefeitura.html" class="mobile-link">Prefeitura <span>›</span></a>
+  <a href="camara.html" class="mobile-link">Câmara <span>›</span></a>
+  <a href="secretarias.html" class="mobile-link">Secretarias <span>›</span></a>
+  <a href="ranking.html" class="mobile-link">Ranking <span>›</span></a>
+  <a href="calendario.html" class="mobile-link">Calendário <span>›</span></a>
+  <a href="vagas.html" class="mobile-link">Vagas <span>›</span></a>
+  <a href="comercios.html" class="mobile-link">Comércios <span>›</span></a>
+  <a href="voz-do-povo.html" class="mobile-link red">🗣️ Voz do Povo <span>›</span></a>
+</div>
+
+<!-- HERO -->
+<div class="hero a1">
+  <p class="hero-label">Módulo 3 · Comércios</p>
+  <h1>Quinari Comércios</h1>
+  <p class="hero-sub">Diretório completo de estabelecimentos de Senador Guiomard — encontre, avalie e apoie o comércio local.</p>
+</div>
+
+<!-- KPIs -->
+<div class="kpis a2" id="kpis">
+  <div class="kpi"><div class="kpi-val" id="kpi-total"><span class="spinner"></span></div><div class="kpi-lab">Estabelecimentos</div></div>
+  <div class="kpi"><div class="kpi-val" id="kpi-cats">—</div><div class="kpi-lab">Categorias</div></div>
+  <div class="kpi"><div class="kpi-val" id="kpi-aval">—</div><div class="kpi-lab">Avaliações</div></div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar a2">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" id="search-input" type="text" placeholder="Buscar estabelecimento...">
+  </div>
+  <div class="filter-scroll" id="filter-btns"></div>
+  <button class="btn-cadastrar" id="btn-cadastrar">+ Cadastrar</button>
+</div>
+
+<!-- GRID -->
+<div class="grid-wrap a3">
+  <div class="comercios-grid" id="comercios-grid">
+    <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted)"><span class="spinner"></span> Carregando...</div>
+  </div>
+</div>
+
+<!-- MODAL DETALHE -->
+<div class="modal-overlay" id="modal-detalhe">
+  <div class="modal" id="modal-detalhe-inner"></div>
+</div>
+
+<!-- MODAL AVALIAÇÃO -->
+<div class="modal-overlay" id="modal-aval">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title" id="aval-modal-titulo">Avaliar</span>
+      <button class="modal-close" id="aval-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label class="form-label">Sua Nota *</label>
+        <div class="star-picker" id="star-picker">
+          <button class="star-btn" data-v="1">★</button>
+          <button class="star-btn" data-v="2">★</button>
+          <button class="star-btn" data-v="3">★</button>
+          <button class="star-btn" data-v="4">★</button>
+          <button class="star-btn" data-v="5">★</button>
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="av-coment">Comentário (opcional)</label>
+        <textarea class="form-textarea" id="av-coment" maxlength="500" placeholder="Conte sua experiência..."></textarea>
+      </div>
+      <button class="btn-enviar" id="btn-enviar-aval">Enviar Avaliação</button>
+      <div class="msg-ok" id="aval-ok">✓ Avaliação enviada! Obrigado.</div>
+      <div class="msg-erro" id="aval-erro"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CADASTRO -->
+<div class="modal-overlay" id="modal-cadastro">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title">Cadastrar Estabelecimento</span>
+      <button class="modal-close" id="cad-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label class="form-label" for="n-nome">Nome do Estabelecimento *</label>
+        <input class="form-input" id="n-nome" type="text" maxlength="200" placeholder="Ex: Farmácia Saúde & Vida">
+      </div>
+      <div class="form-row-2">
+        <div class="form-row" style="margin:0">
+          <label class="form-label" for="n-cat">Categoria *</label>
+          <select class="form-select" id="n-cat">
+            <option value="">— Selecione —</option>
+            <option value="alimentacao">Alimentação</option>
+            <option value="saude">Saúde e Farmácia</option>
+            <option value="educacao">Educação</option>
+            <option value="moda">Moda e Vestuário</option>
+            <option value="eletronicos">Eletrônicos</option>
+            <option value="construcao">Construção</option>
+            <option value="servicos">Serviços</option>
+            <option value="beleza">Beleza e Estética</option>
+            <option value="agro">Agropecuária</option>
+            <option value="transporte">Transporte</option>
+            <option value="outro">Outro</option>
+          </select>
+        </div>
+        <div class="form-row" style="margin:0">
+          <label class="form-label" for="n-tel">Telefone / WhatsApp</label>
+          <input class="form-input" id="n-tel" type="tel" maxlength="20" placeholder="(68) 99999-9999">
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="n-end">Endereço</label>
+        <input class="form-input" id="n-end" type="text" maxlength="300" placeholder="Rua, número, bairro">
+      </div>
+      <div class="form-row-2">
+        <div class="form-row" style="margin:0">
+          <label class="form-label" for="n-horario">Horário de Funcionamento</label>
+          <input class="form-input" id="n-horario" type="text" maxlength="200" placeholder="Seg–Sex 8h–18h">
+        </div>
+        <div class="form-row" style="margin:0">
+          <label class="form-label" for="n-insta">Instagram</label>
+          <input class="form-input" id="n-insta" type="text" maxlength="100" placeholder="@nomedoperfil">
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="n-desc">Descrição</label>
+        <textarea class="form-textarea" id="n-desc" maxlength="1000" placeholder="Descreva os produtos ou serviços oferecidos..."></textarea>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="n-foto">URL da Foto (opcional)</label>
+        <input class="form-input" id="n-foto" type="url" maxlength="500" placeholder="https://...">
+        <p class="form-hint">Cole o link de uma imagem do estabelecimento.</p>
+      </div>
+      <button class="btn-enviar" id="btn-enviar-cad">Cadastrar Estabelecimento</button>
+      <div class="msg-ok" id="cad-ok">✓ Cadastrado com sucesso! Em breve aparecerá na lista.</div>
+      <div class="msg-erro" id="cad-erro"></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">Quinari <span>em Foco</span></div>
+  <p class="f-txt">Plataforma independente de transparência municipal · Senador Guiomard – AC</p>
+</footer>
+
+<script>
+// ─── CONFIG ────────────────────────────────────────────────────────────────
+const CATS = {
+  alimentacao: { label: 'Alimentação',      cor: '#f5c518', icon: '🍽️' },
+  saude:       { label: 'Saúde/Farmácia',   cor: '#00c87a', icon: '💊' },
+  educacao:    { label: 'Educação',         cor: '#4da6ff', icon: '📚' },
+  moda:        { label: 'Moda',             cor: '#a78bfa', icon: '👗' },
+  eletronicos: { label: 'Eletrônicos',      cor: '#74b9ff', icon: '📱' },
+  construcao:  { label: 'Construção',       cor: '#e17055', icon: '🏗️' },
+  servicos:    { label: 'Serviços',         cor: '#fd79a8', icon: '🔧' },
+  beleza:      { label: 'Beleza/Estética',  cor: '#ff9f43', icon: '✂️' },
+  agro:        { label: 'Agropecuária',     cor: '#55efc4', icon: '🌾' },
+  transporte:  { label: 'Transporte',       cor: '#636e72', icon: '🚗' },
+  outro:       { label: 'Outro',            cor: '#909099', icon: '🏪' }
+};
+
+// ─── ESTADO ────────────────────────────────────────────────────────────────
+let todosComercios = [];
+let filtroAtivo = 'todos';
+let busca = '';
+let comercioSelecionado = null;
+let notaSelecionada = 0;
+
+// ─── SUPABASE ──────────────────────────────────────────────────────────────
+const LS_KEY = 'qef_comercios';
+
+function salvarLocal(list) {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(list)); } catch (_) {}
+}
+function carregarLocal() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch (_) { return []; }
+}
+
+async function carregarComercios() {
+  try {
+    const r = await fetch('/api/comercios');
+    if (r.ok) {
+      const d = await r.json();
+      if (Array.isArray(d.comercios)) {
+        todosComercios = d.comercios;
+        salvarLocal(d.comercios);
+        return;
+      }
+    }
+  } catch (_) {}
+  todosComercios = carregarLocal();
+}
+
+// ─── FILTRAR ───────────────────────────────────────────────────────────────
+function filtrados() {
+  return todosComercios.filter(c => {
+    const catOk = filtroAtivo === 'todos' || c.cat === filtroAtivo;
+    const bOk = !busca ||
+      c.nome.toLowerCase().includes(busca) ||
+      (c.descricao || '').toLowerCase().includes(busca);
+    return catOk && bOk;
+  });
+}
+
+// ─── STARS ─────────────────────────────────────────────────────────────────
+function renderStars(nota, total) {
+  const cheia = Math.round(nota || 0);
+  const s = '★'.repeat(cheia) + '☆'.repeat(5 - cheia);
+  return nota ? `${s} <span style="color:var(--muted)">${nota} (${total})</span>` : `<span style="color:var(--muted)">Sem avaliações</span>`;
+}
+
+// ─── KPIs ──────────────────────────────────────────────────────────────────
+function renderKPIs() {
+  document.getElementById('kpi-total').textContent = todosComercios.length;
+  document.getElementById('kpi-cats').textContent = new Set(todosComercios.map(c => c.cat)).size;
+  document.getElementById('kpi-aval').textContent = todosComercios.reduce((s, c) => s + (c.total_avaliacoes || 0), 0);
+}
+
+// ─── FILTROS ───────────────────────────────────────────────────────────────
+function renderFiltros() {
+  const catsPresentes = new Set(todosComercios.map(c => c.cat));
+  const cont = document.getElementById('filter-btns');
+  cont.innerHTML = '';
+  const todos = document.createElement('button');
+  todos.className = 'filter-btn' + (filtroAtivo === 'todos' ? ' ativo' : '');
+  todos.dataset.cat = 'todos';
+  todos.textContent = 'Todos';
+  cont.appendChild(todos);
+  for (const [key, cfg] of Object.entries(CATS)) {
+    if (!catsPresentes.has(key)) continue;
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (filtroAtivo === key ? ' ativo' : '');
+    btn.dataset.cat = key;
+    btn.textContent = cfg.label;
+    cont.appendChild(btn);
+  }
+}
+
+// ─── GRID ──────────────────────────────────────────────────────────────────
+function renderGrid() {
+  const grid = document.getElementById('comercios-grid');
+  const lista = filtrados();
+  if (!lista.length) {
+    grid.innerHTML = `<div class="grid-empty">
+      <div class="grid-empty-icon">🏪</div>
+      <div class="grid-empty-txt">Nenhum estabelecimento encontrado</div>
+      <p style="margin-top:8px;font-size:14px;color:var(--muted)">Seja o primeiro a cadastrar o seu negócio!</p>
+    </div>`;
+    return;
+  }
+  grid.innerHTML = '';
+  lista.forEach(c => {
+    const cfg = CATS[c.cat] || CATS.outro;
+    const card = document.createElement('div');
+    card.className = 'com-card';
+    card.dataset.id = c.id;
+
+    const fotoHtml = c.foto_url
+      ? `<div class="com-foto"><img src="${c.foto_url}" alt="${c.nome}" loading="lazy" onerror="this.parentElement.innerHTML='${cfg.icon}'"></div>`
+      : `<div class="com-foto">${cfg.icon}</div>`;
+
+    card.innerHTML = `
+      ${fotoHtml}
+      <div class="com-body">
+        <span class="com-cat" style="background:${cfg.cor}22;color:${cfg.cor}">${cfg.label}</span>
+        <div class="com-nome">${c.nome}</div>
+        ${c.descricao ? `<div class="com-desc">${c.descricao}</div>` : ''}
+      </div>
+      <div class="com-footer">
+        <div class="com-stars">${c.media ? '★ ' + c.media : '☆'}</div>
+        <div class="com-info">${c.telefone || c.horario || ''}</div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ─── MODAL DETALHE ─────────────────────────────────────────────────────────
+function abrirDetalhe(id) {
+  const c = todosComercios.find(x => String(x.id) === String(id));
+  if (!c) return;
+  comercioSelecionado = c;
+  const cfg = CATS[c.cat] || CATS.outro;
+
+  const fotoHtml = c.foto_url
+    ? `<div class="det-foto"><img src="${c.foto_url}" alt="${c.nome}" onerror="this.parentElement.innerHTML='${cfg.icon}'"></div>`
+    : `<div class="det-foto">${cfg.icon}</div>`;
+
+  const instaLink = c.instagram
+    ? `<a class="det-btn" href="https://instagram.com/${c.instagram.replace('@','')}" target="_blank" rel="noopener">📸 Instagram</a>`
+    : '';
+  const waLink = c.whatsapp
+    ? `<a class="det-btn primary" href="https://wa.me/55${c.whatsapp.replace(/\D/g,'')}" target="_blank" rel="noopener">📲 WhatsApp</a>`
+    : '';
+  const telLink = c.telefone && !c.whatsapp
+    ? `<a class="det-btn" href="tel:${c.telefone.replace(/\D/g,'')}">${c.telefone}</a>`
+    : '';
+
+  document.getElementById('modal-detalhe-inner').innerHTML = `
+    ${fotoHtml}
+    <div class="modal-head">
+      <span class="modal-title" style="font-size:16px">${c.nome}</span>
+      <button class="modal-close" id="det-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <span class="det-cat" style="background:${cfg.cor}22;color:${cfg.cor}">${cfg.label}</span>
+      <div class="det-nome">${c.nome}</div>
+      <div class="det-stars">${renderStars(c.media, c.total_avaliacoes)}</div>
+      ${c.descricao ? `<div class="det-desc">${c.descricao}</div><hr class="det-sep">` : ''}
+      ${c.endereco ? `<div class="det-row"><span class="det-row-icon">📍</span><span>${c.endereco}</span></div>` : ''}
+      ${c.horario  ? `<div class="det-row"><span class="det-row-icon">🕐</span><span>${c.horario}</span></div>` : ''}
+      ${c.telefone ? `<div class="det-row"><span class="det-row-icon">📞</span><span>${c.telefone}</span></div>` : ''}
+      <hr class="det-sep">
+      <div class="det-btns">
+        ${waLink}${telLink}${instaLink}
+        <button class="det-btn" id="btn-avaliar-det">⭐ Avaliar</button>
+      </div>
+    </div>`;
+
+  document.getElementById('modal-detalhe').classList.add('open');
+  document.getElementById('det-close').addEventListener('click', () => {
+    document.getElementById('modal-detalhe').classList.remove('open');
+  });
+  document.getElementById('btn-avaliar-det').addEventListener('click', () => {
+    document.getElementById('modal-detalhe').classList.remove('open');
+    abrirAvaliacao(c);
+  });
+}
+
+// ─── MODAL AVALIAÇÃO ───────────────────────────────────────────────────────
+function abrirAvaliacao(c) {
+  comercioSelecionado = c;
+  notaSelecionada = 0;
+  document.getElementById('aval-modal-titulo').textContent = `Avaliar: ${c.nome}`;
+  document.getElementById('av-coment').value = '';
+  document.getElementById('aval-ok').classList.remove('vis');
+  document.getElementById('aval-erro').classList.remove('vis');
+  document.querySelectorAll('.star-btn').forEach(b => b.classList.remove('on'));
+  document.getElementById('modal-aval').classList.add('open');
+}
+
+document.getElementById('star-picker').addEventListener('click', e => {
+  const btn = e.target.closest('.star-btn');
+  if (!btn) return;
+  notaSelecionada = parseInt(btn.dataset.v);
+  document.querySelectorAll('.star-btn').forEach(b => {
+    b.classList.toggle('on', parseInt(b.dataset.v) <= notaSelecionada);
+  });
+});
+
+document.getElementById('btn-enviar-aval').addEventListener('click', async () => {
+  if (!comercioSelecionado) return;
+  const ok   = document.getElementById('aval-ok');
+  const erro = document.getElementById('aval-erro');
+  ok.classList.remove('vis'); erro.classList.remove('vis');
+
+  if (!notaSelecionada) {
+    erro.textContent = 'Selecione uma nota (1 a 5 estrelas).';
+    erro.classList.add('vis'); return;
+  }
+  const btn = document.getElementById('btn-enviar-aval');
+  btn.disabled = true; btn.textContent = 'Enviando…';
+  try {
+    const r = await fetch('/api/comercios', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        acao: 'avaliar',
+        comercio_id: comercioSelecionado.id,
+        nota: notaSelecionada,
+        comentario: document.getElementById('av-coment').value.trim()
+      })
+    });
+    if (!r.ok) { const d = await r.json().catch(()=>({})); throw new Error(d.erro || `Erro ${r.status}`); }
+    ok.classList.add('vis');
+    // atualiza média localmente
+    const idx = todosComercios.findIndex(c => c.id === comercioSelecionado.id);
+    if (idx >= 0) {
+      const c = todosComercios[idx];
+      const n = (c.total_avaliacoes || 0) + 1;
+      const m = (((c.media || 0) * (n - 1)) + notaSelecionada) / n;
+      todosComercios[idx] = { ...c, media: +m.toFixed(1), total_avaliacoes: n };
+      renderGrid();
+    }
+  } catch (err) {
+    erro.textContent = 'Erro: ' + err.message; erro.classList.add('vis');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Enviar Avaliação';
+  }
+});
+
+// ─── MODAL CADASTRO ────────────────────────────────────────────────────────
+document.getElementById('btn-cadastrar').addEventListener('click', () => {
+  document.getElementById('modal-cadastro').classList.add('open');
+  document.getElementById('cad-ok').classList.remove('vis');
+  document.getElementById('cad-erro').classList.remove('vis');
+});
+document.getElementById('cad-close').addEventListener('click', () => {
+  document.getElementById('modal-cadastro').classList.remove('open');
+});
+document.getElementById('modal-cadastro').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal-cadastro')) {
+    document.getElementById('modal-cadastro').classList.remove('open');
+  }
+});
+
+document.getElementById('btn-enviar-cad').addEventListener('click', async () => {
+  const nome    = document.getElementById('n-nome').value.trim();
+  const cat     = document.getElementById('n-cat').value;
+  const tel     = document.getElementById('n-tel').value.trim();
+  const end     = document.getElementById('n-end').value.trim();
+  const horario = document.getElementById('n-horario').value.trim();
+  const insta   = document.getElementById('n-insta').value.trim();
+  const desc    = document.getElementById('n-desc').value.trim();
+  const foto    = document.getElementById('n-foto').value.trim();
+  const ok   = document.getElementById('cad-ok');
+  const erro = document.getElementById('cad-erro');
+  ok.classList.remove('vis'); erro.classList.remove('vis');
+
+  if (!nome || !cat) {
+    erro.textContent = 'Preencha Nome e Categoria.';
+    erro.classList.add('vis'); return;
+  }
+  const btn = document.getElementById('btn-enviar-cad');
+  btn.disabled = true; btn.textContent = 'Cadastrando…';
+  try {
+    const r = await fetch('/api/comercios', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ acao: 'cadastrar', comercio: {
+        nome, cat, telefone: tel, whatsapp: tel,
+        endereco: end, horario, instagram: insta, descricao: desc, foto_url: foto
+      }})
+    });
+    if (!r.ok) { const d = await r.json().catch(()=>({})); throw new Error(d.erro || `Erro ${r.status}`); }
+    ok.classList.add('vis');
+    ['n-nome','n-tel','n-end','n-horario','n-insta','n-desc','n-foto'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('n-cat').value = '';
+    await carregarComercios();
+    renderKPIs(); renderFiltros(); renderGrid();
+  } catch (err) {
+    erro.textContent = 'Erro: ' + err.message; erro.classList.add('vis');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Cadastrar Estabelecimento';
+  }
+});
+
+// ─── EVENTOS ───────────────────────────────────────────────────────────────
+document.getElementById('comercios-grid').addEventListener('click', e => {
+  const card = e.target.closest('.com-card');
+  if (card) abrirDetalhe(card.dataset.id);
+});
+document.getElementById('modal-detalhe').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal-detalhe')) {
+    document.getElementById('modal-detalhe').classList.remove('open');
+  }
+});
+document.getElementById('aval-close').addEventListener('click', () => {
+  document.getElementById('modal-aval').classList.remove('open');
+});
+document.getElementById('modal-aval').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal-aval')) {
+    document.getElementById('modal-aval').classList.remove('open');
+  }
+});
+document.getElementById('filter-btns').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  filtroAtivo = btn.dataset.cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('ativo', b.dataset.cat === filtroAtivo));
+  renderGrid();
+});
+document.getElementById('search-input').addEventListener('input', e => {
+  busca = e.target.value.toLowerCase().trim();
+  renderGrid();
+});
+document.getElementById('menu-btn').addEventListener('click', () => {
+  const nav = document.getElementById('mobile-nav');
+  const btn = document.getElementById('menu-btn');
+  const open = nav.classList.toggle('open');
+  btn.textContent = open ? '✕' : '☰';
+});
+
+// ─── INIT ──────────────────────────────────────────────────────────────────
+(async () => {
+  await carregarComercios();
+  renderKPIs();
+  renderFiltros();
+  renderGrid();
+})();
+</script>
+</body>
+</html>
