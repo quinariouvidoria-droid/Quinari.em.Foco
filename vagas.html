@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vagas de Emprego · Quinari em Foco</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --red:    #e10600;
+  --red2:   #ff1f1a;
+  --white:  #ffffff;
+  --off:    #f0f0f0;
+  --bg:     #15151e;
+  --bg1:    #1e1e2a;
+  --bg2:    #26262f;
+  --bg3:    #2f2f3a;
+  --border: #383842;
+  --muted:  #909099;
+  --green:  #00c87a;
+  --r:      4px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--off);font-family:'Barlow',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.a1{animation:fadeUp .5s .05s ease both}
+.a2{animation:fadeUp .5s .15s ease both}
+.a3{animation:fadeUp .5s .25s ease both}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:300;background:var(--bg);border-bottom:3px solid var(--red);height:60px;display:flex;align-items:center;padding:0 24px;gap:16px;}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;text-transform:uppercase;letter-spacing:.5px;color:var(--white);text-decoration:none;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.nav-bar{width:4px;height:20px;background:var(--red);border-radius:2px;animation:blink 2.5s infinite;}
+.nav-logo span{color:var(--red);}
+.nav-back{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:7px 14px;border:1px solid var(--border);border-radius:var(--r);transition:all .15s;display:flex;align-items:center;gap:6px;}
+.nav-back:hover{color:var(--white);border-color:var(--white);}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.nav-menu-btn{display:none;background:none;border:none;color:var(--white);font-size:22px;cursor:pointer;padding:4px;}
+.mobile-nav{display:none;position:fixed;top:60px;left:0;right:0;bottom:0;background:var(--bg);z-index:250;padding:24px;border-top:1px solid var(--border);flex-direction:column;gap:4px;overflow-y:auto;}
+.mobile-nav.open{display:flex;}
+.mobile-link{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;letter-spacing:1px;text-transform:uppercase;color:var(--off);text-decoration:none;padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;transition:background .15s;}
+.mobile-link:hover{background:var(--bg1);}
+.mobile-link.red{color:var(--red);}
+
+/* ── HERO ── */
+.hero{padding:40px 24px 28px;max-width:1100px;margin:0 auto;}
+.hero-label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:8px;}
+.hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(28px,5vw,42px);text-transform:uppercase;line-height:1.1;color:var(--white);}
+.hero-sub{font-size:15px;color:var(--muted);margin-top:8px;max-width:600px;}
+
+/* ── KPIs ── */
+.kpis{display:flex;gap:12px;padding:0 24px 24px;max-width:1100px;margin:0 auto;flex-wrap:wrap;}
+.kpi{background:var(--bg1);border:1px solid var(--border);border-radius:6px;padding:14px 20px;min-width:120px;}
+.kpi-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:28px;color:var(--white);line-height:1;}
+.kpi-lab{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-top:3px;}
+
+/* ── TOOLBAR ── */
+.toolbar{max-width:1100px;margin:0 auto;padding:0 24px 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.search-wrap{flex:1;min-width:200px;position:relative;}
+.search-input{width:100%;background:var(--bg1);border:1px solid var(--border);color:var(--off);padding:10px 12px 10px 36px;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:14px;transition:border .15s;}
+.search-input:focus{outline:none;border-color:var(--red);}
+.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none;}
+.filter-btns{display:flex;gap:6px;flex-wrap:wrap;}
+.filter-btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.6px;text-transform:uppercase;background:none;border:1px solid var(--border);color:var(--muted);padding:7px 12px;border-radius:20px;cursor:pointer;transition:all .15s;}
+.filter-btn.ativo{color:var(--white);border-color:var(--white);background:rgba(255,255,255,.05);}
+.btn-publicar{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:13px;letter-spacing:.8px;text-transform:uppercase;background:var(--green);color:var(--bg);border:none;padding:9px 18px;border-radius:var(--r);cursor:pointer;transition:background .15s;white-space:nowrap;}
+.btn-publicar:hover{background:#00e88a;}
+
+/* ── GRID DE VAGAS ── */
+.vagas-wrap{max-width:1100px;margin:0 auto;padding:0 24px 60px;}
+.vagas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
+.vaga-card{background:var(--bg1);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .15s,transform .1s;cursor:pointer;display:flex;flex-direction:column;}
+.vaga-card:hover{border-color:var(--green);transform:translateY(-2px);}
+.vaga-top{padding:18px 18px 12px;flex:1;}
+.vaga-cat{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:20px;display:inline-block;margin-bottom:10px;}
+.vaga-titulo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;color:var(--white);line-height:1.2;margin-bottom:4px;}
+.vaga-empresa{font-size:14px;color:var(--muted);}
+.vaga-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.vaga-tag{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:var(--bg2);border:1px solid var(--border);padding:3px 8px;border-radius:3px;}
+.vaga-tag.destaque{color:var(--green);background:rgba(0,200,122,.08);border-color:rgba(0,200,122,.3);}
+.vaga-bottom{padding:12px 18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.vaga-data{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+.vaga-btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.6px;text-transform:uppercase;background:var(--green);color:var(--bg);border:none;padding:7px 14px;border-radius:var(--r);cursor:pointer;}
+.vagas-empty{text-align:center;padding:60px 24px;color:var(--muted);}
+.vagas-empty-icon{font-size:40px;margin-bottom:12px;}
+.vagas-empty-txt{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+
+/* ── MODAL BASE ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;align-items:center;justify-content:center;padding:16px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg1);border:1px solid var(--border);border-radius:8px;width:100%;max-width:540px;max-height:90vh;overflow-y:auto;}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--border);}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;text-transform:uppercase;letter-spacing:.8px;color:var(--white);}
+.modal-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:2px 6px;line-height:1;}
+.modal-close:hover{color:var(--white);}
+.modal-body{padding:20px;}
+
+/* ── MODAL DETALHE ── */
+.det-cat{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:4px 10px;border-radius:20px;display:inline-block;margin-bottom:12px;}
+.det-titulo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:24px;color:var(--white);line-height:1.2;margin-bottom:6px;}
+.det-empresa{font-size:15px;color:var(--muted);margin-bottom:14px;}
+.det-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px;}
+.det-tag{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);background:var(--bg2);border:1px solid var(--border);padding:4px 10px;border-radius:3px;}
+.det-tag.green{color:var(--green);background:rgba(0,200,122,.08);border-color:rgba(0,200,122,.3);}
+.det-section{margin-bottom:16px;}
+.det-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:5px;}
+.det-text{font-size:14px;color:var(--off);white-space:pre-wrap;}
+.det-sep{border:none;border-top:1px solid var(--border);margin:16px 0;}
+.btn-candidatar{width:100%;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:16px;letter-spacing:1px;text-transform:uppercase;background:var(--green);color:var(--bg);border:none;padding:13px;border-radius:var(--r);cursor:pointer;transition:background .15s;}
+.btn-candidatar:hover{background:#00e88a;}
+
+/* ── FORMULÁRIOS ── */
+.form-row{margin-bottom:14px;}
+.form-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px;}
+.form-input{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--off);padding:10px 12px;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:14px;transition:border .15s;}
+.form-input:focus{outline:none;border-color:var(--green);}
+.form-select{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--off);padding:10px 12px;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:14px;cursor:pointer;}
+.form-select:focus{outline:none;border-color:var(--green);}
+.form-textarea{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--off);padding:10px 12px;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:14px;resize:vertical;min-height:80px;transition:border .15s;}
+.form-textarea:focus{outline:none;border-color:var(--green);}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.btn-enviar{width:100%;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:16px;letter-spacing:1px;text-transform:uppercase;background:var(--green);color:var(--bg);border:none;padding:13px;border-radius:var(--r);cursor:pointer;margin-top:8px;transition:background .15s;}
+.btn-enviar:hover{background:#00e88a;}
+.btn-enviar:disabled{opacity:.5;cursor:not-allowed;}
+.msg-ok{font-family:'DM Mono',monospace;font-size:13px;color:var(--green);background:rgba(0,200,122,.08);border:1px solid rgba(0,200,122,.25);padding:10px 14px;border-radius:var(--r);margin-top:12px;display:none;}
+.msg-ok.vis{display:block;}
+.msg-erro{font-family:'DM Mono',monospace;font-size:13px;color:var(--red);background:rgba(225,6,0,.08);border:1px solid rgba(225,6,0,.25);padding:10px 14px;border-radius:var(--r);margin-top:12px;display:none;}
+.msg-erro.vis{display:block;}
+.form-hint{font-size:12px;color:var(--muted);margin-top:4px;}
+
+/* ── SPINNER ── */
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--off);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── FOOTER ── */
+footer{background:var(--bg1);border-top:1px solid var(--border);padding:32px 24px;text-align:center;}
+.f-logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;text-transform:uppercase;color:var(--white);margin-bottom:6px;}
+.f-logo span{color:var(--red);}
+.f-txt{font-size:13px;color:var(--muted);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .nav-menu-btn{display:flex;}
+  .vagas-grid{grid-template-columns:1fr;}
+  .form-row-2{grid-template-columns:1fr;}
+  .kpis{gap:8px;}
+  .kpi{padding:10px 14px;}
+  .kpi-val{font-size:22px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="nav-bar"></span>
+    Quinari <span>em Foco</span>
+  </a>
+  <a href="index.html" class="nav-back">← Início</a>
+  <div class="nav-right">
+    <button class="nav-menu-btn" id="menu-btn" aria-label="Menu">☰</button>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobile-nav">
+  <a href="prefeitura.html" class="mobile-link">Prefeitura <span>›</span></a>
+  <a href="camara.html" class="mobile-link">Câmara <span>›</span></a>
+  <a href="secretarias.html" class="mobile-link">Secretarias <span>›</span></a>
+  <a href="ranking.html" class="mobile-link">Ranking <span>›</span></a>
+  <a href="calendario.html" class="mobile-link">Calendário <span>›</span></a>
+  <a href="vagas.html" class="mobile-link">Vagas <span>›</span></a>
+  <a href="voz-do-povo.html" class="mobile-link red">🗣️ Voz do Povo <span>›</span></a>
+</div>
+
+<!-- HERO -->
+<div class="hero a1">
+  <p class="hero-label">Módulo 2 · Engajamento</p>
+  <h1>Vagas de Emprego</h1>
+  <p class="hero-sub">Oportunidades de trabalho em Senador Guiomard — empresas, comércio, serviços públicos e mais. Gratuito para anunciar.</p>
+</div>
+
+<!-- KPIs -->
+<div class="kpis a2" id="kpis">
+  <div class="kpi"><div class="kpi-val" id="kpi-total"><span class="spinner"></span></div><div class="kpi-lab">Vagas Abertas</div></div>
+  <div class="kpi"><div class="kpi-val" id="kpi-empresas">—</div><div class="kpi-lab">Empresas</div></div>
+  <div class="kpi"><div class="kpi-val" id="kpi-cats">—</div><div class="kpi-lab">Categorias</div></div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar a2">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" id="search-input" type="text" placeholder="Buscar por cargo, empresa...">
+  </div>
+  <div class="filter-btns" id="filter-btns"></div>
+  <button class="btn-publicar" id="btn-publicar">+ Anunciar Vaga</button>
+</div>
+
+<!-- GRID -->
+<div class="vagas-wrap a3">
+  <div class="vagas-grid" id="vagas-grid">
+    <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted)"><span class="spinner"></span> Carregando vagas...</div>
+  </div>
+</div>
+
+<!-- MODAL: DETALHE DA VAGA -->
+<div class="modal-overlay" id="modal-detalhe">
+  <div class="modal" id="modal-detalhe-inner"></div>
+</div>
+
+<!-- MODAL: CANDIDATURA -->
+<div class="modal-overlay" id="modal-candidatura">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title" id="cand-titulo-modal">Candidatar-se</span>
+      <button class="modal-close" id="cand-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label class="form-label" for="c-nome">Seu Nome Completo *</label>
+        <input class="form-input" id="c-nome" type="text" maxlength="200">
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="c-email">E-mail *</label>
+        <input class="form-input" id="c-email" type="email" maxlength="200">
+        <p class="form-hint">Seu e-mail será enviado ao anunciante da vaga.</p>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="c-tel">Telefone / WhatsApp</label>
+        <input class="form-input" id="c-tel" type="tel" maxlength="20" placeholder="(68) 99999-9999">
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="c-msg">Mensagem de apresentação</label>
+        <textarea class="form-textarea" id="c-msg" maxlength="1000" placeholder="Conte um pouco sobre você e sua experiência..."></textarea>
+      </div>
+      <button class="btn-enviar" id="btn-enviar-cand">Enviar Candidatura</button>
+      <div class="msg-ok" id="cand-ok">✓ Candidatura enviada! Boa sorte!</div>
+      <div class="msg-erro" id="cand-erro"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: PUBLICAR VAGA -->
+<div class="modal-overlay" id="modal-publicar">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title">Anunciar Vaga</span>
+      <button class="modal-close" id="pub-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label class="form-label" for="p-titulo">Cargo / Título da Vaga *</label>
+        <input class="form-input" id="p-titulo" type="text" placeholder="Ex: Caixa de Supermercado" maxlength="200">
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="p-empresa">Nome da Empresa *</label>
+        <input class="form-input" id="p-empresa" type="text" placeholder="Ex: Supermercado Quinari" maxlength="200">
+      </div>
+      <div class="form-row-2">
+        <div class="form-row" style="margin:0">
+          <label class="form-label" for="p-cat">Categoria *</label>
+          <select class="form-select" id="p-cat">
+            <option value="">— Selecione —</option>
+            <option value="comercio">Comércio</option>
+            <option value="industria">Indústria</option>
+            <option value="servicos">Serviços</option>
+            <option value="saude">Saúde</option>
+            <option value="educacao">Educação</option>
+            <option value="construcao">Construção</option>
+            <option value="tecnologia">Tecnologia</option>
+            <option value="agro">Agropecuária</option>
+            <option value="publico">Setor Público</option>
+            <option value="outro">Outro</option>
+          </select>
+        </div>
+        <div class="form-row" style="margin:0">
+          <label class="form-label" for="p-tipo">Tipo de Contrato</label>
+          <select class="form-select" id="p-tipo">
+            <option value="clt">CLT</option>
+            <option value="pj">PJ</option>
+            <option value="temporario">Temporário</option>
+            <option value="estagio">Estágio</option>
+            <option value="autonomo">Autônomo</option>
+            <option value="outro">Outro</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-row" style="margin:0">
+          <label class="form-label" for="p-salario">Salário / Remuneração</label>
+          <input class="form-input" id="p-salario" type="text" placeholder="Ex: R$ 1.500 ou A combinar" maxlength="100">
+        </div>
+        <div class="form-row" style="margin:0">
+          <label class="form-label" for="p-local">Local de Trabalho</label>
+          <input class="form-input" id="p-local" type="text" placeholder="Senador Guiomard" maxlength="200">
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="p-desc">Descrição da Vaga</label>
+        <textarea class="form-textarea" id="p-desc" placeholder="Descreva as atividades, requisitos e benefícios..." maxlength="3000" style="min-height:100px;"></textarea>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="p-contato">Como se candidatar / Contato *</label>
+        <input class="form-input" id="p-contato" type="text" placeholder="Ex: Enviar currículo para..." maxlength="200">
+      </div>
+      <div class="form-row-2">
+        <div class="form-row" style="margin:0">
+          <label class="form-label" for="p-email">Seu E-mail *</label>
+          <input class="form-input" id="p-email" type="email" maxlength="200">
+          <p class="form-hint">Usado para encerrar a vaga depois.</p>
+        </div>
+        <div class="form-row" style="margin:0">
+          <label class="form-label" for="p-tel">Telefone / WhatsApp</label>
+          <input class="form-input" id="p-tel" type="tel" maxlength="20" placeholder="(68) 99999-9999">
+        </div>
+      </div>
+      <button class="btn-enviar" id="btn-enviar-pub">Publicar Vaga</button>
+      <div class="msg-ok" id="pub-ok">✓ Vaga publicada com sucesso! Obrigado por contribuir.</div>
+      <div class="msg-erro" id="pub-erro"></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">Quinari <span>em Foco</span></div>
+  <p class="f-txt">Plataforma independente de transparência municipal · Senador Guiomard – AC</p>
+</footer>
+
+<script>
+// ─── CONFIG ────────────────────────────────────────────────────────────────
+const CATS = {
+  comercio:   { label: 'Comércio',     cor: '#f5c518' },
+  industria:  { label: 'Indústria',    cor: '#4da6ff' },
+  servicos:   { label: 'Serviços',     cor: '#a78bfa' },
+  saude:      { label: 'Saúde',        cor: '#00c87a' },
+  educacao:   { label: 'Educação',     cor: '#ff9f43' },
+  construcao: { label: 'Construção',   cor: '#e17055' },
+  tecnologia: { label: 'Tecnologia',   cor: '#74b9ff' },
+  agro:       { label: 'Agropecuária', cor: '#55efc4' },
+  publico:    { label: 'Setor Público',cor: '#e10600' },
+  outro:      { label: 'Outro',        cor: '#909099' }
+};
+
+const TIPOS = {
+  clt:       'CLT',
+  pj:        'PJ',
+  temporario:'Temporário',
+  estagio:   'Estágio',
+  autonomo:  'Autônomo',
+  outro:     'Outro'
+};
+
+// ─── ESTADO ────────────────────────────────────────────────────────────────
+let todasVagas = [];
+let filtroAtivo = 'todos';
+let busca = '';
+let vagaSelecionada = null;
+
+// ─── SUPABASE ──────────────────────────────────────────────────────────────
+const LS_KEY = 'qef_vagas_emprego';
+
+function salvarLocal(vagas) {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(vagas)); } catch (_) {}
+}
+function carregarLocal() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch (_) { return []; }
+}
+
+async function carregarVagas() {
+  try {
+    const r = await fetch('/api/vagas');
+    if (r.ok) {
+      const d = await r.json();
+      if (Array.isArray(d.vagas)) {
+        todasVagas = d.vagas;
+        salvarLocal(d.vagas);
+        return;
+      }
+    }
+  } catch (_) {}
+  todasVagas = carregarLocal();
+}
+
+// ─── FILTRAR ───────────────────────────────────────────────────────────────
+function vagasFiltradas() {
+  return todasVagas.filter(v => {
+    const catOk = filtroAtivo === 'todos' || v.cat === filtroAtivo;
+    const buscaOk = !busca ||
+      v.titulo.toLowerCase().includes(busca) ||
+      v.empresa.toLowerCase().includes(busca) ||
+      (v.descricao || '').toLowerCase().includes(busca);
+    return catOk && buscaOk;
+  });
+}
+
+// ─── RENDER KPIs ───────────────────────────────────────────────────────────
+function renderKPIs() {
+  document.getElementById('kpi-total').textContent = todasVagas.length;
+  const empresas = new Set(todasVagas.map(v => v.empresa)).size;
+  const cats = new Set(todasVagas.map(v => v.cat)).size;
+  document.getElementById('kpi-empresas').textContent = empresas;
+  document.getElementById('kpi-cats').textContent = cats;
+}
+
+// ─── RENDER FILTROS ────────────────────────────────────────────────────────
+function renderFiltros() {
+  const catsPresentes = new Set(todasVagas.map(v => v.cat));
+  const cont = document.getElementById('filter-btns');
+  cont.innerHTML = '';
+  const todos = document.createElement('button');
+  todos.className = 'filter-btn' + (filtroAtivo === 'todos' ? ' ativo' : '');
+  todos.dataset.cat = 'todos';
+  todos.textContent = 'Todas';
+  cont.appendChild(todos);
+  for (const [key, cfg] of Object.entries(CATS)) {
+    if (!catsPresentes.has(key)) continue;
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (filtroAtivo === key ? ' ativo' : '');
+    btn.dataset.cat = key;
+    btn.textContent = cfg.label;
+    cont.appendChild(btn);
+  }
+}
+
+// ─── RENDER GRID ───────────────────────────────────────────────────────────
+function formatarData(dataStr) {
+  if (!dataStr) return '';
+  const d = new Date(dataStr);
+  return d.toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+function renderGrid() {
+  const grid = document.getElementById('vagas-grid');
+  const lista = vagasFiltradas();
+  if (!lista.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1" class="vagas-empty">
+      <div class="vagas-empty-icon">💼</div>
+      <div class="vagas-empty-txt">Nenhuma vaga encontrada</div>
+      <p style="margin-top:8px;font-size:14px;color:var(--muted)">Tente outro filtro ou seja o primeiro a anunciar!</p>
+    </div>`;
+    return;
+  }
+  grid.innerHTML = '';
+  lista.forEach(v => {
+    const cfg = CATS[v.cat] || CATS.outro;
+    const card = document.createElement('div');
+    card.className = 'vaga-card';
+    card.dataset.id = v.id;
+    card.innerHTML = `
+      <div class="vaga-top">
+        <span class="vaga-cat" style="background:${cfg.cor}22;color:${cfg.cor}">${cfg.label}</span>
+        <div class="vaga-titulo">${v.titulo}</div>
+        <div class="vaga-empresa">${v.empresa}</div>
+        <div class="vaga-tags">
+          <span class="vaga-tag">${TIPOS[v.tipo] || v.tipo}</span>
+          ${v.local ? `<span class="vaga-tag">📍 ${v.local}</span>` : ''}
+          ${v.salario ? `<span class="vaga-tag destaque">💰 ${v.salario}</span>` : ''}
+        </div>
+      </div>
+      <div class="vaga-bottom">
+        <span class="vaga-data">${formatarData(v.criado_em)}</span>
+        <button class="vaga-btn" data-id="${v.id}">Ver vaga →</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ─── MODAL DETALHE ─────────────────────────────────────────────────────────
+function abrirDetalhe(id) {
+  const v = todasVagas.find(x => String(x.id) === String(id));
+  if (!v) return;
+  vagaSelecionada = v;
+  const cfg = CATS[v.cat] || CATS.outro;
+  const inner = document.getElementById('modal-detalhe-inner');
+  inner.innerHTML = `
+    <div class="modal-head">
+      <span class="modal-title">Detalhes da Vaga</span>
+      <button class="modal-close" id="det-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <span class="det-cat" style="background:${cfg.cor}22;color:${cfg.cor}">${cfg.label}</span>
+      <div class="det-titulo">${v.titulo}</div>
+      <div class="det-empresa">${v.empresa}</div>
+      <div class="det-tags">
+        <span class="det-tag">${TIPOS[v.tipo] || v.tipo}</span>
+        ${v.local ? `<span class="det-tag">📍 ${v.local}</span>` : ''}
+        ${v.salario ? `<span class="det-tag green">💰 ${v.salario}</span>` : ''}
+        <span class="det-tag">Publicado em ${formatarData(v.criado_em)}</span>
+      </div>
+      ${v.descricao ? `<div class="det-section"><div class="det-label">Sobre a vaga</div><div class="det-text">${v.descricao}</div></div>` : ''}
+      ${v.contato ? `<hr class="det-sep"><div class="det-section"><div class="det-label">Como se candidatar</div><div class="det-text">${v.contato}</div></div>` : ''}
+      ${v.telefone ? `<div class="det-section"><div class="det-label">Telefone / WhatsApp</div><div class="det-text">${v.telefone}</div></div>` : ''}
+      <hr class="det-sep">
+      <button class="btn-candidatar" id="btn-cand-detalhe">Me Candidatar a Esta Vaga</button>
+    </div>`;
+  document.getElementById('modal-detalhe').classList.add('open');
+
+  document.getElementById('det-close').addEventListener('click', () => {
+    document.getElementById('modal-detalhe').classList.remove('open');
+  });
+  document.getElementById('btn-cand-detalhe').addEventListener('click', () => {
+    document.getElementById('modal-detalhe').classList.remove('open');
+    abrirCandidatura(v);
+  });
+}
+
+// ─── MODAL CANDIDATURA ─────────────────────────────────────────────────────
+function abrirCandidatura(v) {
+  vagaSelecionada = v;
+  document.getElementById('cand-titulo-modal').textContent = `Candidatar-se: ${v.titulo}`;
+  document.getElementById('cand-ok').classList.remove('vis');
+  document.getElementById('cand-erro').classList.remove('vis');
+  ['c-nome','c-email','c-tel','c-msg'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('modal-candidatura').classList.add('open');
+}
+
+// ─── EVENTOS ───────────────────────────────────────────────────────────────
+document.getElementById('vagas-grid').addEventListener('click', e => {
+  const btn = e.target.closest('[data-id]');
+  if (btn) abrirDetalhe(btn.dataset.id);
+});
+
+document.getElementById('modal-detalhe').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal-detalhe')) {
+    document.getElementById('modal-detalhe').classList.remove('open');
+  }
+});
+
+document.getElementById('cand-close').addEventListener('click', () => {
+  document.getElementById('modal-candidatura').classList.remove('open');
+});
+document.getElementById('modal-candidatura').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal-candidatura')) {
+    document.getElementById('modal-candidatura').classList.remove('open');
+  }
+});
+
+document.getElementById('btn-enviar-cand').addEventListener('click', async () => {
+  if (!vagaSelecionada) return;
+  const nome  = document.getElementById('c-nome').value.trim();
+  const email = document.getElementById('c-email').value.trim();
+  const tel   = document.getElementById('c-tel').value.trim();
+  const msg   = document.getElementById('c-msg').value.trim();
+  const ok    = document.getElementById('cand-ok');
+  const erro  = document.getElementById('cand-erro');
+  ok.classList.remove('vis'); erro.classList.remove('vis');
+
+  if (!nome || !email) {
+    erro.textContent = 'Preencha Nome e E-mail.';
+    erro.classList.add('vis'); return;
+  }
+  const btn = document.getElementById('btn-enviar-cand');
+  btn.disabled = true; btn.textContent = 'Enviando…';
+  try {
+    const r = await fetch('/api/vagas', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ acao: 'candidatar', vaga_id: vagaSelecionada.id, nome, email, telefone: tel, mensagem: msg })
+    });
+    if (!r.ok) { const d = await r.json().catch(()=>({})); throw new Error(d.erro || `Erro ${r.status}`); }
+    ok.classList.add('vis');
+    ['c-nome','c-email','c-tel','c-msg'].forEach(id => document.getElementById(id).value = '');
+  } catch (err) {
+    erro.textContent = 'Erro: ' + err.message; erro.classList.add('vis');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Enviar Candidatura';
+  }
+});
+
+// filtros
+document.getElementById('filter-btns').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  filtroAtivo = btn.dataset.cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('ativo', b.dataset.cat === filtroAtivo));
+  renderGrid();
+});
+
+// busca
+document.getElementById('search-input').addEventListener('input', e => {
+  busca = e.target.value.toLowerCase().trim();
+  renderGrid();
+});
+
+// publicar modal
+document.getElementById('btn-publicar').addEventListener('click', () => {
+  document.getElementById('modal-publicar').classList.add('open');
+  document.getElementById('pub-ok').classList.remove('vis');
+  document.getElementById('pub-erro').classList.remove('vis');
+});
+document.getElementById('pub-close').addEventListener('click', () => {
+  document.getElementById('modal-publicar').classList.remove('open');
+});
+document.getElementById('modal-publicar').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal-publicar')) {
+    document.getElementById('modal-publicar').classList.remove('open');
+  }
+});
+
+document.getElementById('btn-enviar-pub').addEventListener('click', async () => {
+  const titulo   = document.getElementById('p-titulo').value.trim();
+  const empresa  = document.getElementById('p-empresa').value.trim();
+  const cat      = document.getElementById('p-cat').value;
+  const tipo     = document.getElementById('p-tipo').value;
+  const salario  = document.getElementById('p-salario').value.trim();
+  const local    = document.getElementById('p-local').value.trim();
+  const desc     = document.getElementById('p-desc').value.trim();
+  const contato  = document.getElementById('p-contato').value.trim();
+  const email    = document.getElementById('p-email').value.trim();
+  const telefone = document.getElementById('p-tel').value.trim();
+  const ok   = document.getElementById('pub-ok');
+  const erro = document.getElementById('pub-erro');
+  ok.classList.remove('vis'); erro.classList.remove('vis');
+
+  if (!titulo || !empresa || !cat || !contato || !email) {
+    erro.textContent = 'Preencha: Cargo, Empresa, Categoria, Como se candidatar e E-mail.';
+    erro.classList.add('vis'); return;
+  }
+  const btn = document.getElementById('btn-enviar-pub');
+  btn.disabled = true; btn.textContent = 'Publicando…';
+  try {
+    const r = await fetch('/api/vagas', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ acao: 'publicar', vaga: { titulo, empresa, cat, tipo, salario, local, descricao: desc, contato, email, telefone } })
+    });
+    if (!r.ok) { const d = await r.json().catch(()=>({})); throw new Error(d.erro || `Erro ${r.status}`); }
+    ok.classList.add('vis');
+    ['p-titulo','p-empresa','p-salario','p-local','p-desc','p-contato','p-email','p-tel'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('p-cat').value = '';
+    await carregarVagas();
+    renderKPIs(); renderFiltros(); renderGrid();
+  } catch (err) {
+    erro.textContent = 'Erro: ' + err.message; erro.classList.add('vis');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Publicar Vaga';
+  }
+});
+
+// hamburger
+document.getElementById('menu-btn').addEventListener('click', () => {
+  const nav = document.getElementById('mobile-nav');
+  const btn = document.getElementById('menu-btn');
+  const open = nav.classList.toggle('open');
+  btn.textContent = open ? '✕' : '☰';
+});
+
+// ─── INIT ──────────────────────────────────────────────────────────────────
+(async () => {
+  await carregarVagas();
+  renderKPIs();
+  renderFiltros();
+  renderGrid();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendário Municipal · Quinari em Foco</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --red:    #e10600;
+  --red2:   #ff1f1a;
+  --white:  #ffffff;
+  --off:    #f0f0f0;
+  --bg:     #15151e;
+  --bg1:    #1e1e2a;
+  --bg2:    #26262f;
+  --bg3:    #2f2f3a;
+  --border: #383842;
+  --muted:  #909099;
+  --r:      4px;
+  --c-camara:     #4da6ff;
+  --c-prefeitura: #e10600;
+  --c-saude:      #00c87a;
+  --c-educacao:   #f5c518;
+  --c-feriado:    #a78bfa;
+  --c-outro:      #909099;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--off);font-family:'Barlow',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.a1{animation:fadeUp .5s .05s ease both}
+.a2{animation:fadeUp .5s .15s ease both}
+.a3{animation:fadeUp .5s .25s ease both}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:300;background:var(--bg);border-bottom:3px solid var(--red);height:60px;display:flex;align-items:center;padding:0 24px;gap:16px;}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;text-transform:uppercase;letter-spacing:.5px;color:var(--white);text-decoration:none;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.nav-bar{width:4px;height:20px;background:var(--red);border-radius:2px;animation:blink 2.5s infinite;}
+.nav-logo span{color:var(--red);}
+.nav-back{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:7px 14px;border:1px solid var(--border);border-radius:var(--r);transition:all .15s;display:flex;align-items:center;gap:6px;}
+.nav-back:hover{color:var(--white);border-color:var(--white);}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.nav-menu-btn{display:none;background:none;border:none;color:var(--white);font-size:22px;cursor:pointer;padding:4px;}
+.mobile-nav{display:none;position:fixed;top:60px;left:0;right:0;bottom:0;background:var(--bg);z-index:250;padding:24px;border-top:1px solid var(--border);flex-direction:column;gap:4px;overflow-y:auto;}
+.mobile-nav.open{display:flex;}
+.mobile-link{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;letter-spacing:1px;text-transform:uppercase;color:var(--off);text-decoration:none;padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;transition:background .15s;}
+.mobile-link:hover{background:var(--bg1);}
+.mobile-link.red{color:var(--red);}
+
+/* ── HERO ── */
+.hero{padding:40px 24px 32px;max-width:1100px;margin:0 auto;}
+.hero-label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
+.hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(28px,5vw,42px);text-transform:uppercase;line-height:1.1;color:var(--white);}
+.hero-sub{font-size:15px;color:var(--muted);margin-top:8px;max-width:600px;}
+
+/* ── LEGENDA ── */
+.legenda{display:flex;flex-wrap:wrap;gap:10px;padding:0 24px 24px;max-width:1100px;margin:0 auto;}
+.leg-item{display:flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);cursor:pointer;padding:5px 10px;border:1px solid var(--border);border-radius:20px;transition:all .15s;user-select:none;}
+.leg-item.ativo{color:var(--white);border-color:var(--white);background:rgba(255,255,255,.05);}
+.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+/* ── MAIN LAYOUT ── */
+.cal-wrap{max-width:1100px;margin:0 auto;padding:0 24px 60px;display:grid;grid-template-columns:1fr 320px;gap:24px;}
+
+/* ── CALENDAR ── */
+.cal-card{background:var(--bg1);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.cal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);}
+.cal-nav-btn{background:none;border:1px solid var(--border);color:var(--off);width:34px;height:34px;border-radius:var(--r);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.cal-nav-btn:hover{border-color:var(--white);color:var(--white);}
+.cal-mes{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;text-transform:uppercase;letter-spacing:1px;color:var(--white);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
+.cal-dow{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:center;padding:10px 0;border-bottom:1px solid var(--border);}
+.cal-dow.fim{color:var(--red);}
+.cal-dia{min-height:72px;padding:6px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;position:relative;}
+.cal-dia:nth-child(7n){border-right:none;}
+.cal-dia:hover{background:var(--bg2);}
+.cal-dia.fora{opacity:.3;pointer-events:none;}
+.cal-dia.hoje .cal-num{background:var(--red);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;}
+.cal-dia.selecionado{background:rgba(255,255,255,.04);outline:1px solid var(--border);}
+.cal-num{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--off);width:24px;height:24px;display:flex;align-items:center;justify-content:center;margin-bottom:2px;}
+.cal-dots{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px;}
+.cal-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+
+/* ── SIDEBAR ── */
+.sidebar-card{background:var(--bg1);border:1px solid var(--border);border-radius:8px;overflow:hidden;align-self:start;}
+.sidebar-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.sidebar-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.8px;color:var(--white);}
+.btn-sugerir{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.8px;text-transform:uppercase;background:var(--red);color:#fff;border:none;padding:7px 13px;border-radius:var(--r);cursor:pointer;transition:background .15s;}
+.btn-sugerir:hover{background:var(--red2);}
+.eventos-lista{max-height:520px;overflow-y:auto;}
+.ev-item{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;gap:12px;cursor:pointer;transition:background .1s;}
+.ev-item:last-child{border-bottom:none;}
+.ev-item:hover{background:var(--bg2);}
+.ev-barra{width:3px;border-radius:2px;flex-shrink:0;align-self:stretch;}
+.ev-body{}
+.ev-titulo{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;color:var(--white);line-height:1.2;}
+.ev-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-top:3px;}
+.ev-cat{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-top:4px;display:inline-block;padding:2px 8px;border-radius:20px;}
+.ev-empty{padding:32px 18px;text-align:center;color:var(--muted);font-size:14px;}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;align-items:center;justify-content:center;padding:16px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg1);border:1px solid var(--border);border-radius:8px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--border);}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;text-transform:uppercase;letter-spacing:.8px;color:var(--white);}
+.modal-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:2px 6px;line-height:1;}
+.modal-close:hover{color:var(--white);}
+.modal-body{padding:20px;}
+.form-row{margin-bottom:14px;}
+.form-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px;}
+.form-input{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--off);padding:10px 12px;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:14px;transition:border .15s;}
+.form-input:focus{outline:none;border-color:var(--red);}
+.form-select{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--off);padding:10px 12px;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:14px;cursor:pointer;}
+.form-select:focus{outline:none;border-color:var(--red);}
+.form-textarea{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--off);padding:10px 12px;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:14px;resize:vertical;min-height:80px;transition:border .15s;}
+.form-textarea:focus{outline:none;border-color:var(--red);}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.btn-enviar{width:100%;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:16px;letter-spacing:1px;text-transform:uppercase;background:var(--red);color:#fff;border:none;padding:13px;border-radius:var(--r);cursor:pointer;margin-top:8px;transition:background .15s;}
+.btn-enviar:hover{background:var(--red2);}
+.btn-enviar:disabled{opacity:.5;cursor:not-allowed;}
+.msg-ok{font-family:'DM Mono',monospace;font-size:13px;color:#00c87a;background:rgba(0,200,122,.08);border:1px solid rgba(0,200,122,.25);padding:10px 14px;border-radius:var(--r);margin-top:12px;display:none;}
+.msg-ok.vis{display:block;}
+.msg-erro{font-family:'DM Mono',monospace;font-size:13px;color:var(--red);background:rgba(225,6,0,.08);border:1px solid rgba(225,6,0,.25);padding:10px 14px;border-radius:var(--r);margin-top:12px;display:none;}
+.msg-erro.vis{display:block;}
+
+/* ── DETALHE DO DIA ── */
+.detalhe-dia{background:var(--bg2);border:1px solid var(--border);border-radius:6px;margin:0 20px 16px;padding:14px;display:none;}
+.detalhe-dia.vis{display:block;}
+.detalhe-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px;}
+.detalhe-ev{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border);}
+.detalhe-ev:last-child{border-bottom:none;}
+.detalhe-barra{width:3px;border-radius:2px;flex-shrink:0;margin-top:3px;align-self:stretch;}
+.detalhe-titulo{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;color:var(--white);}
+.detalhe-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-top:2px;}
+.detalhe-desc{font-size:13px;color:var(--muted);margin-top:4px;}
+
+/* ── FOOTER ── */
+footer{background:var(--bg1);border-top:1px solid var(--border);padding:32px 24px;text-align:center;}
+.f-logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;text-transform:uppercase;color:var(--white);margin-bottom:6px;}
+.f-logo span{color:var(--red);}
+.f-txt{font-size:13px;color:var(--muted);}
+
+/* ── SPINNER ── */
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--off);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .nav-menu-btn{display:flex;}
+  .cal-wrap{grid-template-columns:1fr;}
+  .sidebar-card{order:-1;}
+  .eventos-lista{max-height:300px;}
+  .cal-dia{min-height:54px;}
+  .legenda{gap:6px;}
+  .leg-item{font-size:11px;padding:4px 8px;}
+}
+@media(max-width:480px){
+  .cal-dia{min-height:44px;padding:4px;}
+  .cal-num{font-size:11px;width:20px;height:20px;}
+  .cal-dots{gap:2px;}
+  .cal-dot{width:5px;height:5px;}
+  .form-row-2{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="nav-bar"></span>
+    Quinari <span>em Foco</span>
+  </a>
+  <a href="index.html" class="nav-back">← Início</a>
+  <div class="nav-right">
+    <button class="nav-menu-btn" id="menu-btn" aria-label="Menu">☰</button>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobile-nav">
+  <a href="prefeitura.html" class="mobile-link">Prefeitura <span>›</span></a>
+  <a href="camara.html" class="mobile-link">Câmara <span>›</span></a>
+  <a href="secretarias.html" class="mobile-link">Secretarias <span>›</span></a>
+  <a href="ranking.html" class="mobile-link">Ranking <span>›</span></a>
+  <a href="calendario.html" class="mobile-link">Calendário <span>›</span></a>
+  <a href="vagas.html" class="mobile-link">Vagas <span>›</span></a>
+  <a href="voz-do-povo.html" class="mobile-link red">🗣️ Voz do Povo <span>›</span></a>
+</div>
+
+<!-- HERO -->
+<div class="hero a1">
+  <p class="hero-label">Módulo 2 · Engajamento</p>
+  <h1>Calendário Municipal</h1>
+  <p class="hero-sub">Sessões da Câmara, eventos da Prefeitura, datas comemorativas e serviços públicos de Senador Guiomard.</p>
+</div>
+
+<!-- LEGENDA / FILTROS -->
+<div class="legenda a2" id="legenda"></div>
+
+<!-- MAIN -->
+<div class="cal-wrap a3">
+
+  <!-- CALENDÁRIO -->
+  <div>
+    <div class="cal-card">
+      <div class="cal-header">
+        <button class="cal-nav-btn" id="btn-prev">‹</button>
+        <span class="cal-mes" id="cal-titulo"></span>
+        <button class="cal-nav-btn" id="btn-next">›</button>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+    </div>
+    <div class="detalhe-dia" id="detalhe-dia">
+      <div class="detalhe-label" id="detalhe-label"></div>
+      <div id="detalhe-evs"></div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar-card">
+    <div class="sidebar-head">
+      <span class="sidebar-title" id="sidebar-titulo">Próximos Eventos</span>
+      <button class="btn-sugerir" id="btn-sugerir">+ Sugerir</button>
+    </div>
+    <div class="eventos-lista" id="eventos-lista">
+      <p class="ev-empty"><span class="spinner"></span></p>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL: SUGERIR EVENTO -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title">Sugerir Evento</span>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label class="form-label" for="f-titulo">Título do Evento *</label>
+        <input class="form-input" id="f-titulo" type="text" placeholder="Ex: Sessão Ordinária da Câmara" maxlength="200">
+      </div>
+      <div class="form-row-2">
+        <div class="form-row" style="margin:0">
+          <label class="form-label" for="f-data">Data *</label>
+          <input class="form-input" id="f-data" type="date">
+        </div>
+        <div class="form-row" style="margin:0">
+          <label class="form-label" for="f-hora">Horário</label>
+          <input class="form-input" id="f-hora" type="time" placeholder="19:00">
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="f-cat">Categoria *</label>
+        <select class="form-select" id="f-cat">
+          <option value="">— Selecione —</option>
+          <option value="camara">Câmara Municipal</option>
+          <option value="prefeitura">Prefeitura</option>
+          <option value="saude">Saúde</option>
+          <option value="educacao">Educação</option>
+          <option value="feriado">Feriado / Data comemorativa</option>
+          <option value="outro">Outro</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="f-local">Local</label>
+        <input class="form-input" id="f-local" type="text" placeholder="Ex: Câmara dos Vereadores" maxlength="200">
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="f-desc">Descrição</label>
+        <textarea class="form-textarea" id="f-desc" placeholder="Informações adicionais sobre o evento..." maxlength="1000"></textarea>
+      </div>
+      <button class="btn-enviar" id="btn-enviar-form">Enviar Sugestão</button>
+      <div class="msg-ok" id="msg-ok">✓ Sugestão enviada com sucesso!</div>
+      <div class="msg-erro" id="msg-erro"></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">Quinari <span>em Foco</span></div>
+  <p class="f-txt">Plataforma independente de transparência municipal · Senador Guiomard – AC</p>
+</footer>
+
+<script>
+// ─── CONFIG ────────────────────────────────────────────────────────────────
+const CATS = {
+  camara:     { label: 'Câmara',     cor: '#4da6ff' },
+  prefeitura: { label: 'Prefeitura', cor: '#e10600' },
+  saude:      { label: 'Saúde',      cor: '#00c87a' },
+  educacao:   { label: 'Educação',   cor: '#f5c518' },
+  feriado:    { label: 'Feriado',    cor: '#a78bfa' },
+  outro:      { label: 'Outro',      cor: '#909099' }
+};
+
+const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+               'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const DIAS_SEMANA = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+
+// ─── ESTADO ────────────────────────────────────────────────────────────────
+let viewAno  = new Date().getFullYear();
+let viewMes  = new Date().getMonth() + 1; // 1-12
+let todosEventos = []; // todos carregados (mês corrente)
+let filtrosAtivos = new Set(Object.keys(CATS));
+let diaSelecionado = null;
+
+// ─── SUPABASE ──────────────────────────────────────────────────────────────
+// localStorage como cache local
+const LS_KEY = 'qef_calendario_eventos';
+
+function salvarLocal(eventos) {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(eventos)); } catch (_) {}
+}
+function carregarLocal() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch (_) { return []; }
+}
+
+async function carregarEventos() {
+  try {
+    const r = await fetch(`/api/calendario?mes=${viewMes}&ano=${viewAno}`);
+    if (r.ok) {
+      const d = await r.json();
+      if (d.eventos) {
+        todosEventos = d.eventos;
+        salvarLocal(d.eventos);
+        return;
+      }
+    }
+  } catch (_) {}
+  // fallback local
+  todosEventos = carregarLocal().filter(e => {
+    const d = new Date(e.data + 'T00:00:00');
+    return d.getFullYear() === viewAno && (d.getMonth() + 1) === viewMes;
+  });
+}
+
+async function enviarEvento(ev) {
+  const r = await fetch('/api/calendario', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ acao: 'adicionar', evento: ev })
+  });
+  if (!r.ok) {
+    const d = await r.json().catch(() => ({}));
+    throw new Error(d.erro || `Erro ${r.status}`);
+  }
+  // salva local também
+  const local = carregarLocal();
+  local.push({ ...ev, id: Date.now(), criado_em: new Date().toISOString() });
+  salvarLocal(local);
+}
+
+// ─── RENDER: LEGENDA ───────────────────────────────────────────────────────
+function renderLegenda() {
+  const el = document.getElementById('legenda');
+  el.innerHTML = '';
+  for (const [key, cfg] of Object.entries(CATS)) {
+    const btn = document.createElement('button');
+    btn.className = 'leg-item' + (filtrosAtivos.has(key) ? ' ativo' : '');
+    btn.dataset.cat = key;
+    btn.innerHTML = `<span class="leg-dot" style="background:${cfg.cor}"></span>${cfg.label}`;
+    el.appendChild(btn);
+  }
+}
+
+// ─── RENDER: GRID ──────────────────────────────────────────────────────────
+function eventosFiltrados() {
+  return todosEventos.filter(e => filtrosAtivos.has(e.cat));
+}
+
+function renderCalendario() {
+  document.getElementById('cal-titulo').textContent = `${MESES[viewMes - 1]} ${viewAno}`;
+
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+
+  // cabeçalho dias da semana
+  DIAS_SEMANA.forEach((d, i) => {
+    const el = document.createElement('div');
+    el.className = 'cal-dow' + (i === 0 || i === 6 ? ' fim' : '');
+    el.textContent = d;
+    grid.appendChild(el);
+  });
+
+  const primeiroDia = new Date(viewAno, viewMes - 1, 1).getDay();
+  const ultimoDia   = new Date(viewAno, viewMes, 0).getDate();
+  const hoje = new Date();
+
+  // dias vazios antes
+  for (let i = 0; i < primeiroDia; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-dia fora';
+    grid.appendChild(el);
+  }
+
+  const evsFiltrados = eventosFiltrados();
+
+  for (let d = 1; d <= ultimoDia; d++) {
+    const dataStr = `${viewAno}-${String(viewMes).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const evsNoDia = evsFiltrados.filter(e => e.data === dataStr);
+
+    const eHoje = (d === hoje.getDate() && viewMes === hoje.getMonth() + 1 && viewAno === hoje.getFullYear());
+    const eSelecionado = dataStr === diaSelecionado;
+
+    const cel = document.createElement('div');
+    cel.className = 'cal-dia' + (eHoje ? ' hoje' : '') + (eSelecionado ? ' selecionado' : '');
+    cel.dataset.data = dataStr;
+
+    const num = document.createElement('div');
+    num.className = 'cal-num';
+    num.textContent = d;
+    cel.appendChild(num);
+
+    if (evsNoDia.length) {
+      const dots = document.createElement('div');
+      dots.className = 'cal-dots';
+      evsNoDia.slice(0, 5).forEach(e => {
+        const dot = document.createElement('div');
+        dot.className = 'cal-dot';
+        dot.style.background = (CATS[e.cat] || CATS.outro).cor;
+        dots.appendChild(dot);
+      });
+      cel.appendChild(dots);
+    }
+
+    grid.appendChild(cel);
+  }
+}
+
+// ─── RENDER: SIDEBAR ───────────────────────────────────────────────────────
+function renderSidebar(eventos) {
+  const lista = document.getElementById('eventos-lista');
+  const titulo = document.getElementById('sidebar-titulo');
+
+  if (!eventos || !eventos.length) {
+    lista.innerHTML = '<p class="ev-empty">Nenhum evento neste período.</p>';
+    titulo.textContent = diaSelecionado ? formatarData(diaSelecionado) : 'Próximos Eventos';
+    return;
+  }
+
+  titulo.textContent = diaSelecionado ? formatarData(diaSelecionado) : `${MESES[viewMes - 1]} ${viewAno}`;
+  lista.innerHTML = '';
+
+  eventos.forEach(ev => {
+    const cfg = CATS[ev.cat] || CATS.outro;
+    const item = document.createElement('div');
+    item.className = 'ev-item';
+    item.innerHTML = `
+      <div class="ev-barra" style="background:${cfg.cor}"></div>
+      <div class="ev-body">
+        <div class="ev-titulo">${ev.titulo}</div>
+        <div class="ev-meta">${formatarData(ev.data)}${ev.hora ? ' · ' + ev.hora : ''}${ev.local ? ' · ' + ev.local : ''}</div>
+        <span class="ev-cat" style="background:${cfg.cor}22;color:${cfg.cor}">${cfg.label}</span>
+      </div>`;
+    lista.appendChild(item);
+  });
+}
+
+// ─── RENDER: DETALHE DIA ───────────────────────────────────────────────────
+function renderDetalheDia(dataStr) {
+  const evs = eventosFiltrados().filter(e => e.data === dataStr);
+  const box = document.getElementById('detalhe-dia');
+  const label = document.getElementById('detalhe-label');
+  const cont = document.getElementById('detalhe-evs');
+
+  if (!evs.length) { box.classList.remove('vis'); return; }
+
+  label.textContent = formatarData(dataStr);
+  cont.innerHTML = evs.map(ev => {
+    const cfg = CATS[ev.cat] || CATS.outro;
+    return `<div class="detalhe-ev">
+      <div class="detalhe-barra" style="background:${cfg.cor}"></div>
+      <div>
+        <div class="detalhe-titulo">${ev.titulo}</div>
+        <div class="detalhe-meta">${ev.hora ? ev.hora + (ev.local ? ' · ' + ev.local : '') : (ev.local || '')}</div>
+        ${ev.descricao ? `<div class="detalhe-desc">${ev.descricao}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+  box.classList.add('vis');
+}
+
+// ─── UTILS ─────────────────────────────────────────────────────────────────
+function formatarData(dataStr) {
+  const [y, m, d] = dataStr.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+// ─── ATUALIZAR TUDO ────────────────────────────────────────────────────────
+async function atualizar() {
+  document.getElementById('eventos-lista').innerHTML = '<p class="ev-empty"><span class="spinner"></span></p>';
+  await carregarEventos();
+  renderCalendario();
+  const evsFiltrados = eventosFiltrados();
+  const hoje = new Date().toISOString().slice(0, 10);
+  const proximos = evsFiltrados.filter(e => e.data >= hoje).slice(0, 30);
+  renderSidebar(proximos.length ? proximos : evsFiltrados.slice(0, 20));
+  if (diaSelecionado) renderDetalheDia(diaSelecionado);
+}
+
+// ─── EVENTOS ───────────────────────────────────────────────────────────────
+document.getElementById('btn-prev').addEventListener('click', () => {
+  diaSelecionado = null;
+  document.getElementById('detalhe-dia').classList.remove('vis');
+  viewMes--;
+  if (viewMes < 1) { viewMes = 12; viewAno--; }
+  atualizar();
+});
+
+document.getElementById('btn-next').addEventListener('click', () => {
+  diaSelecionado = null;
+  document.getElementById('detalhe-dia').classList.remove('vis');
+  viewMes++;
+  if (viewMes > 12) { viewMes = 1; viewAno++; }
+  atualizar();
+});
+
+document.getElementById('cal-grid').addEventListener('click', e => {
+  const cel = e.target.closest('.cal-dia');
+  if (!cel || !cel.dataset.data) return;
+  const data = cel.dataset.data;
+  if (diaSelecionado === data) {
+    diaSelecionado = null;
+    document.getElementById('detalhe-dia').classList.remove('vis');
+    document.querySelectorAll('.cal-dia.selecionado').forEach(el => el.classList.remove('selecionado'));
+    const evsFiltrados = eventosFiltrados();
+    const hoje = new Date().toISOString().slice(0, 10);
+    const proximos = evsFiltrados.filter(e => e.data >= hoje).slice(0, 30);
+    renderSidebar(proximos.length ? proximos : evsFiltrados.slice(0, 20));
+    document.getElementById('sidebar-titulo').textContent = `${MESES[viewMes - 1]} ${viewAno}`;
+  } else {
+    diaSelecionado = data;
+    document.querySelectorAll('.cal-dia.selecionado').forEach(el => el.classList.remove('selecionado'));
+    cel.classList.add('selecionado');
+    const evsDia = eventosFiltrados().filter(e => e.data === data);
+    renderSidebar(evsDia);
+    renderDetalheDia(data);
+  }
+});
+
+document.getElementById('legenda').addEventListener('click', e => {
+  const btn = e.target.closest('.leg-item');
+  if (!btn) return;
+  const cat = btn.dataset.cat;
+  if (filtrosAtivos.has(cat)) {
+    if (filtrosAtivos.size === 1) return; // pelo menos 1 ativo
+    filtrosAtivos.delete(cat);
+    btn.classList.remove('ativo');
+  } else {
+    filtrosAtivos.add(cat);
+    btn.classList.add('ativo');
+  }
+  renderCalendario();
+  const evsFiltrados = eventosFiltrados();
+  if (diaSelecionado) {
+    const evsDia = evsFiltrados.filter(e => e.data === diaSelecionado);
+    renderSidebar(evsDia);
+    renderDetalheDia(diaSelecionado);
+  } else {
+    const hoje = new Date().toISOString().slice(0, 10);
+    const proximos = evsFiltrados.filter(e => e.data >= hoje).slice(0, 30);
+    renderSidebar(proximos.length ? proximos : evsFiltrados.slice(0, 20));
+  }
+});
+
+// ─── MODAL ─────────────────────────────────────────────────────────────────
+document.getElementById('btn-sugerir').addEventListener('click', () => {
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('msg-ok').classList.remove('vis');
+  document.getElementById('msg-erro').classList.remove('vis');
+});
+document.getElementById('modal-close').addEventListener('click', () => {
+  document.getElementById('modal-overlay').classList.remove('open');
+});
+document.getElementById('modal-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal-overlay')) {
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+});
+
+document.getElementById('btn-enviar-form').addEventListener('click', async () => {
+  const titulo = document.getElementById('f-titulo').value.trim();
+  const data   = document.getElementById('f-data').value;
+  const hora   = document.getElementById('f-hora').value;
+  const cat    = document.getElementById('f-cat').value;
+  const local  = document.getElementById('f-local').value.trim();
+  const desc   = document.getElementById('f-desc').value.trim();
+
+  const msgOk   = document.getElementById('msg-ok');
+  const msgErro = document.getElementById('msg-erro');
+  msgOk.classList.remove('vis');
+  msgErro.classList.remove('vis');
+
+  if (!titulo || !data || !cat) {
+    msgErro.textContent = 'Preencha os campos obrigatórios: Título, Data e Categoria.';
+    msgErro.classList.add('vis');
+    return;
+  }
+
+  const btn = document.getElementById('btn-enviar-form');
+  btn.disabled = true;
+  btn.textContent = 'Enviando…';
+
+  try {
+    await enviarEvento({ titulo, data, hora: hora || null, cat, local: local || null, descricao: desc || null });
+    msgOk.classList.add('vis');
+    // limpar form
+    ['f-titulo','f-data','f-hora','f-local','f-desc'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('f-cat').value = '';
+    // recarregar
+    await atualizar();
+  } catch (err) {
+    msgErro.textContent = 'Erro ao enviar: ' + err.message;
+    msgErro.classList.add('vis');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Enviar Sugestão';
+  }
+});
+
+// ─── HAMBURGER ─────────────────────────────────────────────────────────────
+document.getElementById('menu-btn').addEventListener('click', () => {
+  const nav = document.getElementById('mobile-nav');
+  const btn = document.getElementById('menu-btn');
+  const open = nav.classList.toggle('open');
+  btn.textContent = open ? '✕' : '☰';
+});
+
+// ─── INIT ──────────────────────────────────────────────────────────────────
+renderLegenda();
+atualizar();
+</script>
+</body>
+</html>

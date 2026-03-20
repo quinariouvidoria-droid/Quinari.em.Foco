@@ -26,6 +26,12 @@
     },
     "api/voz.js": {
       "maxDuration": 15
+    },
+    "api/calendario.js": {
+      "maxDuration": 10
+    },
+    "api/vagas.js": {
+      "maxDuration": 10
     }
   }
 }
